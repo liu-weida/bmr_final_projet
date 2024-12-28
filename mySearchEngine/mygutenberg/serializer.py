@@ -1,18 +1,7 @@
 from rest_framework.serializers import ModelSerializer
-from mygutenberg.models import ProduitAllBooks, ProduitEnglishBooks, ProduitFrenchBooks
+from mygutenberg.models import BookMetadata
 
-
-class ProduitAllBooksSerializer(ModelSerializer):
+class BookMetadataSerializer(ModelSerializer):
     class Meta:
-        model = ProduitAllBooks
-        fields = ('id', 'bookID')
-
-class ProduitEnglishBooksSerializer(ModelSerializer):
-    class Meta:
-        model = ProduitEnglishBooks
-        fields = ('id', 'bookID', 'Language')
-
-class ProduitFrenchBooksSerializer(ModelSerializer):
-    class Meta:
-        model = ProduitFrenchBooks
-        fields = ('id', 'bookID', 'Language')
+        model = BookMetadata
+        fields = '__all__'
