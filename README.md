@@ -6,6 +6,12 @@ python3 -m venv myTidyVEnv
 source myTidyVEnv/bin/activate
 pip3 install -r requirements.txt
 ```
+### preparation :
+```
+python3 manage.py crawlBooks 1 100
+```
+预加载数据
+数字代表id范围
 
 ### run server :
 ```
@@ -27,7 +33,7 @@ myGutenburg/
 models.py : 数据库模型
 更改后需要上传cache新模型结构
 ```
-python3 manage.py makemigrations mytig
+python3 manage.py makemigrations mygutenberg
 python3 manage.py migrate
 ```
 
