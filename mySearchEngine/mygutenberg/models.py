@@ -1,4 +1,14 @@
 from django.db import models
+from django.contrib.auth.models import User
+
+class UserQuery(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    query = models.CharField(max_length=255)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    results_count = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.user.username} searched for '{self.query}'"
 
 # Create your models here.
 class ProduitAllBooks(models.Model):
@@ -31,3 +41,14 @@ class BookMetadata(models.Model):
 
     def __str__(self):
         return self.title or f"Book {self.book_id}"
+
+class UserQuery(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    query = models.CharField(max_length=255)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    results_count = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.user.username} searched for '{self.query}'"
+
+

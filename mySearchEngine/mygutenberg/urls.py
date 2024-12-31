@@ -8,4 +8,6 @@ urlpatterns = [
     path('frenchbook/<int:pk>/', views.RedirectionBookDetail.as_view()),
     path('englishbooks/', views.RedirectionEnglishBookList.as_view()),
     path('englishbook/<int:pk>/', views.RedirectionBookDetail.as_view()),
+    path('login/', views.LoginView.as_view(), name='login'),
+    path('register/', views.RegisterView.as_view(), name='register'),
 ]
