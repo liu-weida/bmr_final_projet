@@ -14,8 +14,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.rhw.bmr.project.dao.entity.BookSearchDO;
 import org.rhw.bmr.project.dao.mapper.BookSearchMapper;
+import org.rhw.bmr.project.dto.req.BookSearchByRegexpReqDTO;
 import org.rhw.bmr.project.dto.req.BookSearchByWordReqDTO;
 import org.rhw.bmr.project.dto.req.BookSearchReqDTO;
+import org.rhw.bmr.project.dto.resp.BookSearchByRegespRespDTO;
 import org.rhw.bmr.project.dto.resp.BookSearchByWordRespDTO;
 import org.rhw.bmr.project.dto.resp.BookSearchRespDTO;
 import org.rhw.bmr.project.service.BookSearchService;
@@ -89,13 +91,6 @@ public class BookSearchServiceImpl extends ServiceImpl<BookSearchMapper, BookSea
     @Override
     public IPage<BookSearchByWordRespDTO> pageBookSearchByWord(BookSearchByWordReqDTO requestParam) {
 
-
-        if (requestParam.getWord() == null || requestParam.getWord().isEmpty()){
-
-            log.error("搜索词为空");
-            return null;
-
-        }
         try {
             // 构建分页参数
             int pageNo = requestParam.getPageNo() != null ? requestParam.getPageNo() : 1;
@@ -140,6 +135,62 @@ public class BookSearchServiceImpl extends ServiceImpl<BookSearchMapper, BookSea
 
             // 构建分页结果
             IPage<BookSearchByWordRespDTO> page = new Page<>(pageNo, pageSize, total);
+            page.setRecords(records);
+            return page;
+
+        } catch (Exception e) {
+            log.error("Elasticsearch 查询失败", e);
+            return new Page<>(); // 返回空分页
+        }
+    }
+
+    @Override
+    public IPage<BookSearchByRegespRespDTO> pageBookSearchByRegexp(BookSearchByRegexpReqDTO requestParam) {
+
+        try {
+            // 构建分页参数
+            int pageNo = requestParam.getPageNo() != null ? requestParam.getPageNo() : 1;
+            int pageSize = requestParam.getPageSize() != null ? requestParam.getPageSize() : 10;
+            int from = (pageNo - 1) * pageSize;
+
+            // 构建查询请求
+            SearchRequest searchRequest = SearchRequest.of(sr -> sr
+                    .index("bmr_books") // 替换为你的索引名称
+                    .query(q -> q
+                            .regexp(r -> r
+                                    .field("content") // 指定正则匹配的字段
+                                    .value(requestParam.getRegularExpr()) // 正则表达式，确保输入符合 Lucene Regexp 语法
+                            )
+                    )
+                    .source(s -> s
+                            .filter(f -> f
+                                    .includes("id", "title", "author", "refId", "category", "language") // 指定返回字段
+                            )
+                    )
+                    .from(from) // 设置分页开始位置
+                    .size(pageSize) // 设置每页大小
+            );
+
+
+            // 执行查询
+            SearchResponse<BookSearchByRegespRespDTO> response = elasticsearchClient.search(
+                    searchRequest,
+                    BookSearchByRegespRespDTO.class
+            );
+
+            // 获取查询结果
+            List<BookSearchByRegespRespDTO> records = new ArrayList<>();
+            for (Hit<BookSearchByRegespRespDTO> hit : response.hits().hits()) {
+                records.add(hit.source());
+            }
+
+            // 获取总记录数
+            long total = response.hits().total() != null
+                    ? response.hits().total().value()
+                    : 0;
+
+            // 构建分页结果
+            IPage<BookSearchByRegespRespDTO> page = new Page<>(pageNo, pageSize, total);
             page.setRecords(records);
             return page;
 

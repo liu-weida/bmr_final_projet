@@ -39,4 +39,4 @@ elasticsearch:
 
 scheduledTaskSyncElastic:
   enabled: true
-  interval: 300
+  interval: 30000

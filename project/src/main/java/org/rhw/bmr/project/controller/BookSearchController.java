@@ -4,8 +4,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.RequiredArgsConstructor;
 import org.rhw.bmr.project.common.convention.result.Result;
 import org.rhw.bmr.project.common.convention.result.Results;
+import org.rhw.bmr.project.dto.req.BookSearchByRegexpReqDTO;
 import org.rhw.bmr.project.dto.req.BookSearchByWordReqDTO;
 import org.rhw.bmr.project.dto.req.BookSearchReqDTO;
+import org.rhw.bmr.project.dto.resp.BookSearchByRegespRespDTO;
 import org.rhw.bmr.project.dto.resp.BookSearchByWordRespDTO;
 import org.rhw.bmr.project.dto.resp.BookSearchRespDTO;
 import org.rhw.bmr.project.service.BookSearchService;
@@ -30,5 +32,8 @@ public class BookSearchController {
         return Results.success(bookSearchService.pageBookSearchByWord(requestParam));
     }
 
-
+    @GetMapping("/api/bmr/project/v1/bookSearch_by_regexp")
+    public Result<IPage<BookSearchByRegespRespDTO>> pageBookSearchByRegexp(BookSearchByRegexpReqDTO requestParam){
+        return Results.success(bookSearchService.pageBookSearchByRegexp(requestParam));
+    }
 }
