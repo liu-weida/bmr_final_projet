@@ -1,0 +1,42 @@
+server:
+  port: 8001
+
+spring:
+  datasource:
+    # ShardingSphere 对 Driver 自定义，实现分库分表等隐藏逻辑
+    driver-class-name: org.apache.shardingsphere.driver.ShardingSphereDriver
+    # ShardingSphere 配置文件路径
+    url: jdbc:shardingsphere:classpath:shardingsphere-config.yaml
+  task:
+    scheduling:
+      pool:
+        size: 5 # 线程池大小
+
+
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      channel-topic:
+        short-link-stats: 'short_link:stats-stream'
+        short-link-stats-group: 'short_link:stats-stream:only-group'
+
+  mvc:
+    view:
+      prefix: /templates/
+      suffix: .html
+
+short-link:
+  domain:
+    default: nurl.ink:8001
+
+elasticsearch:
+  host: 127.0.0.1
+  port: 9200
+  username: elastic
+  password: z38fb1zzs_SJXCL7Py3N
+  protocol: https
+
+scheduledTaskSyncElastic:
+  enabled: true
+  interval: 300
