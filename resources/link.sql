@@ -483,292 +483,308 @@ CREATE TABLE `t_books_0`
     `create_time`          datetime DEFAULT NULL COMMENT 'Creation Time',
     `update_time`          datetime DEFAULT NULL COMMENT 'Modified Time',
     `del_flag`             tinyint(1) DEFAULT NULL COMMENT 'Delete Flag 0: not deleted 1: deleted',
+    `es_sync_flag` TINYINT(1) DEFAULT 0 COMMENT '0: 未同步 1: 已同步',
     PRIMARY KEY (`id`),
     UNIQUE KEY `idx_unique_title_author` (`title`, `author`) USING BTREE
 )  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_general_ci;CREATE TABLE `t_books_1`
-                             (
-                                 `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Book ID',
-                                 `ref_id`               varchar(50) DEFAULT NULL COMMENT 'Reference ID for external systems',
-                                 `title`                varchar(255) DEFAULT NULL COMMENT 'Book Title',
-                                 `author`               varchar(255) DEFAULT NULL COMMENT 'Author',
-                                 `category`             varchar(100) DEFAULT NULL COMMENT 'Book Category',
-                                 `description`          text DEFAULT NULL COMMENT 'Book Description',
-                                 `language`             varchar(50) DEFAULT NULL COMMENT 'Language',
-                                 `click_count`          int(11) DEFAULT 0 COMMENT 'Number of times the book was clicked',
-                                 `storage_path`         varchar(512) DEFAULT NULL COMMENT 'Path to the stored book file',
-                                 `sorted_order`         int(11) DEFAULT NULL COMMENT 'Sorted Order for frontend display',
-                                 `deletion_time`        bigint(20) DEFAULT NULL COMMENT 'Deletion Time',
-                                 `create_time`          datetime DEFAULT NULL COMMENT 'Creation Time',
-                                 `update_time`          datetime DEFAULT NULL COMMENT 'Modified Time',
-                                 `del_flag`             tinyint(1) DEFAULT NULL COMMENT 'Delete Flag 0: not deleted 1: deleted',
-                                 PRIMARY KEY (`id`),
-                                 UNIQUE KEY `idx_unique_title_author` (`title`, `author`) USING BTREE
-                             )  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_general_ci;CREATE TABLE `t_books_2`
-                             (
-                                 `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Book ID',
-                                 `ref_id`               varchar(50) DEFAULT NULL COMMENT 'Reference ID for external systems',
-                                 `title`                varchar(255) DEFAULT NULL COMMENT 'Book Title',
-                                 `author`               varchar(255) DEFAULT NULL COMMENT 'Author',
-                                 `category`             varchar(100) DEFAULT NULL COMMENT 'Book Category',
-                                 `description`          text DEFAULT NULL COMMENT 'Book Description',
-                                 `language`             varchar(50) DEFAULT NULL COMMENT 'Language',
-                                 `click_count`          int(11) DEFAULT 0 COMMENT 'Number of times the book was clicked',
-                                 `storage_path`         varchar(512) DEFAULT NULL COMMENT 'Path to the stored book file',
-                                 `sorted_order`         int(11) DEFAULT NULL COMMENT 'Sorted Order for frontend display',
-                                 `deletion_time`        bigint(20) DEFAULT NULL COMMENT 'Deletion Time',
-                                 `create_time`          datetime DEFAULT NULL COMMENT 'Creation Time',
-                                 `update_time`          datetime DEFAULT NULL COMMENT 'Modified Time',
-                                 `del_flag`             tinyint(1) DEFAULT NULL COMMENT 'Delete Flag 0: not deleted 1: deleted',
-                                 PRIMARY KEY (`id`),
-                                 UNIQUE KEY `idx_unique_title_author` (`title`, `author`) USING BTREE
-                             )  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_general_ci;CREATE TABLE `t_books_3`
-                             (
-                                 `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Book ID',
-                                 `ref_id`               varchar(50) DEFAULT NULL COMMENT 'Reference ID for external systems',
-                                 `title`                varchar(255) DEFAULT NULL COMMENT 'Book Title',
-                                 `author`               varchar(255) DEFAULT NULL COMMENT 'Author',
-                                 `category`             varchar(100) DEFAULT NULL COMMENT 'Book Category',
-                                 `description`          text DEFAULT NULL COMMENT 'Book Description',
-                                 `language`             varchar(50) DEFAULT NULL COMMENT 'Language',
-                                 `click_count`          int(11) DEFAULT 0 COMMENT 'Number of times the book was clicked',
-                                 `storage_path`         varchar(512) DEFAULT NULL COMMENT 'Path to the stored book file',
-                                 `sorted_order`         int(11) DEFAULT NULL COMMENT 'Sorted Order for frontend display',
-                                 `deletion_time`        bigint(20) DEFAULT NULL COMMENT 'Deletion Time',
-                                 `create_time`          datetime DEFAULT NULL COMMENT 'Creation Time',
-                                 `update_time`          datetime DEFAULT NULL COMMENT 'Modified Time',
-                                 `del_flag`             tinyint(1) DEFAULT NULL COMMENT 'Delete Flag 0: not deleted 1: deleted',
-                                 PRIMARY KEY (`id`),
-                                 UNIQUE KEY `idx_unique_title_author` (`title`, `author`) USING BTREE
-                             )  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_general_ci;CREATE TABLE `t_books_4`
-                             (
-                                 `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Book ID',
-                                 `ref_id`               varchar(50) DEFAULT NULL COMMENT 'Reference ID for external systems',
-                                 `title`                varchar(255) DEFAULT NULL COMMENT 'Book Title',
-                                 `author`               varchar(255) DEFAULT NULL COMMENT 'Author',
-                                 `category`             varchar(100) DEFAULT NULL COMMENT 'Book Category',
-                                 `description`          text DEFAULT NULL COMMENT 'Book Description',
-                                 `language`             varchar(50) DEFAULT NULL COMMENT 'Language',
-                                 `click_count`          int(11) DEFAULT 0 COMMENT 'Number of times the book was clicked',
-                                 `storage_path`         varchar(512) DEFAULT NULL COMMENT 'Path to the stored book file',
-                                 `sorted_order`         int(11) DEFAULT NULL COMMENT 'Sorted Order for frontend display',
-                                 `deletion_time`        bigint(20) DEFAULT NULL COMMENT 'Deletion Time',
-                                 `create_time`          datetime DEFAULT NULL COMMENT 'Creation Time',
-                                 `update_time`          datetime DEFAULT NULL COMMENT 'Modified Time',
-                                 `del_flag`             tinyint(1) DEFAULT NULL COMMENT 'Delete Flag 0: not deleted 1: deleted',
-                                 PRIMARY KEY (`id`),
-                                 UNIQUE KEY `idx_unique_title_author` (`title`, `author`) USING BTREE
-                             )  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_general_ci;CREATE TABLE `t_books_5`
-                             (
-                                 `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Book ID',
-                                 `ref_id`               varchar(50) DEFAULT NULL COMMENT 'Reference ID for external systems',
-                                 `title`                varchar(255) DEFAULT NULL COMMENT 'Book Title',
-                                 `author`               varchar(255) DEFAULT NULL COMMENT 'Author',
-                                 `category`             varchar(100) DEFAULT NULL COMMENT 'Book Category',
-                                 `description`          text DEFAULT NULL COMMENT 'Book Description',
-                                 `language`             varchar(50) DEFAULT NULL COMMENT 'Language',
-                                 `click_count`          int(11) DEFAULT 0 COMMENT 'Number of times the book was clicked',
-                                 `storage_path`         varchar(512) DEFAULT NULL COMMENT 'Path to the stored book file',
-                                 `sorted_order`         int(11) DEFAULT NULL COMMENT 'Sorted Order for frontend display',
-                                 `deletion_time`        bigint(20) DEFAULT NULL COMMENT 'Deletion Time',
-                                 `create_time`          datetime DEFAULT NULL COMMENT 'Creation Time',
-                                 `update_time`          datetime DEFAULT NULL COMMENT 'Modified Time',
-                                 `del_flag`             tinyint(1) DEFAULT NULL COMMENT 'Delete Flag 0: not deleted 1: deleted',
-                                 PRIMARY KEY (`id`),
-                                 UNIQUE KEY `idx_unique_title_author` (`title`, `author`) USING BTREE
-                             )  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_general_ci;CREATE TABLE `t_books_6`
-                             (
-                                 `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Book ID',
-                                 `ref_id`               varchar(50) DEFAULT NULL COMMENT 'Reference ID for external systems',
-                                 `title`                varchar(255) DEFAULT NULL COMMENT 'Book Title',
-                                 `author`               varchar(255) DEFAULT NULL COMMENT 'Author',
-                                 `category`             varchar(100) DEFAULT NULL COMMENT 'Book Category',
-                                 `description`          text DEFAULT NULL COMMENT 'Book Description',
-                                 `language`             varchar(50) DEFAULT NULL COMMENT 'Language',
-                                 `click_count`          int(11) DEFAULT 0 COMMENT 'Number of times the book was clicked',
-                                 `storage_path`         varchar(512) DEFAULT NULL COMMENT 'Path to the stored book file',
-                                 `sorted_order`         int(11) DEFAULT NULL COMMENT 'Sorted Order for frontend display',
-                                 `deletion_time`        bigint(20) DEFAULT NULL COMMENT 'Deletion Time',
-                                 `create_time`          datetime DEFAULT NULL COMMENT 'Creation Time',
-                                 `update_time`          datetime DEFAULT NULL COMMENT 'Modified Time',
-                                 `del_flag`             tinyint(1) DEFAULT NULL COMMENT 'Delete Flag 0: not deleted 1: deleted',
-                                 PRIMARY KEY (`id`),
-                                 UNIQUE KEY `idx_unique_title_author` (`title`, `author`) USING BTREE
-                             )  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_general_ci;CREATE TABLE `t_books_7`
-                             (
-                                 `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Book ID',
-                                 `ref_id`               varchar(50) DEFAULT NULL COMMENT 'Reference ID for external systems',
-                                 `title`                varchar(255) DEFAULT NULL COMMENT 'Book Title',
-                                 `author`               varchar(255) DEFAULT NULL COMMENT 'Author',
-                                 `category`             varchar(100) DEFAULT NULL COMMENT 'Book Category',
-                                 `description`          text DEFAULT NULL COMMENT 'Book Description',
-                                 `language`             varchar(50) DEFAULT NULL COMMENT 'Language',
-                                 `click_count`          int(11) DEFAULT 0 COMMENT 'Number of times the book was clicked',
-                                 `storage_path`         varchar(512) DEFAULT NULL COMMENT 'Path to the stored book file',
-                                 `sorted_order`         int(11) DEFAULT NULL COMMENT 'Sorted Order for frontend display',
-                                 `deletion_time`        bigint(20) DEFAULT NULL COMMENT 'Deletion Time',
-                                 `create_time`          datetime DEFAULT NULL COMMENT 'Creation Time',
-                                 `update_time`          datetime DEFAULT NULL COMMENT 'Modified Time',
-                                 `del_flag`             tinyint(1) DEFAULT NULL COMMENT 'Delete Flag 0: not deleted 1: deleted',
-                                 PRIMARY KEY (`id`),
-                                 UNIQUE KEY `idx_unique_title_author` (`title`, `author`) USING BTREE
-                             )  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_general_ci;CREATE TABLE `t_books_8`
-                             (
-                                 `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Book ID',
-                                 `ref_id`               varchar(50) DEFAULT NULL COMMENT 'Reference ID for external systems',
-                                 `title`                varchar(255) DEFAULT NULL COMMENT 'Book Title',
-                                 `author`               varchar(255) DEFAULT NULL COMMENT 'Author',
-                                 `category`             varchar(100) DEFAULT NULL COMMENT 'Book Category',
-                                 `description`          text DEFAULT NULL COMMENT 'Book Description',
-                                 `language`             varchar(50) DEFAULT NULL COMMENT 'Language',
-                                 `click_count`          int(11) DEFAULT 0 COMMENT 'Number of times the book was clicked',
-                                 `storage_path`         varchar(512) DEFAULT NULL COMMENT 'Path to the stored book file',
-                                 `sorted_order`         int(11) DEFAULT NULL COMMENT 'Sorted Order for frontend display',
-                                 `deletion_time`        bigint(20) DEFAULT NULL COMMENT 'Deletion Time',
-                                 `create_time`          datetime DEFAULT NULL COMMENT 'Creation Time',
-                                 `update_time`          datetime DEFAULT NULL COMMENT 'Modified Time',
-                                 `del_flag`             tinyint(1) DEFAULT NULL COMMENT 'Delete Flag 0: not deleted 1: deleted',
-                                 PRIMARY KEY (`id`),
-                                 UNIQUE KEY `idx_unique_title_author` (`title`, `author`) USING BTREE
-                             )  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_general_ci;CREATE TABLE `t_books_9`
-                             (
-                                 `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Book ID',
-                                 `ref_id`               varchar(50) DEFAULT NULL COMMENT 'Reference ID for external systems',
-                                 `title`                varchar(255) DEFAULT NULL COMMENT 'Book Title',
-                                 `author`               varchar(255) DEFAULT NULL COMMENT 'Author',
-                                 `category`             varchar(100) DEFAULT NULL COMMENT 'Book Category',
-                                 `description`          text DEFAULT NULL COMMENT 'Book Description',
-                                 `language`             varchar(50) DEFAULT NULL COMMENT 'Language',
-                                 `click_count`          int(11) DEFAULT 0 COMMENT 'Number of times the book was clicked',
-                                 `storage_path`         varchar(512) DEFAULT NULL COMMENT 'Path to the stored book file',
-                                 `sorted_order`         int(11) DEFAULT NULL COMMENT 'Sorted Order for frontend display',
-                                 `deletion_time`        bigint(20) DEFAULT NULL COMMENT 'Deletion Time',
-                                 `create_time`          datetime DEFAULT NULL COMMENT 'Creation Time',
-                                 `update_time`          datetime DEFAULT NULL COMMENT 'Modified Time',
-                                 `del_flag`             tinyint(1) DEFAULT NULL COMMENT 'Delete Flag 0: not deleted 1: deleted',
-                                 PRIMARY KEY (`id`),
-                                 UNIQUE KEY `idx_unique_title_author` (`title`, `author`) USING BTREE
-                             )  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_general_ci;CREATE TABLE `t_books_10`
-                             (
-                                 `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Book ID',
-                                 `ref_id`               varchar(50) DEFAULT NULL COMMENT 'Reference ID for external systems',
-                                 `title`                varchar(255) DEFAULT NULL COMMENT 'Book Title',
-                                 `author`               varchar(255) DEFAULT NULL COMMENT 'Author',
-                                 `category`             varchar(100) DEFAULT NULL COMMENT 'Book Category',
-                                 `description`          text DEFAULT NULL COMMENT 'Book Description',
-                                 `language`             varchar(50) DEFAULT NULL COMMENT 'Language',
-                                 `click_count`          int(11) DEFAULT 0 COMMENT 'Number of times the book was clicked',
-                                 `storage_path`         varchar(512) DEFAULT NULL COMMENT 'Path to the stored book file',
-                                 `sorted_order`         int(11) DEFAULT NULL COMMENT 'Sorted Order for frontend display',
-                                 `deletion_time`        bigint(20) DEFAULT NULL COMMENT 'Deletion Time',
-                                 `create_time`          datetime DEFAULT NULL COMMENT 'Creation Time',
-                                 `update_time`          datetime DEFAULT NULL COMMENT 'Modified Time',
-                                 `del_flag`             tinyint(1) DEFAULT NULL COMMENT 'Delete Flag 0: not deleted 1: deleted',
-                                 PRIMARY KEY (`id`),
-                                 UNIQUE KEY `idx_unique_title_author` (`title`, `author`) USING BTREE
-                             )  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_general_ci;CREATE TABLE `t_books_11`
-                             (
-                                 `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Book ID',
-                                 `ref_id`               varchar(50) DEFAULT NULL COMMENT 'Reference ID for external systems',
-                                 `title`                varchar(255) DEFAULT NULL COMMENT 'Book Title',
-                                 `author`               varchar(255) DEFAULT NULL COMMENT 'Author',
-                                 `category`             varchar(100) DEFAULT NULL COMMENT 'Book Category',
-                                 `description`          text DEFAULT NULL COMMENT 'Book Description',
-                                 `language`             varchar(50) DEFAULT NULL COMMENT 'Language',
-                                 `click_count`          int(11) DEFAULT 0 COMMENT 'Number of times the book was clicked',
-                                 `storage_path`         varchar(512) DEFAULT NULL COMMENT 'Path to the stored book file',
-                                 `sorted_order`         int(11) DEFAULT NULL COMMENT 'Sorted Order for frontend display',
-                                 `deletion_time`        bigint(20) DEFAULT NULL COMMENT 'Deletion Time',
-                                 `create_time`          datetime DEFAULT NULL COMMENT 'Creation Time',
-                                 `update_time`          datetime DEFAULT NULL COMMENT 'Modified Time',
-                                 `del_flag`             tinyint(1) DEFAULT NULL COMMENT 'Delete Flag 0: not deleted 1: deleted',
-                                 PRIMARY KEY (`id`),
-                                 UNIQUE KEY `idx_unique_title_author` (`title`, `author`) USING BTREE
-                             )  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_general_ci;CREATE TABLE `t_books_12`
-                             (
-                                 `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Book ID',
-                                 `ref_id`               varchar(50) DEFAULT NULL COMMENT 'Reference ID for external systems',
-                                 `title`                varchar(255) DEFAULT NULL COMMENT 'Book Title',
-                                 `author`               varchar(255) DEFAULT NULL COMMENT 'Author',
-                                 `category`             varchar(100) DEFAULT NULL COMMENT 'Book Category',
-                                 `description`          text DEFAULT NULL COMMENT 'Book Description',
-                                 `language`             varchar(50) DEFAULT NULL COMMENT 'Language',
-                                 `click_count`          int(11) DEFAULT 0 COMMENT 'Number of times the book was clicked',
-                                 `storage_path`         varchar(512) DEFAULT NULL COMMENT 'Path to the stored book file',
-                                 `sorted_order`         int(11) DEFAULT NULL COMMENT 'Sorted Order for frontend display',
-                                 `deletion_time`        bigint(20) DEFAULT NULL COMMENT 'Deletion Time',
-                                 `create_time`          datetime DEFAULT NULL COMMENT 'Creation Time',
-                                 `update_time`          datetime DEFAULT NULL COMMENT 'Modified Time',
-                                 `del_flag`             tinyint(1) DEFAULT NULL COMMENT 'Delete Flag 0: not deleted 1: deleted',
-                                 PRIMARY KEY (`id`),
-                                 UNIQUE KEY `idx_unique_title_author` (`title`, `author`) USING BTREE
-                             )  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_general_ci;CREATE TABLE `t_books_13`
-                             (
-                                 `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Book ID',
-                                 `ref_id`               varchar(50) DEFAULT NULL COMMENT 'Reference ID for external systems',
-                                 `title`                varchar(255) DEFAULT NULL COMMENT 'Book Title',
-                                 `author`               varchar(255) DEFAULT NULL COMMENT 'Author',
-                                 `category`             varchar(100) DEFAULT NULL COMMENT 'Book Category',
-                                 `description`          text DEFAULT NULL COMMENT 'Book Description',
-                                 `language`             varchar(50) DEFAULT NULL COMMENT 'Language',
-                                 `click_count`          int(11) DEFAULT 0 COMMENT 'Number of times the book was clicked',
-                                 `storage_path`         varchar(512) DEFAULT NULL COMMENT 'Path to the stored book file',
-                                 `sorted_order`         int(11) DEFAULT NULL COMMENT 'Sorted Order for frontend display',
-                                 `deletion_time`        bigint(20) DEFAULT NULL COMMENT 'Deletion Time',
-                                 `create_time`          datetime DEFAULT NULL COMMENT 'Creation Time',
-                                 `update_time`          datetime DEFAULT NULL COMMENT 'Modified Time',
-                                 `del_flag`             tinyint(1) DEFAULT NULL COMMENT 'Delete Flag 0: not deleted 1: deleted',
-                                 PRIMARY KEY (`id`),
-                                 UNIQUE KEY `idx_unique_title_author` (`title`, `author`) USING BTREE
-                             )  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_general_ci;CREATE TABLE `t_books_14`
-                             (
-                                 `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Book ID',
-                                 `ref_id`               varchar(50) DEFAULT NULL COMMENT 'Reference ID for external systems',
-                                 `title`                varchar(255) DEFAULT NULL COMMENT 'Book Title',
-                                 `author`               varchar(255) DEFAULT NULL COMMENT 'Author',
-                                 `category`             varchar(100) DEFAULT NULL COMMENT 'Book Category',
-                                 `description`          text DEFAULT NULL COMMENT 'Book Description',
-                                 `language`             varchar(50) DEFAULT NULL COMMENT 'Language',
-                                 `click_count`          int(11) DEFAULT 0 COMMENT 'Number of times the book was clicked',
-                                 `storage_path`         varchar(512) DEFAULT NULL COMMENT 'Path to the stored book file',
-                                 `sorted_order`         int(11) DEFAULT NULL COMMENT 'Sorted Order for frontend display',
-                                 `deletion_time`        bigint(20) DEFAULT NULL COMMENT 'Deletion Time',
-                                 `create_time`          datetime DEFAULT NULL COMMENT 'Creation Time',
-                                 `update_time`          datetime DEFAULT NULL COMMENT 'Modified Time',
-                                 `del_flag`             tinyint(1) DEFAULT NULL COMMENT 'Delete Flag 0: not deleted 1: deleted',
-                                 PRIMARY KEY (`id`),
-                                 UNIQUE KEY `idx_unique_title_author` (`title`, `author`) USING BTREE
-                             )  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_general_ci;CREATE TABLE `t_books_15`
-                             (
-                                 `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Book ID',
-                                 `ref_id`               varchar(50) DEFAULT NULL COMMENT 'Reference ID for external systems',
-                                 `title`                varchar(255) DEFAULT NULL COMMENT 'Book Title',
-                                 `author`               varchar(255) DEFAULT NULL COMMENT 'Author',
-                                 `category`             varchar(100) DEFAULT NULL COMMENT 'Book Category',
-                                 `description`          text DEFAULT NULL COMMENT 'Book Description',
-                                 `language`             varchar(50) DEFAULT NULL COMMENT 'Language',
-                                 `click_count`          int(11) DEFAULT 0 COMMENT 'Number of times the book was clicked',
-                                 `storage_path`         varchar(512) DEFAULT NULL COMMENT 'Path to the stored book file',
-                                 `sorted_order`         int(11) DEFAULT NULL COMMENT 'Sorted Order for frontend display',
-                                 `deletion_time`        bigint(20) DEFAULT NULL COMMENT 'Deletion Time',
-                                 `create_time`          datetime DEFAULT NULL COMMENT 'Creation Time',
-                                 `update_time`          datetime DEFAULT NULL COMMENT 'Modified Time',
-                                 `del_flag`             tinyint(1) DEFAULT NULL COMMENT 'Delete Flag 0: not deleted 1: deleted',
-                                 PRIMARY KEY (`id`),
-                                 UNIQUE KEY `idx_unique_title_author` (`title`, `author`) USING BTREE
-                             )  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_general_ci;
+                              COLLATE utf8mb4_general_ci;CREATE TABLE `t_books_1`
+                                                         (
+                                                             `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Book ID',
+                                                             `ref_id`               varchar(50) DEFAULT NULL COMMENT 'Reference ID for external systems',
+                                                             `title`                varchar(255) DEFAULT NULL COMMENT 'Book Title',
+                                                             `author`               varchar(255) DEFAULT NULL COMMENT 'Author',
+                                                             `category`             varchar(100) DEFAULT NULL COMMENT 'Book Category',
+                                                             `description`          text DEFAULT NULL COMMENT 'Book Description',
+                                                             `language`             varchar(50) DEFAULT NULL COMMENT 'Language',
+                                                             `click_count`          int(11) DEFAULT 0 COMMENT 'Number of times the book was clicked',
+                                                             `storage_path`         varchar(512) DEFAULT NULL COMMENT 'Path to the stored book file',
+                                                             `sorted_order`         int(11) DEFAULT NULL COMMENT 'Sorted Order for frontend display',
+                                                             `deletion_time`        bigint(20) DEFAULT NULL COMMENT 'Deletion Time',
+                                                             `create_time`          datetime DEFAULT NULL COMMENT 'Creation Time',
+                                                             `update_time`          datetime DEFAULT NULL COMMENT 'Modified Time',
+                                                             `del_flag`             tinyint(1) DEFAULT NULL COMMENT 'Delete Flag 0: not deleted 1: deleted',
+                                                             `es_sync_flag` TINYINT(1) DEFAULT 0 COMMENT '0: 未同步 1: 已同步',
+                                                             PRIMARY KEY (`id`),
+                                                             UNIQUE KEY `idx_unique_title_author` (`title`, `author`) USING BTREE
+                                                         )  CHARACTER SET utf8mb4
+                              COLLATE utf8mb4_general_ci;CREATE TABLE `t_books_2`
+                                                         (
+                                                             `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Book ID',
+                                                             `ref_id`               varchar(50) DEFAULT NULL COMMENT 'Reference ID for external systems',
+                                                             `title`                varchar(255) DEFAULT NULL COMMENT 'Book Title',
+                                                             `author`               varchar(255) DEFAULT NULL COMMENT 'Author',
+                                                             `category`             varchar(100) DEFAULT NULL COMMENT 'Book Category',
+                                                             `description`          text DEFAULT NULL COMMENT 'Book Description',
+                                                             `language`             varchar(50) DEFAULT NULL COMMENT 'Language',
+                                                             `click_count`          int(11) DEFAULT 0 COMMENT 'Number of times the book was clicked',
+                                                             `storage_path`         varchar(512) DEFAULT NULL COMMENT 'Path to the stored book file',
+                                                             `sorted_order`         int(11) DEFAULT NULL COMMENT 'Sorted Order for frontend display',
+                                                             `deletion_time`        bigint(20) DEFAULT NULL COMMENT 'Deletion Time',
+                                                             `create_time`          datetime DEFAULT NULL COMMENT 'Creation Time',
+                                                             `update_time`          datetime DEFAULT NULL COMMENT 'Modified Time',
+                                                             `del_flag`             tinyint(1) DEFAULT NULL COMMENT 'Delete Flag 0: not deleted 1: deleted',
+                                                             `es_sync_flag` TINYINT(1) DEFAULT 0 COMMENT '0: 未同步 1: 已同步',
+                                                             PRIMARY KEY (`id`),
+                                                             UNIQUE KEY `idx_unique_title_author` (`title`, `author`) USING BTREE
+                                                         )  CHARACTER SET utf8mb4
+                              COLLATE utf8mb4_general_ci;CREATE TABLE `t_books_3`
+                                                         (
+                                                             `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Book ID',
+                                                             `ref_id`               varchar(50) DEFAULT NULL COMMENT 'Reference ID for external systems',
+                                                             `title`                varchar(255) DEFAULT NULL COMMENT 'Book Title',
+                                                             `author`               varchar(255) DEFAULT NULL COMMENT 'Author',
+                                                             `category`             varchar(100) DEFAULT NULL COMMENT 'Book Category',
+                                                             `description`          text DEFAULT NULL COMMENT 'Book Description',
+                                                             `language`             varchar(50) DEFAULT NULL COMMENT 'Language',
+                                                             `click_count`          int(11) DEFAULT 0 COMMENT 'Number of times the book was clicked',
+                                                             `storage_path`         varchar(512) DEFAULT NULL COMMENT 'Path to the stored book file',
+                                                             `sorted_order`         int(11) DEFAULT NULL COMMENT 'Sorted Order for frontend display',
+                                                             `deletion_time`        bigint(20) DEFAULT NULL COMMENT 'Deletion Time',
+                                                             `create_time`          datetime DEFAULT NULL COMMENT 'Creation Time',
+                                                             `update_time`          datetime DEFAULT NULL COMMENT 'Modified Time',
+                                                             `del_flag`             tinyint(1) DEFAULT NULL COMMENT 'Delete Flag 0: not deleted 1: deleted',
+                                                             `es_sync_flag` TINYINT(1) DEFAULT 0 COMMENT '0: 未同步 1: 已同步',
+                                                             PRIMARY KEY (`id`),
+                                                             UNIQUE KEY `idx_unique_title_author` (`title`, `author`) USING BTREE
+                                                         )  CHARACTER SET utf8mb4
+                              COLLATE utf8mb4_general_ci;CREATE TABLE `t_books_4`
+                                                         (
+                                                             `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Book ID',
+                                                             `ref_id`               varchar(50) DEFAULT NULL COMMENT 'Reference ID for external systems',
+                                                             `title`                varchar(255) DEFAULT NULL COMMENT 'Book Title',
+                                                             `author`               varchar(255) DEFAULT NULL COMMENT 'Author',
+                                                             `category`             varchar(100) DEFAULT NULL COMMENT 'Book Category',
+                                                             `description`          text DEFAULT NULL COMMENT 'Book Description',
+                                                             `language`             varchar(50) DEFAULT NULL COMMENT 'Language',
+                                                             `click_count`          int(11) DEFAULT 0 COMMENT 'Number of times the book was clicked',
+                                                             `storage_path`         varchar(512) DEFAULT NULL COMMENT 'Path to the stored book file',
+                                                             `sorted_order`         int(11) DEFAULT NULL COMMENT 'Sorted Order for frontend display',
+                                                             `deletion_time`        bigint(20) DEFAULT NULL COMMENT 'Deletion Time',
+                                                             `create_time`          datetime DEFAULT NULL COMMENT 'Creation Time',
+                                                             `update_time`          datetime DEFAULT NULL COMMENT 'Modified Time',
+                                                             `del_flag`             tinyint(1) DEFAULT NULL COMMENT 'Delete Flag 0: not deleted 1: deleted',
+                                                             `es_sync_flag` TINYINT(1) DEFAULT 0 COMMENT '0: 未同步 1: 已同步',
+                                                             PRIMARY KEY (`id`),
+                                                             UNIQUE KEY `idx_unique_title_author` (`title`, `author`) USING BTREE
+                                                         )  CHARACTER SET utf8mb4
+                              COLLATE utf8mb4_general_ci;CREATE TABLE `t_books_5`
+                                                         (
+                                                             `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Book ID',
+                                                             `ref_id`               varchar(50) DEFAULT NULL COMMENT 'Reference ID for external systems',
+                                                             `title`                varchar(255) DEFAULT NULL COMMENT 'Book Title',
+                                                             `author`               varchar(255) DEFAULT NULL COMMENT 'Author',
+                                                             `category`             varchar(100) DEFAULT NULL COMMENT 'Book Category',
+                                                             `description`          text DEFAULT NULL COMMENT 'Book Description',
+                                                             `language`             varchar(50) DEFAULT NULL COMMENT 'Language',
+                                                             `click_count`          int(11) DEFAULT 0 COMMENT 'Number of times the book was clicked',
+                                                             `storage_path`         varchar(512) DEFAULT NULL COMMENT 'Path to the stored book file',
+                                                             `sorted_order`         int(11) DEFAULT NULL COMMENT 'Sorted Order for frontend display',
+                                                             `deletion_time`        bigint(20) DEFAULT NULL COMMENT 'Deletion Time',
+                                                             `create_time`          datetime DEFAULT NULL COMMENT 'Creation Time',
+                                                             `update_time`          datetime DEFAULT NULL COMMENT 'Modified Time',
+                                                             `del_flag`             tinyint(1) DEFAULT NULL COMMENT 'Delete Flag 0: not deleted 1: deleted',
+                                                             `es_sync_flag` TINYINT(1) DEFAULT 0 COMMENT '0: 未同步 1: 已同步',
+                                                             PRIMARY KEY (`id`),
+                                                             UNIQUE KEY `idx_unique_title_author` (`title`, `author`) USING BTREE
+                                                         )  CHARACTER SET utf8mb4
+                              COLLATE utf8mb4_general_ci;CREATE TABLE `t_books_6`
+                                                         (
+                                                             `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Book ID',
+                                                             `ref_id`               varchar(50) DEFAULT NULL COMMENT 'Reference ID for external systems',
+                                                             `title`                varchar(255) DEFAULT NULL COMMENT 'Book Title',
+                                                             `author`               varchar(255) DEFAULT NULL COMMENT 'Author',
+                                                             `category`             varchar(100) DEFAULT NULL COMMENT 'Book Category',
+                                                             `description`          text DEFAULT NULL COMMENT 'Book Description',
+                                                             `language`             varchar(50) DEFAULT NULL COMMENT 'Language',
+                                                             `click_count`          int(11) DEFAULT 0 COMMENT 'Number of times the book was clicked',
+                                                             `storage_path`         varchar(512) DEFAULT NULL COMMENT 'Path to the stored book file',
+                                                             `sorted_order`         int(11) DEFAULT NULL COMMENT 'Sorted Order for frontend display',
+                                                             `deletion_time`        bigint(20) DEFAULT NULL COMMENT 'Deletion Time',
+                                                             `create_time`          datetime DEFAULT NULL COMMENT 'Creation Time',
+                                                             `update_time`          datetime DEFAULT NULL COMMENT 'Modified Time',
+                                                             `del_flag`             tinyint(1) DEFAULT NULL COMMENT 'Delete Flag 0: not deleted 1: deleted',
+                                                             `es_sync_flag` TINYINT(1) DEFAULT 0 COMMENT '0: 未同步 1: 已同步',
+                                                             PRIMARY KEY (`id`),
+                                                             UNIQUE KEY `idx_unique_title_author` (`title`, `author`) USING BTREE
+                                                         )  CHARACTER SET utf8mb4
+                              COLLATE utf8mb4_general_ci;CREATE TABLE `t_books_7`
+                                                         (
+                                                             `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Book ID',
+                                                             `ref_id`               varchar(50) DEFAULT NULL COMMENT 'Reference ID for external systems',
+                                                             `title`                varchar(255) DEFAULT NULL COMMENT 'Book Title',
+                                                             `author`               varchar(255) DEFAULT NULL COMMENT 'Author',
+                                                             `category`             varchar(100) DEFAULT NULL COMMENT 'Book Category',
+                                                             `description`          text DEFAULT NULL COMMENT 'Book Description',
+                                                             `language`             varchar(50) DEFAULT NULL COMMENT 'Language',
+                                                             `click_count`          int(11) DEFAULT 0 COMMENT 'Number of times the book was clicked',
+                                                             `storage_path`         varchar(512) DEFAULT NULL COMMENT 'Path to the stored book file',
+                                                             `sorted_order`         int(11) DEFAULT NULL COMMENT 'Sorted Order for frontend display',
+                                                             `deletion_time`        bigint(20) DEFAULT NULL COMMENT 'Deletion Time',
+                                                             `create_time`          datetime DEFAULT NULL COMMENT 'Creation Time',
+                                                             `update_time`          datetime DEFAULT NULL COMMENT 'Modified Time',
+                                                             `del_flag`             tinyint(1) DEFAULT NULL COMMENT 'Delete Flag 0: not deleted 1: deleted',
+                                                             `es_sync_flag` TINYINT(1) DEFAULT 0 COMMENT '0: 未同步 1: 已同步',
+                                                             PRIMARY KEY (`id`),
+                                                             UNIQUE KEY `idx_unique_title_author` (`title`, `author`) USING BTREE
+                                                         )  CHARACTER SET utf8mb4
+                              COLLATE utf8mb4_general_ci;CREATE TABLE `t_books_8`
+                                                         (
+                                                             `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Book ID',
+                                                             `ref_id`               varchar(50) DEFAULT NULL COMMENT 'Reference ID for external systems',
+                                                             `title`                varchar(255) DEFAULT NULL COMMENT 'Book Title',
+                                                             `author`               varchar(255) DEFAULT NULL COMMENT 'Author',
+                                                             `category`             varchar(100) DEFAULT NULL COMMENT 'Book Category',
+                                                             `description`          text DEFAULT NULL COMMENT 'Book Description',
+                                                             `language`             varchar(50) DEFAULT NULL COMMENT 'Language',
+                                                             `click_count`          int(11) DEFAULT 0 COMMENT 'Number of times the book was clicked',
+                                                             `storage_path`         varchar(512) DEFAULT NULL COMMENT 'Path to the stored book file',
+                                                             `sorted_order`         int(11) DEFAULT NULL COMMENT 'Sorted Order for frontend display',
+                                                             `deletion_time`        bigint(20) DEFAULT NULL COMMENT 'Deletion Time',
+                                                             `create_time`          datetime DEFAULT NULL COMMENT 'Creation Time',
+                                                             `update_time`          datetime DEFAULT NULL COMMENT 'Modified Time',
+                                                             `del_flag`             tinyint(1) DEFAULT NULL COMMENT 'Delete Flag 0: not deleted 1: deleted',
+                                                             `es_sync_flag` TINYINT(1) DEFAULT 0 COMMENT '0: 未同步 1: 已同步',
+                                                             PRIMARY KEY (`id`),
+                                                             UNIQUE KEY `idx_unique_title_author` (`title`, `author`) USING BTREE
+                                                         )  CHARACTER SET utf8mb4
+                              COLLATE utf8mb4_general_ci;CREATE TABLE `t_books_9`
+                                                         (
+                                                             `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Book ID',
+                                                             `ref_id`               varchar(50) DEFAULT NULL COMMENT 'Reference ID for external systems',
+                                                             `title`                varchar(255) DEFAULT NULL COMMENT 'Book Title',
+                                                             `author`               varchar(255) DEFAULT NULL COMMENT 'Author',
+                                                             `category`             varchar(100) DEFAULT NULL COMMENT 'Book Category',
+                                                             `description`          text DEFAULT NULL COMMENT 'Book Description',
+                                                             `language`             varchar(50) DEFAULT NULL COMMENT 'Language',
+                                                             `click_count`          int(11) DEFAULT 0 COMMENT 'Number of times the book was clicked',
+                                                             `storage_path`         varchar(512) DEFAULT NULL COMMENT 'Path to the stored book file',
+                                                             `sorted_order`         int(11) DEFAULT NULL COMMENT 'Sorted Order for frontend display',
+                                                             `deletion_time`        bigint(20) DEFAULT NULL COMMENT 'Deletion Time',
+                                                             `create_time`          datetime DEFAULT NULL COMMENT 'Creation Time',
+                                                             `update_time`          datetime DEFAULT NULL COMMENT 'Modified Time',
+                                                             `del_flag`             tinyint(1) DEFAULT NULL COMMENT 'Delete Flag 0: not deleted 1: deleted',
+                                                             `es_sync_flag` TINYINT(1) DEFAULT 0 COMMENT '0: 未同步 1: 已同步',
+                                                             PRIMARY KEY (`id`),
+                                                             UNIQUE KEY `idx_unique_title_author` (`title`, `author`) USING BTREE
+                                                         )  CHARACTER SET utf8mb4
+                              COLLATE utf8mb4_general_ci;CREATE TABLE `t_books_10`
+                                                         (
+                                                             `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Book ID',
+                                                             `ref_id`               varchar(50) DEFAULT NULL COMMENT 'Reference ID for external systems',
+                                                             `title`                varchar(255) DEFAULT NULL COMMENT 'Book Title',
+                                                             `author`               varchar(255) DEFAULT NULL COMMENT 'Author',
+                                                             `category`             varchar(100) DEFAULT NULL COMMENT 'Book Category',
+                                                             `description`          text DEFAULT NULL COMMENT 'Book Description',
+                                                             `language`             varchar(50) DEFAULT NULL COMMENT 'Language',
+                                                             `click_count`          int(11) DEFAULT 0 COMMENT 'Number of times the book was clicked',
+                                                             `storage_path`         varchar(512) DEFAULT NULL COMMENT 'Path to the stored book file',
+                                                             `sorted_order`         int(11) DEFAULT NULL COMMENT 'Sorted Order for frontend display',
+                                                             `deletion_time`        bigint(20) DEFAULT NULL COMMENT 'Deletion Time',
+                                                             `create_time`          datetime DEFAULT NULL COMMENT 'Creation Time',
+                                                             `update_time`          datetime DEFAULT NULL COMMENT 'Modified Time',
+                                                             `del_flag`             tinyint(1) DEFAULT NULL COMMENT 'Delete Flag 0: not deleted 1: deleted',
+                                                             `es_sync_flag` TINYINT(1) DEFAULT 0 COMMENT '0: 未同步 1: 已同步',
+                                                             PRIMARY KEY (`id`),
+                                                             UNIQUE KEY `idx_unique_title_author` (`title`, `author`) USING BTREE
+                                                         )  CHARACTER SET utf8mb4
+                              COLLATE utf8mb4_general_ci;CREATE TABLE `t_books_11`
+                                                         (
+                                                             `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Book ID',
+                                                             `ref_id`               varchar(50) DEFAULT NULL COMMENT 'Reference ID for external systems',
+                                                             `title`                varchar(255) DEFAULT NULL COMMENT 'Book Title',
+                                                             `author`               varchar(255) DEFAULT NULL COMMENT 'Author',
+                                                             `category`             varchar(100) DEFAULT NULL COMMENT 'Book Category',
+                                                             `description`          text DEFAULT NULL COMMENT 'Book Description',
+                                                             `language`             varchar(50) DEFAULT NULL COMMENT 'Language',
+                                                             `click_count`          int(11) DEFAULT 0 COMMENT 'Number of times the book was clicked',
+                                                             `storage_path`         varchar(512) DEFAULT NULL COMMENT 'Path to the stored book file',
+                                                             `sorted_order`         int(11) DEFAULT NULL COMMENT 'Sorted Order for frontend display',
+                                                             `deletion_time`        bigint(20) DEFAULT NULL COMMENT 'Deletion Time',
+                                                             `create_time`          datetime DEFAULT NULL COMMENT 'Creation Time',
+                                                             `update_time`          datetime DEFAULT NULL COMMENT 'Modified Time',
+                                                             `del_flag`             tinyint(1) DEFAULT NULL COMMENT 'Delete Flag 0: not deleted 1: deleted',
+                                                             `es_sync_flag` TINYINT(1) DEFAULT 0 COMMENT '0: 未同步 1: 已同步',
+                                                             PRIMARY KEY (`id`),
+                                                             UNIQUE KEY `idx_unique_title_author` (`title`, `author`) USING BTREE
+                                                         )  CHARACTER SET utf8mb4
+                              COLLATE utf8mb4_general_ci;CREATE TABLE `t_books_12`
+                                                         (
+                                                             `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Book ID',
+                                                             `ref_id`               varchar(50) DEFAULT NULL COMMENT 'Reference ID for external systems',
+                                                             `title`                varchar(255) DEFAULT NULL COMMENT 'Book Title',
+                                                             `author`               varchar(255) DEFAULT NULL COMMENT 'Author',
+                                                             `category`             varchar(100) DEFAULT NULL COMMENT 'Book Category',
+                                                             `description`          text DEFAULT NULL COMMENT 'Book Description',
+                                                             `language`             varchar(50) DEFAULT NULL COMMENT 'Language',
+                                                             `click_count`          int(11) DEFAULT 0 COMMENT 'Number of times the book was clicked',
+                                                             `storage_path`         varchar(512) DEFAULT NULL COMMENT 'Path to the stored book file',
+                                                             `sorted_order`         int(11) DEFAULT NULL COMMENT 'Sorted Order for frontend display',
+                                                             `deletion_time`        bigint(20) DEFAULT NULL COMMENT 'Deletion Time',
+                                                             `create_time`          datetime DEFAULT NULL COMMENT 'Creation Time',
+                                                             `update_time`          datetime DEFAULT NULL COMMENT 'Modified Time',
+                                                             `del_flag`             tinyint(1) DEFAULT NULL COMMENT 'Delete Flag 0: not deleted 1: deleted',
+                                                             `es_sync_flag` TINYINT(1) DEFAULT 0 COMMENT '0: 未同步 1: 已同步',
+                                                             PRIMARY KEY (`id`),
+                                                             UNIQUE KEY `idx_unique_title_author` (`title`, `author`) USING BTREE
+                                                         )  CHARACTER SET utf8mb4
+                              COLLATE utf8mb4_general_ci;CREATE TABLE `t_books_13`
+                                                         (
+                                                             `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Book ID',
+                                                             `ref_id`               varchar(50) DEFAULT NULL COMMENT 'Reference ID for external systems',
+                                                             `title`                varchar(255) DEFAULT NULL COMMENT 'Book Title',
+                                                             `author`               varchar(255) DEFAULT NULL COMMENT 'Author',
+                                                             `category`             varchar(100) DEFAULT NULL COMMENT 'Book Category',
+                                                             `description`          text DEFAULT NULL COMMENT 'Book Description',
+                                                             `language`             varchar(50) DEFAULT NULL COMMENT 'Language',
+                                                             `click_count`          int(11) DEFAULT 0 COMMENT 'Number of times the book was clicked',
+                                                             `storage_path`         varchar(512) DEFAULT NULL COMMENT 'Path to the stored book file',
+                                                             `sorted_order`         int(11) DEFAULT NULL COMMENT 'Sorted Order for frontend display',
+                                                             `deletion_time`        bigint(20) DEFAULT NULL COMMENT 'Deletion Time',
+                                                             `create_time`          datetime DEFAULT NULL COMMENT 'Creation Time',
+                                                             `update_time`          datetime DEFAULT NULL COMMENT 'Modified Time',
+                                                             `del_flag`             tinyint(1) DEFAULT NULL COMMENT 'Delete Flag 0: not deleted 1: deleted',
+                                                             `es_sync_flag` TINYINT(1) DEFAULT 0 COMMENT '0: 未同步 1: 已同步',
+                                                             PRIMARY KEY (`id`),
+                                                             UNIQUE KEY `idx_unique_title_author` (`title`, `author`) USING BTREE
+                                                         )  CHARACTER SET utf8mb4
+                              COLLATE utf8mb4_general_ci;CREATE TABLE `t_books_14`
+                                                         (
+                                                             `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Book ID',
+                                                             `ref_id`               varchar(50) DEFAULT NULL COMMENT 'Reference ID for external systems',
+                                                             `title`                varchar(255) DEFAULT NULL COMMENT 'Book Title',
+                                                             `author`               varchar(255) DEFAULT NULL COMMENT 'Author',
+                                                             `category`             varchar(100) DEFAULT NULL COMMENT 'Book Category',
+                                                             `description`          text DEFAULT NULL COMMENT 'Book Description',
+                                                             `language`             varchar(50) DEFAULT NULL COMMENT 'Language',
+                                                             `click_count`          int(11) DEFAULT 0 COMMENT 'Number of times the book was clicked',
+                                                             `storage_path`         varchar(512) DEFAULT NULL COMMENT 'Path to the stored book file',
+                                                             `sorted_order`         int(11) DEFAULT NULL COMMENT 'Sorted Order for frontend display',
+                                                             `deletion_time`        bigint(20) DEFAULT NULL COMMENT 'Deletion Time',
+                                                             `create_time`          datetime DEFAULT NULL COMMENT 'Creation Time',
+                                                             `update_time`          datetime DEFAULT NULL COMMENT 'Modified Time',
+                                                             `del_flag`             tinyint(1) DEFAULT NULL COMMENT 'Delete Flag 0: not deleted 1: deleted',
+                                                             `es_sync_flag` TINYINT(1) DEFAULT 0 COMMENT '0: 未同步 1: 已同步',
+                                                             PRIMARY KEY (`id`),
+                                                             UNIQUE KEY `idx_unique_title_author` (`title`, `author`) USING BTREE
+                                                         )  CHARACTER SET utf8mb4
+                              COLLATE utf8mb4_general_ci;CREATE TABLE `t_books_15`
+                                                         (
+                                                             `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Book ID',
+                                                             `ref_id`               varchar(50) DEFAULT NULL COMMENT 'Reference ID for external systems',
+                                                             `title`                varchar(255) DEFAULT NULL COMMENT 'Book Title',
+                                                             `author`               varchar(255) DEFAULT NULL COMMENT 'Author',
+                                                             `category`             varchar(100) DEFAULT NULL COMMENT 'Book Category',
+                                                             `description`          text DEFAULT NULL COMMENT 'Book Description',
+                                                             `language`             varchar(50) DEFAULT NULL COMMENT 'Language',
+                                                             `click_count`          int(11) DEFAULT 0 COMMENT 'Number of times the book was clicked',
+                                                             `storage_path`         varchar(512) DEFAULT NULL COMMENT 'Path to the stored book file',
+                                                             `sorted_order`         int(11) DEFAULT NULL COMMENT 'Sorted Order for frontend display',
+                                                             `deletion_time`        bigint(20) DEFAULT NULL COMMENT 'Deletion Time',
+                                                             `create_time`          datetime DEFAULT NULL COMMENT 'Creation Time',
+                                                             `update_time`          datetime DEFAULT NULL COMMENT 'Modified Time',
+                                                             `del_flag`             tinyint(1) DEFAULT NULL COMMENT 'Delete Flag 0: not deleted 1: deleted',
+                                                             `es_sync_flag` TINYINT(1) DEFAULT 0 COMMENT '0: 未同步 1: 已同步',
+                                                             PRIMARY KEY (`id`),
+                                                             UNIQUE KEY `idx_unique_title_author` (`title`, `author`) USING BTREE
+                                                         )  CHARACTER SET utf8mb4
+                              COLLATE utf8mb4_general_ci;
