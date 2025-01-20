@@ -10,8 +10,7 @@ import org.rhw.bmr.user.common.biz.user.UserContext;
 import org.rhw.bmr.user.dao.entity.GroupDO;
 import org.rhw.bmr.user.dto.req.BmrGroupSortReqDTO;
 import org.rhw.bmr.user.dto.req.BmrGroupUpdateDTO;
-import org.rhw.bmr.user.remote.ShortLinkRemoteService;
-import org.rhw.bmr.user.remote.dto.resp.ShortLinkCountQueryRespDTO;
+import org.rhw.bmr.user.remote.BookSearchRemoteService;
 import org.rhw.bmr.user.toolkit.RandomGenerator;
 import org.rhw.bmr.user.common.convention.result.Result;
 import org.rhw.bmr.user.dao.mapper.GroupMapper;
@@ -31,7 +30,7 @@ import java.util.Optional;
 @Service
 public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implements GroupService {
 
-    ShortLinkRemoteService shortLinkRemoteService = new ShortLinkRemoteService() {
+    BookSearchRemoteService bookSearchRemoteService = new BookSearchRemoteService() {
     };
 
     @Override
@@ -71,27 +70,31 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implemen
 
     @Override
     public List<BmrGroupRespDTO> listGroup() {
-        LambdaQueryWrapper<GroupDO> groupDOLambdaQueryWrapper = Wrappers.lambdaQuery(GroupDO.class)
-                .eq(GroupDO::getDelFlag, 0)
-                .eq(GroupDO::getUsername, UserContext.getUsername())
-                .orderByDesc(GroupDO::getSortOrder, GroupDO::getUpdateTime);
 
-        List<GroupDO> groupDOList = baseMapper.selectList(groupDOLambdaQueryWrapper);
+        //TODO
+        // 查询用户名下的所有group
 
-        Result<List<ShortLinkCountQueryRespDTO>> listResult = shortLinkRemoteService
-                .listGroupShortLinkCount(groupDOList.stream().map(GroupDO::getGid).toList());
-
-        List<BmrGroupRespDTO> shortLinkGroupRespDTPList = BeanUtil.copyToList(groupDOList, BmrGroupRespDTO.class);
-        shortLinkGroupRespDTPList.forEach(each -> {
-
-            Optional<ShortLinkCountQueryRespDTO> first = listResult.getData().stream()
-                    .filter(item -> Objects.equals(item.getGid(), each.getGid()))
-                    .findFirst();
-
-            each.setShortLinkCount(first.isPresent() ? first.get().getShortLinkCount() : 0);
-
-        });
-        return shortLinkGroupRespDTPList;
+//        LambdaQueryWrapper<GroupDO> groupDOLambdaQueryWrapper = Wrappers.lambdaQuery(GroupDO.class)
+//                .eq(GroupDO::getDelFlag, 0)
+//                .eq(GroupDO::getUsername, UserContext.getUsername())
+//                .orderByDesc(GroupDO::getSortOrder, GroupDO::getUpdateTime);
+//
+//        List<GroupDO> groupDOList = baseMapper.selectList(groupDOLambdaQueryWrapper);
+//
+//        Result<List<ShortLinkCountQueryRespDTO>> listResult = bookSearchRemoteService
+//                .listGroupShortLinkCount(groupDOList.stream().map(GroupDO::getGid).toList());
+//
+//        List<BmrGroupRespDTO> shortLinkGroupRespDTPList = BeanUtil.copyToList(groupDOList, BmrGroupRespDTO.class);
+//        shortLinkGroupRespDTPList.forEach(each -> {
+//
+//            Optional<ShortLinkCountQueryRespDTO> first = listResult.getData().stream()
+//                    .filter(item -> Objects.equals(item.getGid(), each.getGid()))
+//                    .findFirst();
+//
+//            each.setShortLinkCount(first.isPresent() ? first.get().getShortLinkCount() : 0);
+//
+//        });
+        return null;
     }
 
     @Override
