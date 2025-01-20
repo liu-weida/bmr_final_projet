@@ -11,8 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class BookSearchReqDTO {
 
-    private Long id;
-
     private String title;
 
     private String author;

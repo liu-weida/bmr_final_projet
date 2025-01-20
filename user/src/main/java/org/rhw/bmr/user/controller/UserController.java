@@ -2,6 +2,7 @@ package org.rhw.bmr.user.controller;
 
 import cn.hutool.core.bean.BeanUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.rhw.bmr.user.common.convention.result.Result;
 import org.rhw.bmr.user.common.convention.result.Results;
 import org.rhw.bmr.user.dto.req.UserLoginReqDTO;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class UserController {
 
     private final UserService userService;
@@ -68,6 +70,7 @@ public class UserController {
      */
     @GetMapping("/api/bmr/user/v1/user/check-login")
     public Result<Boolean> checkLogin(@RequestParam("username") String username, @RequestParam("token") String token){
+
         return Results.success(userService.checkLogin(username, token));
     }
 

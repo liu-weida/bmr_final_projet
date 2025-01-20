@@ -1,94 +1,59 @@
 package org.rhw.bmr.user.common.biz.user;
 
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson2.JSON;
-import jakarta.servlet.*;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.apache.curator.shaded.com.google.common.collect.Lists;
-import org.rhw.bmr.user.common.convention.exception.ClientException;
-import org.rhw.bmr.user.common.convention.result.Results;
-import org.springframework.data.redis.core.StringRedisTemplate;
-
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
-import java.util.Objects;
-
-import static org.rhw.bmr.user.common.enums.UserErrorCodeEnum.USER_TOKEN_FAIL;
+import org.rhw.bmr.user.common.biz.user.UserContext;
+import org.rhw.bmr.user.common.biz.user.UserInfoDTO;
 
 /**
  * 用户信息传输过滤器
- */
+ * 提取用户信息（从请求头）。
+ * 绑定用户信息到线程上下文。
+ * 清理线程上下文，确保线程安全。
+ * */
+// 使用 Lombok 提供的注解，自动生成构造器，注入所有 `final` 修饰的字段
 @RequiredArgsConstructor
+// 实现 `Filter` 接口，用于拦截 HTTP 请求和响应
 public class UserTransmitFilter implements Filter {
 
-    private final StringRedisTemplate stringRedisTemplate;
-
-    private static final List<String> IGNORE_URI = Lists.newArrayList(
-            "/api/bmr/user/v1/user/login",
-            "/api/bmr/user/v1/user/has-username",
-            "/api/bmr/user/v1/title"
-    );
-
-    @SneakyThrows
+    /**
+     * 过滤器的核心逻辑
+     * 作用：从 HTTP 请求的头部信息中提取用户信息，并存储到线程上下文中，便于后续业务逻辑使用
+     */
+    @SneakyThrows // Lombok 注解，隐藏受检异常（Checked Exception）的显式声明
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) {
+        // 将通用的 ServletRequest 转换为 HttpServletRequest，以便访问 HTTP 专用方法
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
 
-        String requestURI = httpServletRequest.getRequestURI();
+        // 从请求头中获取 `username` 字段
+        String username = httpServletRequest.getHeader("username");
 
-        if (!IGNORE_URI.contains(requestURI)) {
+        // 如果 `username` 不为空，则继续处理
+        if (StrUtil.isNotBlank(username)) { // 使用 Hutool 工具类判断字符串是否不为空
+            // 从请求头中获取 `userId` 和 `token` 字段
+            String userId = httpServletRequest.getHeader("userId");
+            String token = httpServletRequest.getHeader("token");
 
-            String method = httpServletRequest.getMethod();
-            if (!(Objects.equals(method, "POST") && Objects.equals(requestURI, "/api/bmr/user/v1/user"))  ) {
-                String username = httpServletRequest.getHeader("username");
-                String token = httpServletRequest.getHeader("token");
+            // 构造用户信息对象（`UserInfoDTO`），包含用户 ID、用户名、真实姓名等信息
+            UserInfoDTO userInfoDTO = new UserInfoDTO(userId, username, token);
 
-                // 如果拿不到token或者说用户名不存在
-                if (!StrUtil.isAllNotBlank(username, token)){
-                    returnJson((HttpServletResponse)servletResponse, JSON.toJSONString(Results.failure(new ClientException(USER_TOKEN_FAIL))));
-                    return;
-                }
-
-                Object userInfoJsonStr;
-                try{
-                    userInfoJsonStr = stringRedisTemplate.opsForHash().get("login_" + username, token);
-
-                    if (userInfoJsonStr == null){
-                        throw new ClientException(USER_TOKEN_FAIL);
-                    }
-
-                }catch(Exception e){
-                    returnJson((HttpServletResponse)servletResponse, JSON.toJSONString(Results.failure(new ClientException(USER_TOKEN_FAIL))));
-                    return;
-                }
-
-                UserInfoDTO userInfoDTO = JSON.parseObject(userInfoJsonStr.toString(), UserInfoDTO.class);
-                UserContext.setUser(userInfoDTO);
-            }
+            // 将用户信息存储到当前线程的上下文中（通过 `UserContext` 类）
+            UserContext.setUser(userInfoDTO);
         }
+
         try {
-             filterChain.doFilter(servletRequest, servletResponse);
+            // 将请求传递给过滤器链中的下一个过滤器或最终的目标资源
+            filterChain.doFilter(servletRequest, servletResponse);
         } finally {
+            // 在请求处理完成后，清除线程上下文中的用户信息，避免线程复用导致的数据泄漏
             UserContext.removeUser();
-        }
-    }
-
-    private void returnJson(HttpServletResponse response, String json) throws Exception {
-        PrintWriter writer = null;
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html; charset=utf-8");
-        try{
-            writer = response.getWriter();
-            writer.write(json);
-        }catch(IOException e){}
-        finally {
-            if (writer != null) {
-                writer.close();
-            }
         }
     }
 }

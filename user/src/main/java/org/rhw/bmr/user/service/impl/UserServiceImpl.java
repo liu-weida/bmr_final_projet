@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import static org.rhw.bmr.user.common.constant.RedisCacheConstant.USER_LOGIN_KEY;
 import static org.rhw.bmr.user.common.enums.UserErrorCodeEnum.USER_LOGIN_REPEAT;
 import static org.rhw.bmr.user.common.enums.UserErrorCodeEnum.USER_NOT_ONLINE;
 
@@ -126,11 +127,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
             throw new ClientException(UserErrorCodeEnum.USER_NULL);
         }
 
-        if (redisTemplate.hasKey("login_"+requestParam.getUsername())){
+        if (redisTemplate.hasKey(USER_LOGIN_KEY+requestParam.getUsername())){
             // 相比直接抛出异常，顶替登录是否好一些？
             throw new ClientException(USER_LOGIN_REPEAT);
             // 下面就是顶替登录的代码
-            // redisTemplate.expire("login_"+requestParam.getUsername(), 0, TimeUnit.SECONDS);
+            // redisTemplate.expire(USER_LOGIN_KEY+requestParam.getUsername(), 0, TimeUnit.SECONDS);
         }
 
         /**
@@ -139,8 +140,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
          */
 
         String uuid = UUID.randomUUID().toString();
-        redisTemplate.opsForHash().put("login_"+requestParam.getUsername(), uuid, JSON.toJSONString(user));
-        redisTemplate.expire("login_"+requestParam.getUsername(), 30L, TimeUnit.MINUTES);
+        redisTemplate.opsForHash().put(USER_LOGIN_KEY+requestParam.getUsername(), uuid, JSON.toJSONString(user));
+        redisTemplate.expire(USER_LOGIN_KEY+requestParam.getUsername(), 30L, TimeUnit.MINUTES);
 
         return new UserLoginRespDTO(uuid);
     }
@@ -149,7 +150,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     public Boolean checkLogin(String username, String token) {
 
         // 检查是否登录，只要检查Redis里是否存在这个Token就行了。
-        return redisTemplate.opsForHash().get("login_"+username, token) != null;
+        return redisTemplate.opsForHash().get(USER_LOGIN_KEY + username, token) != null;
+
     }
 
     @Override
@@ -163,7 +165,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     @Override
     public void logout(String username, String token) {
         if (checkLogin(username, token)){
-            redisTemplate.delete("login_"+username);
+            redisTemplate.delete(USER_LOGIN_KEY+username);
         }else{
             throw new ClientException(USER_NOT_ONLINE);
         }

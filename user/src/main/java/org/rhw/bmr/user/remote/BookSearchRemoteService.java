@@ -23,14 +23,12 @@ public interface BookSearchRemoteService {
 
     default Result<IPage<BookSearchRespDTO>> bookSearch(BookSearchReqDTO requestParam){
         Map<String, Object>requestMap = new HashMap<>();
-        requestMap.put("id", requestParam.getId());
+
         requestMap.put("title", requestParam.getTitle());
         requestMap.put("author", requestParam.getAuthor());
         requestMap.put("category", requestParam.getCategory());
         requestMap.put("language", requestParam.getLanguage());
 
-        requestMap.put("pageNo", requestParam.getPageNo());
-        requestMap.put("pageSize", requestParam.getPageSize());
 
         String resultPageStr = HttpUtil.get(
                 "http://127.0.0.1:8001/api/bmr/project/v1/bookSearch_page",
@@ -43,11 +41,7 @@ public interface BookSearchRemoteService {
 
         requestMap.put("word", requestParam.getWord());
 
-        requestMap.put("pageNo", requestParam.getPageNo());
-        requestMap.put("pageSize", requestParam.getPageSize());
-
-
-        String resultBodyStr = HttpUtil.post(
+        String resultBodyStr = HttpUtil.get(
                 "http://127.0.0.1:8001/api/bmr/project/v1/bookSearch_by_word",
                 requestMap);
 
@@ -60,11 +54,7 @@ public interface BookSearchRemoteService {
 
         requestMap.put("regularExpr", requestParam.getRegularExpr());
 
-        requestMap.put("pageNo", requestParam.getPageNo());
-        requestMap.put("pageSize", requestParam.getPageSize());
-
-
-        String resultBodyStr = HttpUtil.post(
+        String resultBodyStr = HttpUtil.get(
                 "http://127.0.0.1:8001/api/bmr/project/v1/bookSearch_by_regexp",
                 requestMap);
 
