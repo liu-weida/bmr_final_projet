@@ -17,7 +17,7 @@ import org.rhw.bmr.project.common.database.baseDO;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BookSearchDO extends baseDO {
+public class BookDO extends baseDO {
 
     private Long id;
 

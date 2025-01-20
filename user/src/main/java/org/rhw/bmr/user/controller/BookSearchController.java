@@ -10,8 +10,6 @@ import org.rhw.bmr.user.remote.dto.req.*;
 
 import org.rhw.bmr.user.remote.dto.resp.*;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -22,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class BookSearchController {
 
     BookSearchRemoteService bookSearchRemoteService = new BookSearchRemoteService() {};
-    
+
     @GetMapping("/api/bmr/user/v1/bookSearch_page")
     public Result<IPage<BookSearchRespDTO>> pageBookSearch(BookSearchReqDTO requestParam){
 
@@ -38,7 +36,6 @@ public class BookSearchController {
 
     @GetMapping("/api/bmr/user/v1/bookSearch_by_regexp")
     public Result<IPage<BookSearchByRegespRespDTO>> pageBookSearchByRegexp(BookSearchByRegexpReqDTO requestParam){
-
         return bookSearchRemoteService.bookSearchByRegexp(requestParam);
     }
 

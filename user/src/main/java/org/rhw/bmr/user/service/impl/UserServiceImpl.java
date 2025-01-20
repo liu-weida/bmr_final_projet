@@ -129,9 +129,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
 
         if (redisTemplate.hasKey(USER_LOGIN_KEY+requestParam.getUsername())){
             // 相比直接抛出异常，顶替登录是否好一些？
-            throw new ClientException(USER_LOGIN_REPEAT);
+//            throw new ClientException(USER_LOGIN_REPEAT);
             // 下面就是顶替登录的代码
-            // redisTemplate.expire(USER_LOGIN_KEY+requestParam.getUsername(), 0, TimeUnit.SECONDS);
+             redisTemplate.expire(USER_LOGIN_KEY+requestParam.getUsername(), 0, TimeUnit.SECONDS);
         }
 
         /**

@@ -7,18 +7,25 @@ import org.rhw.bmr.project.common.convention.result.Results;
 import org.rhw.bmr.project.dto.req.BookSearchByRegexpReqDTO;
 import org.rhw.bmr.project.dto.req.BookSearchByWordReqDTO;
 import org.rhw.bmr.project.dto.req.BookSearchReqDTO;
+import org.rhw.bmr.project.dto.req.ReadBookReqDTO;
 import org.rhw.bmr.project.dto.resp.BookSearchByRegespRespDTO;
 import org.rhw.bmr.project.dto.resp.BookSearchByWordRespDTO;
 import org.rhw.bmr.project.dto.resp.BookSearchRespDTO;
+import org.rhw.bmr.project.dto.resp.ReadBookRespDTO;
 import org.rhw.bmr.project.service.BookSearchService;
+import org.rhw.bmr.project.service.ReadBookService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URL;
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 public class BookSearchController {
+
 
     private final BookSearchService bookSearchService;
 
@@ -36,4 +43,7 @@ public class BookSearchController {
     public Result<IPage<BookSearchByRegespRespDTO>> pageBookSearchByRegexp(BookSearchByRegexpReqDTO requestParam){
         return Results.success(bookSearchService.pageBookSearchByRegexp(requestParam));
     }
+
+
+
 }
