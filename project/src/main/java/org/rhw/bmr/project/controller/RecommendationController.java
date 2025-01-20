@@ -25,9 +25,7 @@ public class RecommendationController {
 
     @GetMapping("/api/bmr/project/v1/recommend")
     public Result<List<BookDO>> RecommendBook(@RequestParam("user_id") Long userId){
-
-
-        return Results.success(recommendationService.recommendBooksForUser(userId);
+        return Results.success(recommendationService.recommendBooksForUser(userId));
     }
 
 }

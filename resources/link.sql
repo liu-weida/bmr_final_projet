@@ -789,6 +789,55 @@ CREATE TABLE `t_books_0`
                                                          )  CHARACTER SET utf8mb4
                               COLLATE utf8mb4_general_ci;
 
+ALTER TABLE `t_books_0`
+    ADD COLUMN `img` VARCHAR(512) DEFAULT NULL COMMENT 'Book Image Path';
+
+ALTER TABLE `t_books_1`
+    ADD COLUMN `img` VARCHAR(512) DEFAULT NULL COMMENT 'Book Image Path';
+
+ALTER TABLE `t_books_2`
+    ADD COLUMN `img` VARCHAR(512) DEFAULT NULL COMMENT 'Book Image Path';
+
+ALTER TABLE `t_books_3`
+    ADD COLUMN `img` VARCHAR(512) DEFAULT NULL COMMENT 'Book Image Path';
+
+ALTER TABLE `t_books_4`
+    ADD COLUMN `img` VARCHAR(512) DEFAULT NULL COMMENT 'Book Image Path';
+
+ALTER TABLE `t_books_5`
+    ADD COLUMN `img` VARCHAR(512) DEFAULT NULL COMMENT 'Book Image Path';
+
+ALTER TABLE `t_books_6`
+    ADD COLUMN `img` VARCHAR(512) DEFAULT NULL COMMENT 'Book Image Path';
+
+ALTER TABLE `t_books_7`
+    ADD COLUMN `img` VARCHAR(512) DEFAULT NULL COMMENT 'Book Image Path';
+
+ALTER TABLE `t_books_8`
+    ADD COLUMN `img` VARCHAR(512) DEFAULT NULL COMMENT 'Book Image Path';
+
+ALTER TABLE `t_books_9`
+    ADD COLUMN `img` VARCHAR(512) DEFAULT NULL COMMENT 'Book Image Path';
+
+ALTER TABLE `t_books_10`
+    ADD COLUMN `img` VARCHAR(512) DEFAULT NULL COMMENT 'Book Image Path';
+
+ALTER TABLE `t_books_11`
+    ADD COLUMN `img` VARCHAR(512) DEFAULT NULL COMMENT 'Book Image Path';
+
+ALTER TABLE `t_books_12`
+    ADD COLUMN `img` VARCHAR(512) DEFAULT NULL COMMENT 'Book Image Path';
+
+ALTER TABLE `t_books_13`
+    ADD COLUMN `img` VARCHAR(512) DEFAULT NULL COMMENT 'Book Image Path';
+
+ALTER TABLE `t_books_14`
+    ADD COLUMN `img` VARCHAR(512) DEFAULT NULL COMMENT 'Book Image Path';
+
+ALTER TABLE `t_books_15`
+    ADD COLUMN `img` VARCHAR(512) DEFAULT NULL COMMENT 'Book Image Path';
+
+
 CREATE TABLE `t_user_preference_0` (
                                        `id`                BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT 'Primary Key ID',
                                        `user_id`           BIGINT(20) NOT NULL COMMENT 'user ID',

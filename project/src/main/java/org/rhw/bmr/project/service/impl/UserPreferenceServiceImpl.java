@@ -1,8 +1,8 @@
 package org.rhw.bmr.project.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.rhw.bmr.project.dao.entity.BookDO;
 import org.rhw.bmr.project.dao.entity.UserPreferenceDO;
@@ -22,19 +22,25 @@ public class UserPreferenceServiceImpl extends ServiceImpl<UserPreferenceMapper,
     @Override
     public void recordUserPreference(ReadBookReqDTO requestParam) {
 
-        Long userId = requestParam.getId();
+        Long userId = requestParam.getUserid();
+        Long bookId = requestParam.getBookId();
 
-        LambdaQueryWrapper<BookDO> eq = Wrappers.lambdaQuery(BookDO.class).eq(BookDO::getId, userId);
+        // 1. 参数校验
+        if (userId == null || bookId == null) {
+            return;
+        }
 
-        BookDO bookDO = bookMapper.selectOne(eq);
+        // 查询 BookDO
+        LambdaQueryWrapper<BookDO> bookQuery = Wrappers.lambdaQuery(BookDO.class).eq(BookDO::getId, bookId);
+        BookDO bookDO = bookMapper.selectOne(bookQuery);
+
+        if (bookDO == null) {
+            return; // 或者抛出异常，取决于业务需求
+        }
 
         String author = bookDO.getAuthor();
         String category = bookDO.getCategory();
 
-        // 1. 参数校验
-        if (userId == null) {
-            return;
-        }
         if ((author == null || author.isEmpty()) &&
                 (category == null || category.isEmpty())) {
             return;
@@ -57,9 +63,11 @@ public class UserPreferenceServiceImpl extends ServiceImpl<UserPreferenceMapper,
             newPref.setLikeCount(1);
             save(newPref);
         } else {
-            // 3b. 累加 likeCount
-            existPref.setLikeCount(existPref.getLikeCount() + 1);
-            updateById(existPref);
+            // 3b. 累加 likeCount，使用 UpdateWrapper 仅更新 likeCount
+            LambdaUpdateWrapper<UserPreferenceDO> updateWrapper = Wrappers.lambdaUpdate(UserPreferenceDO.class)
+                    .eq(UserPreferenceDO::getId, existPref.getId())
+                    .set(UserPreferenceDO::getLikeCount, existPref.getLikeCount() + 1);
+            update(updateWrapper);
         }
     }
 }
