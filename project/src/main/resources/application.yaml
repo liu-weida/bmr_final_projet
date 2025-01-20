@@ -11,16 +11,6 @@ spring:
     scheduling:
       pool:
         size: 5 # 线程池大小
-
-
-  data:
-    redis:
-      host: 127.0.0.1
-      port: 6379
-      channel-topic:
-        short-link-stats: 'short_link:stats-stream'
-        short-link-stats-group: 'short_link:stats-stream:only-group'
-
   mvc:
     view:
       prefix: /templates/
@@ -39,4 +29,11 @@ elasticsearch:
 
 scheduledTaskSyncElastic:
   enabled: true
-  interval: 30000
+  interval: 3000000
+
+scheduledTaskInsertBook:
+  enabled: true
+  interval: 6000000
+  url: resources/bookInfo
+  backingUp: resources/bookInfoBackingUp
+  formworkFile: resources/bookInfoFormwork.csv

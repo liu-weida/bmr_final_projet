@@ -43,4 +43,6 @@ public class BookDO extends baseDO {
 
     @TableField(value = "es_sync_flag",fill = FieldFill.INSERT)
     private Integer esSyncFlag;
+
+    private String img;
 }
