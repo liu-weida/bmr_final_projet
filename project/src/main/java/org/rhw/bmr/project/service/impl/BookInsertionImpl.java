@@ -236,6 +236,7 @@ public class BookInsertionImpl extends ServiceImpl<BookMapper, BookDO> implement
             }
 
             book.setImg(StringUtils.hasText(values[8]) ? values[8].trim() : null);
+            book.setEsSyncFlag(0);
 
             return book;
         } catch (Exception e) {

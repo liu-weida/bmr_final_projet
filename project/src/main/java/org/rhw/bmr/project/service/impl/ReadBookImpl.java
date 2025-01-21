@@ -28,13 +28,13 @@ public class ReadBookImpl extends ServiceImpl<BookMapper, BookDO> implements Rea
         if (bookDO != null) {
             bookDO.setClickCount(bookDO.getClickCount() + 1);
             baseMapper.updateById(bookDO);
-            return new ReadBookRespDTO(bookDO.getStoragePath());
+            return new ReadBookRespDTO(bookDO.getStoragePath(),bookDO.getImg());
         }
 
 
 
         // 如果未找到对应的书籍，返回一个默认响应或抛出异常
-        return new ReadBookRespDTO(null); // 或者抛出一个自定义异常
+        return new ReadBookRespDTO(); // 或者抛出一个自定义异常
     }
 
 }

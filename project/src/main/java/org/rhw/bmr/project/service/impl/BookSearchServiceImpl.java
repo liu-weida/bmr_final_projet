@@ -72,6 +72,7 @@ public class BookSearchServiceImpl extends ServiceImpl<BookMapper, BookDO> imple
                         .language(bookSearchDO.getLanguage())
                         .clickCount(bookSearchDO.getClickCount())
                         .sortedOrder(bookSearchDO.getSortedOrder())
+                        .img(bookSearchDO.getImg())
                         .build()
         );
 

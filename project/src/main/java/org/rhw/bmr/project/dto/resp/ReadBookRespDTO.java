@@ -16,4 +16,6 @@ public class ReadBookRespDTO {
 
     private String bookURL;
 
+    private String img;
+
 }

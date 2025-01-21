@@ -34,4 +34,6 @@ public class BookSearchRespDTO {
 
     private Long sortedOrder;
 
+    private String img;
+
 }

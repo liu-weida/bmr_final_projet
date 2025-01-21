@@ -37,4 +37,6 @@ public class BookSearchByRegespRespDTO {
     private Long sortedOrder;
 
     private List<String> words;
+
+    private String img;
 }
