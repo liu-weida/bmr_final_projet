@@ -8,11 +8,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import groovy.util.logging.Slf4j;
 import org.rhw.bmr.user.common.biz.user.UserContext;
 import org.rhw.bmr.user.dao.entity.GroupDO;
-import org.rhw.bmr.user.dto.req.BmrGroupSortReqDTO;
+import org.rhw.bmr.user.dto.req.BmrDeleteGroupReqDTO;
 import org.rhw.bmr.user.dto.req.BmrGroupUpdateDTO;
+import org.rhw.bmr.user.dto.req.BmrListGroupReqDTO;
+import org.rhw.bmr.user.dto.req.BmrSaveGroupReqDTO;
 import org.rhw.bmr.user.remote.BookSearchRemoteService;
 import org.rhw.bmr.user.toolkit.RandomGenerator;
-import org.rhw.bmr.user.common.convention.result.Result;
 import org.rhw.bmr.user.dao.mapper.GroupMapper;
 import org.rhw.bmr.user.dto.resp.BmrGroupRespDTO;
 import org.rhw.bmr.user.service.GroupService;
@@ -20,7 +21,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 
 /**
@@ -34,73 +34,46 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implemen
     };
 
     @Override
-    public void saveGroup(String groupName) {
+    public void saveGroup(BmrSaveGroupReqDTO requestParam) {
         String gid;
-        String name = UserContext.getUsername();
 
         do{
             gid = RandomGenerator.generateRandomString();
-        }while(!hasGid(name, gid));
+        }while(!hasGid(requestParam.getGroupName(), gid));
 
         GroupDO groupDO = GroupDO.builder()
                 .gid(RandomGenerator.generateRandomString())
                 .sortOrder(0)
-                .username(name)
-                .name(groupName)
+                .username(requestParam.getUsername())
+                .name(requestParam.getGroupName())
                 .build();
         baseMapper.insert(groupDO);
     }
 
     @Override
-    public void saveGroup(String userName, String groupName) {
-        String gid;
+    public List<BmrGroupRespDTO> listGroup(BmrListGroupReqDTO requestParam) {
 
-        do{
-            gid = RandomGenerator.generateRandomString();
-        }while(!hasGid(userName, gid));
+        LambdaQueryWrapper<GroupDO> eq = Wrappers.lambdaQuery(GroupDO.class)
+                .eq(GroupDO::getDelFlag, 0)
+                .eq(GroupDO::getUsername, requestParam.getUsername());
 
-        GroupDO groupDO = GroupDO.builder()
-                .gid(RandomGenerator.generateRandomString())
-                .sortOrder(0)
-                .username(userName)
-                .name(groupName)
-                .build();
-        baseMapper.insert(groupDO);
-    }
+        List<GroupDO> groupDOList = baseMapper.selectList(eq);
 
-    @Override
-    public List<BmrGroupRespDTO> listGroup() {
+        if (Objects.nonNull(groupDOList)) {
+            return groupDOList.stream().map(each -> {
+                BmrGroupRespDTO bmrGroupRespDTO = new BmrGroupRespDTO();
+                BeanUtil.copyProperties(each, bmrGroupRespDTO);
+                return bmrGroupRespDTO;
+            }).toList();
+        }
 
-        //TODO
-        // 查询用户名下的所有group
-
-//        LambdaQueryWrapper<GroupDO> groupDOLambdaQueryWrapper = Wrappers.lambdaQuery(GroupDO.class)
-//                .eq(GroupDO::getDelFlag, 0)
-//                .eq(GroupDO::getUsername, UserContext.getUsername())
-//                .orderByDesc(GroupDO::getSortOrder, GroupDO::getUpdateTime);
-//
-//        List<GroupDO> groupDOList = baseMapper.selectList(groupDOLambdaQueryWrapper);
-//
-//        Result<List<ShortLinkCountQueryRespDTO>> listResult = bookSearchRemoteService
-//                .listGroupShortLinkCount(groupDOList.stream().map(GroupDO::getGid).toList());
-//
-//        List<BmrGroupRespDTO> shortLinkGroupRespDTPList = BeanUtil.copyToList(groupDOList, BmrGroupRespDTO.class);
-//        shortLinkGroupRespDTPList.forEach(each -> {
-//
-//            Optional<ShortLinkCountQueryRespDTO> first = listResult.getData().stream()
-//                    .filter(item -> Objects.equals(item.getGid(), each.getGid()))
-//                    .findFirst();
-//
-//            each.setShortLinkCount(first.isPresent() ? first.get().getShortLinkCount() : 0);
-//
-//        });
         return null;
     }
 
     @Override
     public void updateGroup(BmrGroupUpdateDTO requestParam) {
         LambdaUpdateWrapper<GroupDO> updateWrapper = Wrappers.lambdaUpdate(GroupDO.class)
-                .eq(GroupDO::getUsername, UserContext.getUsername())
+                .eq(GroupDO::getUsername, requestParam.getUsername())
                 .eq(GroupDO::getDelFlag, 0)
                 .eq(GroupDO::getGid, requestParam.getGid());
 
@@ -110,29 +83,15 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implemen
     }
 
     @Override
-    public void deleteGroup(String gid) {
+    public void deleteGroup(BmrDeleteGroupReqDTO requestParam) {
         LambdaUpdateWrapper<GroupDO> updateWrapper = Wrappers.lambdaUpdate(GroupDO.class)
-                .eq(GroupDO::getUsername, UserContext.getUsername())
+                .eq(GroupDO::getUsername, requestParam.getUsername())
                 .eq(GroupDO::getDelFlag, 0)
-                .eq(GroupDO::getGid, gid);
+                .eq(GroupDO::getGid, requestParam.getGid());
 
         GroupDO groupDO = new GroupDO();
         groupDO.setDelFlag(1);
         baseMapper.update(groupDO, updateWrapper);
-    }
-
-    @Override
-    public void sortGroup(List<BmrGroupSortReqDTO> requestParam) {
-        requestParam.forEach(each->{
-            GroupDO groupDO = GroupDO.builder().sortOrder(each.getSortOrder()).build();
-
-            LambdaUpdateWrapper<GroupDO> updateWrapper = Wrappers.lambdaUpdate(GroupDO.class)
-                    .eq(GroupDO::getGid, each.getGid())
-                    .eq(GroupDO::getDelFlag, 0)
-                    .eq(GroupDO::getUsername, UserContext.getUsername());
-
-            baseMapper.update(groupDO, updateWrapper);
-        });
     }
 
     private boolean hasGid(String userName, String gid) {

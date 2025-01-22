@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class baseDO {
+public class BaseDO {
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;
     /**

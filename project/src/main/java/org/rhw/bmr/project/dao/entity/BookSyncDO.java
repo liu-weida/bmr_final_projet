@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.rhw.bmr.project.common.database.baseDO;
+import org.rhw.bmr.project.common.database.BaseDO;
 
 /**
  * 访问日志监控
@@ -17,7 +17,7 @@ import org.rhw.bmr.project.common.database.baseDO;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BookSyncDO extends baseDO {
+public class BookSyncDO extends BaseDO {
 
     private Long id;
 

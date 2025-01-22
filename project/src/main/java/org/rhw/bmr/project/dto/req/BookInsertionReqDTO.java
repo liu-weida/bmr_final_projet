@@ -5,8 +5,6 @@ import com.baomidou.mybatisplus.annotation.TableField;
 
 public class BookInsertionReqDTO {
 
-    private Long id;
-
     @TableField("ref_id")
     private Long refId;
 

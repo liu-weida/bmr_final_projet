@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.rhw.bmr.user.common.constant.RedisCacheConstant;
 import org.rhw.bmr.user.dao.entity.UserDO;
 import org.rhw.bmr.user.dao.mapper.UserMapper;
+import org.rhw.bmr.user.dto.req.BmrSaveGroupReqDTO;
 import org.rhw.bmr.user.dto.req.UserLoginReqDTO;
 import org.rhw.bmr.user.dto.req.UserRegisterReqDTO;
 import org.rhw.bmr.user.dto.req.UserUpdateReqDTO;
@@ -99,7 +100,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
                     }
                     userRegisterCachePenetrationBloomFilter.add(requestParam.getUsername());
 
-                    groupService.saveGroup(requestParam.getUsername(),"默认分组");
+                    groupService.saveGroup(new BmrSaveGroupReqDTO(requestParam.getUsername(),"默认分组"));
                     return;
                 }catch (DuplicateKeyException e){
                     throw new ClientException(UserErrorCodeEnum.USER_NAME_EXIST);

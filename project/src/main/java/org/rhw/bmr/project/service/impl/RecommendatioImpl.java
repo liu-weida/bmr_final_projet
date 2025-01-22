@@ -7,6 +7,7 @@ import org.rhw.bmr.project.dao.entity.BookDO;
 import org.rhw.bmr.project.dao.entity.UserPreferenceDO;
 import org.rhw.bmr.project.dao.mapper.BookMapper;
 import org.rhw.bmr.project.dao.mapper.UserPreferenceMapper;
+import org.rhw.bmr.project.dto.req.RecommendBookReqDTO;
 import org.rhw.bmr.project.service.RecommendationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,10 @@ public class RecommendatioImpl extends ServiceImpl<UserPreferenceMapper, UserPre
     @Autowired
     private BookMapper bookMapper; // 对应 book 表
     @Override
-    public List<BookDO> recommendBooksForUser(Long userId) {
+    public List<BookDO> recommendBooksForUser(RecommendBookReqDTO requestParam) {
+
+        Long userId = requestParam.getUserId();
+
         // 1. 查询用户偏好，取前 3 位作者和前 3 个分类（可根据需求调整）
         List<UserPreferenceDO> preferences = getUserPreferences(userId);
 

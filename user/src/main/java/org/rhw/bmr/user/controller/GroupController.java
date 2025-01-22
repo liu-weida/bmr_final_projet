@@ -2,9 +2,7 @@ package org.rhw.bmr.user.controller;
 
 
 import lombok.RequiredArgsConstructor;
-import org.rhw.bmr.user.dto.req.BmrGroupReqDTO;
-import org.rhw.bmr.user.dto.req.BmrGroupSortReqDTO;
-import org.rhw.bmr.user.dto.req.BmrGroupUpdateDTO;
+import org.rhw.bmr.user.dto.req.*;
 import org.rhw.bmr.user.common.convention.result.Result;
 import org.rhw.bmr.user.common.convention.result.Results;
 import org.rhw.bmr.user.dto.resp.BmrGroupRespDTO;
@@ -25,8 +23,8 @@ public class GroupController {
      * @return  实体
      */
     @PostMapping("/api/bmr/user/v1/group")
-    public Result<Void> save(@RequestBody BmrGroupReqDTO requestParam) {
-        groupService.saveGroup(requestParam.getName());
+    public Result<Void> save(BmrSaveGroupReqDTO requestParam) {
+        groupService.saveGroup(requestParam);
         return Results.success();
     }
 
@@ -35,8 +33,8 @@ public class GroupController {
      * @return  集合
      */
     @GetMapping("/api/bmr/user/v1/group")
-    public Result<List<BmrGroupRespDTO>> listGroup() {
-        return Results.success(groupService.listGroup());
+    public Result<List<BmrGroupRespDTO>> listGroup(BmrListGroupReqDTO requestParam) {
+        return Results.success(groupService.listGroup(requestParam));
     }
 
     /**
@@ -49,15 +47,10 @@ public class GroupController {
     }
 
     @DeleteMapping("/api/bmr/user/v1/group")
-    public Result<Void> deleteGroup(@RequestParam String gid) {
-        groupService.deleteGroup(gid);
+    public Result<Void> deleteGroup(BmrDeleteGroupReqDTO requestParam) {
+        groupService.deleteGroup(requestParam);
         return Results.success();
     }
 
-    @PostMapping("/api/bmr/user/v1/group/sort")
-    public Result<Void> sortGroup(@RequestBody List<BmrGroupSortReqDTO> requestParam) {
-        groupService.sortGroup(requestParam);
-        return Results.success();
-    }
 
 }

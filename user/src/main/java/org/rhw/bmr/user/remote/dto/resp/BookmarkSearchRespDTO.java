@@ -1,23 +1,17 @@
-package org.rhw.bmr.project.dao.entity;
+package org.rhw.bmr.user.remote.dto.resp;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.rhw.bmr.project.common.database.BaseDO;
 
-/**
- * 访问日志监控
- */
 @Data
-@TableName("t_books")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BookDO extends BaseDO {
+public class BookmarkSearchRespDTO {
 
     private Long id;
 
@@ -45,4 +39,5 @@ public class BookDO extends BaseDO {
     private Integer esSyncFlag;
 
     private String img;
+
 }

@@ -35,8 +35,11 @@ public class BookSearchServiceImpl extends ServiceImpl<BookMapper, BookDO> imple
     @Override
     public IPage<BookSearchRespDTO> pageBookSearchPage(BookSearchReqDTO requestParam) {
 
+        int currentPage = requestParam.getPageNo() == null ? 1 : requestParam.getPageNo();
+        int pageSize = requestParam.getPageSize() == null ? 10 : requestParam.getPageSize();
+
         // 无论用户传什么分页参数，都只取前10本
-        Page<BookDO> page = new Page<>(1, 10);
+        Page<BookDO> page = new Page<>(currentPage, pageSize);
 
         // 构造查询条件
         LambdaQueryWrapper<BookDO> queryWrapper = Wrappers.lambdaQuery(BookDO.class);
@@ -83,11 +86,15 @@ public class BookSearchServiceImpl extends ServiceImpl<BookMapper, BookDO> imple
     @Override
     public IPage<BookSearchByWordRespDTO> pageBookSearchByWord(BookSearchByWordReqDTO requestParam) {
 
+        int currentPage = requestParam.getPageNo() == null ? 1 : requestParam.getPageNo();
+        int pageSz = requestParam.getPageSize() == null ? 10 : requestParam.getPageSize();
+
+
         try {
             // 固定只查前10条
-            int pageNo = 1;
-            int pageSize = 10;
-            int from = 0;
+            int pageNo = currentPage;
+            int pageSize = pageSz;
+            int from = pageNo * pageSize - pageSize;
 
             // 构建查询请求
             SearchRequest searchRequest = SearchRequest.of(sr -> sr
@@ -141,11 +148,15 @@ public class BookSearchServiceImpl extends ServiceImpl<BookMapper, BookDO> imple
     @Override
     public IPage<BookSearchByRegespRespDTO> pageBookSearchByRegexp(BookSearchByRegexpReqDTO requestParam) {
 
+        int currentPage = requestParam.getPageNo() == null ? 1 : requestParam.getPageNo();
+        int pageSz = requestParam.getPageSize() == null ? 10 : requestParam.getPageSize();
+
+
         try {
             // 固定只查前10条
-            int pageNo = 1;
-            int pageSize = 10;
-            int from = 0;
+            int pageNo = currentPage;
+            int pageSize = pageSz;
+            int from = pageNo * pageSize - pageSize;
 
             // 构建查询请求
             SearchRequest searchRequest = SearchRequest.of(sr -> sr

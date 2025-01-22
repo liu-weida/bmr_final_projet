@@ -8,36 +8,34 @@ import lombok.NoArgsConstructor;
 import org.rhw.bmr.project.common.database.BaseDO;
 
 @Data
-@TableName("t_user_preference")
+@TableName("t_group")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserPreferenceDO extends BaseDO {
+public class GroupDO extends BaseDO {
 
     /**
-     * Primary Key ID
+     * id
      */
     private Long id;
 
     /**
-     * user ID
+     * 分组标识
      */
-    private Long userId;
+    private String gid;
 
     /**
-     * Favorite Authors
+     * 分组名称
      */
-    private String author;
+    private String name;
 
     /**
-     * Favorite Categories
+     * 创建分组用户名
      */
-    private String category;
+    private String username;
 
     /**
-     * Number of user clicks/reads
+     * 分组排序
      */
-    private Integer likeCount;
-
-
+    private Integer sortOrder;
 }

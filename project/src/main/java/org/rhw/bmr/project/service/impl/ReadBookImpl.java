@@ -1,18 +1,12 @@
 package org.rhw.bmr.project.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
+
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.rhw.bmr.project.dao.entity.BookDO;
-import org.rhw.bmr.project.dao.entity.BookSyncDO;
 import org.rhw.bmr.project.dao.mapper.BookMapper;
-import org.rhw.bmr.project.dao.mapper.BookSyncMapper;
 import org.rhw.bmr.project.dto.req.ReadBookReqDTO;
 import org.rhw.bmr.project.dto.resp.ReadBookRespDTO;
-import org.rhw.bmr.project.service.BookSyncService;
 import org.rhw.bmr.project.service.ReadBookService;
-import org.rhw.bmr.project.service.UserPreferenceService;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,8 +24,6 @@ public class ReadBookImpl extends ServiceImpl<BookMapper, BookDO> implements Rea
             baseMapper.updateById(bookDO);
             return new ReadBookRespDTO(bookDO.getStoragePath(),bookDO.getImg());
         }
-
-
 
         // 如果未找到对应的书籍，返回一个默认响应或抛出异常
         return new ReadBookRespDTO(); // 或者抛出一个自定义异常
