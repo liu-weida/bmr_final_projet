@@ -6,11 +6,7 @@
 ### 目前状态 :
 - [x] 用户部分修改完成，可以正常使用（但是token验证貌似有点小问题，不知道问题出在哪，不过问题不大，反正项目用不上）
 - [ ] remote部分待完成
-- [ ] 进一步去掉无用部分
-
-原有短链接部分没删（万一用上了呢hhhh）
-分组部分没删（可以拿来用做书籍收藏的分组）
-
+- [ ] 收藏功能待完成
 
 ## project部分 
 项目主体，负责完成老师要求的内容
@@ -20,8 +16,8 @@
 - [x] 根据词搜索 （基于elasticsearch）
 - [x] 根据短语/短句搜索（不能有标点符号）（基于elasticsearch）
 - [x] 根据正则表达式搜索（基于elasticsearch）
-- [ ] 排序
-- [ ] 推荐
+- [x] 排序已完成，基于点击数
+- [x] 推荐初步已完成，待修改为jaccard版本
 
 ### elasticsearch插入图书方法
 #### 1.在数据库中插入书籍时将在storage_path插入本地的图书位置（理论上远程地址也行 但是我没试）
@@ -29,6 +25,15 @@
 #### 3.定时任务将每五分钟（间隔在yaml文件中可以修改）扫描一次库，将未同步的数据同步到elasticsearch中
 #### 4.有时候会跳出来 “链接已关闭” exception 这是正常现象，不影响使用
 #### 5.本地图书馆位置在resources/book
+
+### 数据库插入方法
+#### 1.直接在数据库中插入
+#### 2.使用文件
+##### 2.1 将想插入的内容写入ressource/bookInfoFormwork.csv
+##### 2.2 把bookInfoFormwork.csv移动到ressource/bookInfo
+##### 2.3 启动程序
+##### 2.4 然后就没有然后了，程序会自己读取bookInfoFormwork.csv，然后删除，并备份到ressource/bookInfoBakcingup中，然后在ressource下新建一个空白的（只有表头的）bookInfoFormwork.csv
+    
 
 
 ## 注意事项
@@ -38,4 +43,4 @@
 #### elasticsearch 端口 账号 密码
 
 ### 记得加载resources里的sql文件
-### 记得把resources里的elasticsearch索引加载到elasticsearch里
+### 记得把resources里的elasticsearch索引加载到elasticsearch里（有俩，记得分别执行）
