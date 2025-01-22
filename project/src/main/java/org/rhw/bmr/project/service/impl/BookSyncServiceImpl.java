@@ -79,6 +79,7 @@ public class BookSyncServiceImpl extends ServiceImpl<BookSyncMapper, BookSyncDO>
                     document.put("category", bookSyncDO.getCategory());
                     document.put("language", bookSyncDO.getLanguage());
                     document.put("content", fileContent); // 添加文件内容
+                    document.put("clickCount", bookSyncDO.getClickCount());
 
                     bulkRequestBuilder.operations(op -> op
                             .index(idx -> idx
