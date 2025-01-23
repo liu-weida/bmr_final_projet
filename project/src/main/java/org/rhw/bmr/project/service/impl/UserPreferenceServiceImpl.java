@@ -20,10 +20,6 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * 不使用 JGraphT，而是手动维护图书之间的邻接表 + 动态更新。
- * 邻接表在 PageRank 中会被视为“有向”或“无向”都可，具体看你想如何构建。
- */
 @Service
 public class UserPreferenceServiceImpl extends ServiceImpl<UserPreferenceMapper, UserPreferenceDO>
         implements UserPreferenceService {

@@ -4,11 +4,13 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import org.apache.poi.ss.usermodel.*;
+import org.redisson.api.RBloomFilter;
 import org.rhw.bmr.project.dao.entity.BookDO;
 import org.rhw.bmr.project.dao.mapper.BookMapper;
 import org.rhw.bmr.project.service.BookInsertionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -19,6 +21,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -39,6 +42,9 @@ public class BookInsertionImpl extends ServiceImpl<BookMapper, BookDO> implement
     // 表格模板文件路径
     @Value("${scheduledTaskInsertBook.formworkFile}")
     private String formworkFile;
+
+    @Autowired
+    private RBloomFilter<String> booksInsertBloomFilter;
 
     @Override
     public void insertBook() {
@@ -149,7 +155,13 @@ public class BookInsertionImpl extends ServiceImpl<BookMapper, BookDO> implement
 
                 BookDO book = mapToBookDO(values);
                 if (book != null) {
-                    books.add(book);
+
+                    if (!booksInsertBloomFilter.contains(String.valueOf(book.getRefId()))){
+                        books.add(book);
+                        booksInsertBloomFilter.add(String.valueOf(book.getRefId()));
+                    }
+
+
                 }
             }
         }
@@ -304,13 +316,13 @@ public class BookInsertionImpl extends ServiceImpl<BookMapper, BookDO> implement
      */
     private void backupFile(File file, Path backupPath) {
         try {
-            // 获取当前日期，格式为 yyyyMMdd
-            LocalDate currentDate = LocalDate.now();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-            String dateStr = currentDate.format(formatter);
+            // 获取当前日期时间，格式为 yyyyMMddHHmmss
+            LocalDateTime currentDateTime = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+            String dateTimeStr = currentDateTime.format(formatter);
 
-            // 构建新的文件名
-            String newFileName = "InfoBackingUp_" + dateStr + "_" + file.getName();
+            // 构建新的文件名，包含日期时间戳
+            String newFileName = "InfoBackingUp_" + dateTimeStr + "_" + file.getName();
 
             // 目标路径
             Path targetPath = backupPath.resolve(newFileName);
@@ -323,6 +335,7 @@ public class BookInsertionImpl extends ServiceImpl<BookMapper, BookDO> implement
             logger.error("备份文件 {} 时发生错误: {}", file.getName(), e.getMessage(), e);
         }
     }
+
 
     /**
      * 创建表格模板文件 bookInfoFormwork.csv

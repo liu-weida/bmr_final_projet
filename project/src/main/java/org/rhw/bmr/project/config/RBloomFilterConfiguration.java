@@ -15,8 +15,8 @@ public class RBloomFilterConfiguration {
      * 防止短链接创建查询数据库的布隆过滤器
      */
     @Bean
-    public RBloomFilter<String> ShortUriCreateCachePenetrationBloomFilter(RedissonClient redissonClient) {
-        RBloomFilter<String> cachePenetrationBloomFilter = redissonClient.getBloomFilter("shortUriCreateCacheBloomFilter");
+    public RBloomFilter<String> BooksInsertBloomFilter(RedissonClient redissonClient) {
+        RBloomFilter<String> cachePenetrationBloomFilter = redissonClient.getBloomFilter("booksInsertBloomFilter");
         cachePenetrationBloomFilter.tryInit(100000000L, 0.001);
         return cachePenetrationBloomFilter;
     }

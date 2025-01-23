@@ -14,7 +14,11 @@ import org.rhw.bmr.project.service.BookSyncService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -120,13 +124,40 @@ public class BookSyncServiceImpl extends ServiceImpl<BookSyncMapper, BookSyncDO>
         if (filePath == null || filePath.isEmpty()) {
             return null; // 如果路径为空，返回 null
         }
+
         try {
-            // 读取文件内容
-            return new String(Files.readAllBytes(Paths.get(filePath)), StandardCharsets.UTF_8);
+            if (filePath.startsWith("http://") || filePath.startsWith("https://")) {
+                // 如果是 URL，则通过网络读取内容
+                return readFromUrl(filePath);
+            } else {
+                // 否则读取本地文件内容
+                return new String(Files.readAllBytes(Paths.get(filePath)), StandardCharsets.UTF_8);
+            }
         } catch (IOException e) {
-            log.error("无法读取文件: {}", filePath, e);
+            log.error("无法读取内容: {}", filePath, e);
             return null; // 如果读取失败，返回 null
         }
+    }
+
+    private String readFromUrl(String urlPath) throws IOException {
+        StringBuilder content = new StringBuilder();
+        URL url = new URL(urlPath);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setConnectTimeout(5000); // 连接超时 5 秒
+        connection.setReadTimeout(5000);    // 读取超时 5 秒
+
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                content.append(line).append("\n");
+            }
+        } finally {
+            connection.disconnect();
+        }
+
+        return content.toString();
     }
 
 

@@ -30,6 +30,7 @@ elasticsearch:
 scheduledTaskSyncElastic:
   enabled: true
   interval: 3000000
+  start: 6000
 
 scheduledTaskInsertBook:
   enabled: true
