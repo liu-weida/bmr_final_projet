@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ReadBookReqDTO {
 
-    private Long userid;
+    private String username;
 
     private Long bookId;
 

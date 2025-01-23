@@ -841,7 +841,7 @@ ALTER TABLE `t_books_15`
 
 CREATE TABLE `t_user_preference_0` (
                                        `id`                BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT 'Primary Key ID',
-                                       `user_id`           BIGINT(20) NOT NULL COMMENT 'user ID',
+                                       `user_name`           VARCHAR(100) NOT NULL COMMENT 'user ID',
                                        `author`            VARCHAR(255) DEFAULT NULL COMMENT 'Favorite Authors',
                                        `category`          VARCHAR(100) DEFAULT NULL COMMENT 'Favorite Categories',
                                        `like_count`        INT(11) DEFAULT 0 COMMENT 'Number of user clicks/reads',
@@ -850,13 +850,13 @@ CREATE TABLE `t_user_preference_0` (
                                        `update_time`   datetime     DEFAULT NULL COMMENT 'modified time',
                                        `del_flag`      tinyint(1) DEFAULT NULL COMMENT 'Delete flag 0: not deleted 1: deleted',
                                        PRIMARY KEY (`id`),
-                                       UNIQUE KEY `uk_user_author_category`(`user_id`,`author`,`category`)
+                                       UNIQUE KEY `uk_user_author_category`(`user_name`,`author`,`category`)
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_general_ci;
 CREATE TABLE `t_user_preference_1` (
                                        `id`                BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT 'Primary Key ID',
-                                       `user_id`           BIGINT(20) NOT NULL COMMENT 'user ID',
+                                       `user_name`           VARCHAR(100) NOT NULL COMMENT 'user ID',
                                        `author`            VARCHAR(255) DEFAULT NULL COMMENT 'Favorite Authors',
                                        `category`          VARCHAR(100) DEFAULT NULL COMMENT 'Favorite Categories',
                                        `like_count`        INT(11) DEFAULT 0 COMMENT 'Number of user clicks/reads',
@@ -865,13 +865,13 @@ CREATE TABLE `t_user_preference_1` (
                                        `update_time`   datetime     DEFAULT NULL COMMENT 'modified time',
                                        `del_flag`      tinyint(1) DEFAULT NULL COMMENT 'Delete flag 0: not deleted 1: deleted',
                                        PRIMARY KEY (`id`),
-                                       UNIQUE KEY `uk_user_author_category`(`user_id`,`author`,`category`)
+                                       UNIQUE KEY `uk_user_author_category`(`user_name`,`author`,`category`)
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_general_ci;
 CREATE TABLE `t_user_preference_2` (
                                        `id`                BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT 'Primary Key ID',
-                                       `user_id`           BIGINT(20) NOT NULL COMMENT 'user ID',
+                                       `user_name`           VARCHAR(100) NOT NULL COMMENT 'user ID',
                                        `author`            VARCHAR(255) DEFAULT NULL COMMENT 'Favorite Authors',
                                        `category`          VARCHAR(100) DEFAULT NULL COMMENT 'Favorite Categories',
                                        `like_count`        INT(11) DEFAULT 0 COMMENT 'Number of user clicks/reads',
@@ -880,13 +880,13 @@ CREATE TABLE `t_user_preference_2` (
                                        `update_time`   datetime     DEFAULT NULL COMMENT 'modified time',
                                        `del_flag`      tinyint(1) DEFAULT NULL COMMENT 'Delete flag 0: not deleted 1: deleted',
                                        PRIMARY KEY (`id`),
-                                       UNIQUE KEY `uk_user_author_category`(`user_id`,`author`,`category`)
+                                       UNIQUE KEY `uk_user_author_category`(`user_name`,`author`,`category`)
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_general_ci;
 CREATE TABLE `t_user_preference_3` (
                                        `id`                BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT 'Primary Key ID',
-                                       `user_id`           BIGINT(20) NOT NULL COMMENT 'user ID',
+                                       `user_name`           VARCHAR(100) NOT NULL COMMENT 'user ID',
                                        `author`            VARCHAR(255) DEFAULT NULL COMMENT 'Favorite Authors',
                                        `category`          VARCHAR(100) DEFAULT NULL COMMENT 'Favorite Categories',
                                        `like_count`        INT(11) DEFAULT 0 COMMENT 'Number of user clicks/reads',
@@ -895,13 +895,13 @@ CREATE TABLE `t_user_preference_3` (
                                        `update_time`   datetime     DEFAULT NULL COMMENT 'modified time',
                                        `del_flag`      tinyint(1) DEFAULT NULL COMMENT 'Delete flag 0: not deleted 1: deleted',
                                        PRIMARY KEY (`id`),
-                                       UNIQUE KEY `uk_user_author_category`(`user_id`,`author`,`category`)
+                                       UNIQUE KEY `uk_user_author_category`(`user_name`,`author`,`category`)
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_general_ci;
 CREATE TABLE `t_user_preference_4` (
                                        `id`                BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT 'Primary Key ID',
-                                       `user_id`           BIGINT(20) NOT NULL COMMENT 'user ID',
+                                       `user_name`           VARCHAR(100) NOT NULL COMMENT 'user ID',
                                        `author`            VARCHAR(255) DEFAULT NULL COMMENT 'Favorite Authors',
                                        `category`          VARCHAR(100) DEFAULT NULL COMMENT 'Favorite Categories',
                                        `like_count`        INT(11) DEFAULT 0 COMMENT 'Number of user clicks/reads',
@@ -910,13 +910,13 @@ CREATE TABLE `t_user_preference_4` (
                                        `update_time`   datetime     DEFAULT NULL COMMENT 'modified time',
                                        `del_flag`      tinyint(1) DEFAULT NULL COMMENT 'Delete flag 0: not deleted 1: deleted',
                                        PRIMARY KEY (`id`),
-                                       UNIQUE KEY `uk_user_author_category`(`user_id`,`author`,`category`)
+                                       UNIQUE KEY `uk_user_author_category`(`user_name`,`author`,`category`)
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_general_ci;
 CREATE TABLE `t_user_preference_5` (
                                        `id`                BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT 'Primary Key ID',
-                                       `user_id`           BIGINT(20) NOT NULL COMMENT 'user ID',
+                                       `user_name`           VARCHAR(100) NOT NULL COMMENT 'user ID',
                                        `author`            VARCHAR(255) DEFAULT NULL COMMENT 'Favorite Authors',
                                        `category`          VARCHAR(100) DEFAULT NULL COMMENT 'Favorite Categories',
                                        `like_count`        INT(11) DEFAULT 0 COMMENT 'Number of user clicks/reads',
@@ -925,13 +925,13 @@ CREATE TABLE `t_user_preference_5` (
                                        `update_time`   datetime     DEFAULT NULL COMMENT 'modified time',
                                        `del_flag`      tinyint(1) DEFAULT NULL COMMENT 'Delete flag 0: not deleted 1: deleted',
                                        PRIMARY KEY (`id`),
-                                       UNIQUE KEY `uk_user_author_category`(`user_id`,`author`,`category`)
+                                       UNIQUE KEY `uk_user_author_category`(`user_name`,`author`,`category`)
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_general_ci;
 CREATE TABLE `t_user_preference_6` (
                                        `id`                BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT 'Primary Key ID',
-                                       `user_id`           BIGINT(20) NOT NULL COMMENT 'user ID',
+                                       `user_name`           VARCHAR(100) NOT NULL COMMENT 'user ID',
                                        `author`            VARCHAR(255) DEFAULT NULL COMMENT 'Favorite Authors',
                                        `category`          VARCHAR(100) DEFAULT NULL COMMENT 'Favorite Categories',
                                        `like_count`        INT(11) DEFAULT 0 COMMENT 'Number of user clicks/reads',
@@ -940,13 +940,13 @@ CREATE TABLE `t_user_preference_6` (
                                        `update_time`   datetime     DEFAULT NULL COMMENT 'modified time',
                                        `del_flag`      tinyint(1) DEFAULT NULL COMMENT 'Delete flag 0: not deleted 1: deleted',
                                        PRIMARY KEY (`id`),
-                                       UNIQUE KEY `uk_user_author_category`(`user_id`,`author`,`category`)
+                                       UNIQUE KEY `uk_user_author_category`(`user_name`,`author`,`category`)
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_general_ci;
 CREATE TABLE `t_user_preference_7` (
                                        `id`                BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT 'Primary Key ID',
-                                       `user_id`           BIGINT(20) NOT NULL COMMENT 'user ID',
+                                       `user_name`           VARCHAR(100) NOT NULL COMMENT 'user ID',
                                        `author`            VARCHAR(255) DEFAULT NULL COMMENT 'Favorite Authors',
                                        `category`          VARCHAR(100) DEFAULT NULL COMMENT 'Favorite Categories',
                                        `like_count`        INT(11) DEFAULT 0 COMMENT 'Number of user clicks/reads',
@@ -955,13 +955,13 @@ CREATE TABLE `t_user_preference_7` (
                                        `update_time`   datetime     DEFAULT NULL COMMENT 'modified time',
                                        `del_flag`      tinyint(1) DEFAULT NULL COMMENT 'Delete flag 0: not deleted 1: deleted',
                                        PRIMARY KEY (`id`),
-                                       UNIQUE KEY `uk_user_author_category`(`user_id`,`author`,`category`)
+                                       UNIQUE KEY `uk_user_author_category`(`user_name`,`author`,`category`)
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_general_ci;
 CREATE TABLE `t_user_preference_8` (
                                        `id`                BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT 'Primary Key ID',
-                                       `user_id`           BIGINT(20) NOT NULL COMMENT 'user ID',
+                                       `user_name`           VARCHAR(100) NOT NULL COMMENT 'user ID',
                                        `author`            VARCHAR(255) DEFAULT NULL COMMENT 'Favorite Authors',
                                        `category`          VARCHAR(100) DEFAULT NULL COMMENT 'Favorite Categories',
                                        `like_count`        INT(11) DEFAULT 0 COMMENT 'Number of user clicks/reads',
@@ -970,13 +970,13 @@ CREATE TABLE `t_user_preference_8` (
                                        `update_time`   datetime     DEFAULT NULL COMMENT 'modified time',
                                        `del_flag`      tinyint(1) DEFAULT NULL COMMENT 'Delete flag 0: not deleted 1: deleted',
                                        PRIMARY KEY (`id`),
-                                       UNIQUE KEY `uk_user_author_category`(`user_id`,`author`,`category`)
+                                       UNIQUE KEY `uk_user_author_category`(`user_name`,`author`,`category`)
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_general_ci;
 CREATE TABLE `t_user_preference_9` (
                                        `id`                BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT 'Primary Key ID',
-                                       `user_id`           BIGINT(20) NOT NULL COMMENT 'user ID',
+                                       `user_name`           VARCHAR(100) NOT NULL COMMENT 'user ID',
                                        `author`            VARCHAR(255) DEFAULT NULL COMMENT 'Favorite Authors',
                                        `category`          VARCHAR(100) DEFAULT NULL COMMENT 'Favorite Categories',
                                        `like_count`        INT(11) DEFAULT 0 COMMENT 'Number of user clicks/reads',
@@ -985,13 +985,13 @@ CREATE TABLE `t_user_preference_9` (
                                        `update_time`   datetime     DEFAULT NULL COMMENT 'modified time',
                                        `del_flag`      tinyint(1) DEFAULT NULL COMMENT 'Delete flag 0: not deleted 1: deleted',
                                        PRIMARY KEY (`id`),
-                                       UNIQUE KEY `uk_user_author_category`(`user_id`,`author`,`category`)
+                                       UNIQUE KEY `uk_user_author_category`(`user_name`,`author`,`category`)
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_general_ci;
 CREATE TABLE `t_user_preference_10` (
                                         `id`                BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT 'Primary Key ID',
-                                        `user_id`           BIGINT(20) NOT NULL COMMENT 'user ID',
+                                        `user_name`           VARCHAR(100) NOT NULL COMMENT 'user ID',
                                         `author`            VARCHAR(255) DEFAULT NULL COMMENT 'Favorite Authors',
                                         `category`          VARCHAR(100) DEFAULT NULL COMMENT 'Favorite Categories',
                                         `like_count`        INT(11) DEFAULT 0 COMMENT 'Number of user clicks/reads',
@@ -1000,13 +1000,13 @@ CREATE TABLE `t_user_preference_10` (
                                         `update_time`   datetime     DEFAULT NULL COMMENT 'modified time',
                                         `del_flag`      tinyint(1) DEFAULT NULL COMMENT 'Delete flag 0: not deleted 1: deleted',
                                         PRIMARY KEY (`id`),
-                                        UNIQUE KEY `uk_user_author_category`(`user_id`,`author`,`category`)
+                                        UNIQUE KEY `uk_user_author_category`(`user_name`,`author`,`category`)
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_general_ci;
 CREATE TABLE `t_user_preference_11` (
                                         `id`                BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT 'Primary Key ID',
-                                        `user_id`           BIGINT(20) NOT NULL COMMENT 'user ID',
+                                        `user_name`           VARCHAR(100) NOT NULL COMMENT 'user ID',
                                         `author`            VARCHAR(255) DEFAULT NULL COMMENT 'Favorite Authors',
                                         `category`          VARCHAR(100) DEFAULT NULL COMMENT 'Favorite Categories',
                                         `like_count`        INT(11) DEFAULT 0 COMMENT 'Number of user clicks/reads',
@@ -1015,13 +1015,13 @@ CREATE TABLE `t_user_preference_11` (
                                         `update_time`   datetime     DEFAULT NULL COMMENT 'modified time',
                                         `del_flag`      tinyint(1) DEFAULT NULL COMMENT 'Delete flag 0: not deleted 1: deleted',
                                         PRIMARY KEY (`id`),
-                                        UNIQUE KEY `uk_user_author_category`(`user_id`,`author`,`category`)
+                                        UNIQUE KEY `uk_user_author_category`(`user_name`,`author`,`category`)
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_general_ci;
 CREATE TABLE `t_user_preference_12` (
                                         `id`                BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT 'Primary Key ID',
-                                        `user_id`           BIGINT(20) NOT NULL COMMENT 'user ID',
+                                        `user_name`           VARCHAR(100) NOT NULL COMMENT 'user ID',
                                         `author`            VARCHAR(255) DEFAULT NULL COMMENT 'Favorite Authors',
                                         `category`          VARCHAR(100) DEFAULT NULL COMMENT 'Favorite Categories',
                                         `like_count`        INT(11) DEFAULT 0 COMMENT 'Number of user clicks/reads',
@@ -1030,13 +1030,13 @@ CREATE TABLE `t_user_preference_12` (
                                         `update_time`   datetime     DEFAULT NULL COMMENT 'modified time',
                                         `del_flag`      tinyint(1) DEFAULT NULL COMMENT 'Delete flag 0: not deleted 1: deleted',
                                         PRIMARY KEY (`id`),
-                                        UNIQUE KEY `uk_user_author_category`(`user_id`,`author`,`category`)
+                                        UNIQUE KEY `uk_user_author_category`(`user_name`,`author`,`category`)
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_general_ci;
 CREATE TABLE `t_user_preference_13` (
                                         `id`                BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT 'Primary Key ID',
-                                        `user_id`           BIGINT(20) NOT NULL COMMENT 'user ID',
+                                        `user_name`           VARCHAR(100) NOT NULL COMMENT 'user ID',
                                         `author`            VARCHAR(255) DEFAULT NULL COMMENT 'Favorite Authors',
                                         `category`          VARCHAR(100) DEFAULT NULL COMMENT 'Favorite Categories',
                                         `like_count`        INT(11) DEFAULT 0 COMMENT 'Number of user clicks/reads',
@@ -1045,13 +1045,13 @@ CREATE TABLE `t_user_preference_13` (
                                         `update_time`   datetime     DEFAULT NULL COMMENT 'modified time',
                                         `del_flag`      tinyint(1) DEFAULT NULL COMMENT 'Delete flag 0: not deleted 1: deleted',
                                         PRIMARY KEY (`id`),
-                                        UNIQUE KEY `uk_user_author_category`(`user_id`,`author`,`category`)
+                                        UNIQUE KEY `uk_user_author_category`(`user_name`,`author`,`category`)
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_general_ci;
 CREATE TABLE `t_user_preference_14` (
                                         `id`                BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT 'Primary Key ID',
-                                        `user_id`           BIGINT(20) NOT NULL COMMENT 'user ID',
+                                        `user_name`           VARCHAR(100) NOT NULL COMMENT 'user ID',
                                         `author`            VARCHAR(255) DEFAULT NULL COMMENT 'Favorite Authors',
                                         `category`          VARCHAR(100) DEFAULT NULL COMMENT 'Favorite Categories',
                                         `like_count`        INT(11) DEFAULT 0 COMMENT 'Number of user clicks/reads',
@@ -1060,13 +1060,13 @@ CREATE TABLE `t_user_preference_14` (
                                         `update_time`   datetime     DEFAULT NULL COMMENT 'modified time',
                                         `del_flag`      tinyint(1) DEFAULT NULL COMMENT 'Delete flag 0: not deleted 1: deleted',
                                         PRIMARY KEY (`id`),
-                                        UNIQUE KEY `uk_user_author_category`(`user_id`,`author`,`category`)
+                                        UNIQUE KEY `uk_user_author_category`(`user_name`,`author`,`category`)
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_general_ci;
 CREATE TABLE `t_user_preference_15` (
                                         `id`                BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT 'Primary Key ID',
-                                        `user_id`           BIGINT(20) NOT NULL COMMENT 'user ID',
+                                        `user_name`           VARCHAR(100) NOT NULL COMMENT 'user ID',
                                         `author`            VARCHAR(255) DEFAULT NULL COMMENT 'Favorite Authors',
                                         `category`          VARCHAR(100) DEFAULT NULL COMMENT 'Favorite Categories',
                                         `like_count`        INT(11) DEFAULT 0 COMMENT 'Number of user clicks/reads',
@@ -1075,7 +1075,7 @@ CREATE TABLE `t_user_preference_15` (
                                         `update_time`   datetime     DEFAULT NULL COMMENT 'modified time',
                                         `del_flag`      tinyint(1) DEFAULT NULL COMMENT 'Delete flag 0: not deleted 1: deleted',
                                         PRIMARY KEY (`id`),
-                                        UNIQUE KEY `uk_user_author_category`(`user_id`,`author`,`category`)
+                                        UNIQUE KEY `uk_user_author_category`(`user_name`,`author`,`category`)
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_general_ci;

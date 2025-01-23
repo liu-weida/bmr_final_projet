@@ -33,7 +33,7 @@ rules:
           # 用于单分片键的标准分片场景
           standard:
             # 分片键
-            shardingColumn: user_id
+            shardingColumn: user_name
             # 分片算法，对应 rules[0].shardingAlgorithms
             shardingAlgorithmName: user_preference_hash_mod
         keyGenerateStrategy:

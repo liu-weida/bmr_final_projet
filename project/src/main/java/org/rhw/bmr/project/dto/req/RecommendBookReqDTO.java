@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class RecommendBookReqDTO {
 
-    private Long userId;
+    private String username;
 
 }

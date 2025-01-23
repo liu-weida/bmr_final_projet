@@ -10,6 +10,7 @@ import org.rhw.bmr.project.dao.entity.BookDO;
 import org.rhw.bmr.project.dao.entity.UserPreferenceDO;
 import org.rhw.bmr.project.dao.mapper.BookMapper;
 import org.rhw.bmr.project.dao.mapper.UserPreferenceMapper;
+import org.rhw.bmr.project.dto.req.BookmarkReqDTO;
 import org.rhw.bmr.project.dto.req.ReadBookReqDTO;
 import org.rhw.bmr.project.service.UserPreferenceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,11 +83,11 @@ public class UserPreferenceServiceImpl extends ServiceImpl<UserPreferenceMapper,
 
     @Override
     public void recordUserPreference(ReadBookReqDTO requestParam) {
-        Long userId = requestParam.getUserid();
+        String username = requestParam.getUsername();
         Long bookId = requestParam.getBookId();
 
         // 1. 参数校验
-        if (userId == null || bookId == null) {
+        if (username == null || bookId == null) {
             return;
         }
 
@@ -107,7 +108,7 @@ public class UserPreferenceServiceImpl extends ServiceImpl<UserPreferenceMapper,
 
         // 3. 查找是否已经有这条记录
         LambdaQueryWrapper<UserPreferenceDO> wrapper = Wrappers.lambdaQuery(UserPreferenceDO.class)
-                .eq(UserPreferenceDO::getUserId, userId)
+                .eq(UserPreferenceDO::getUsername, username)
                 .eq(author != null, UserPreferenceDO::getAuthor, author)
                 .eq(category != null, UserPreferenceDO::getCategory, category);
 
@@ -115,7 +116,7 @@ public class UserPreferenceServiceImpl extends ServiceImpl<UserPreferenceMapper,
         if (existPref == null) {
             // 3a. 新建
             UserPreferenceDO newPref = new UserPreferenceDO();
-            newPref.setUserId(userId);
+            newPref.setUsername(username);
             newPref.setAuthor(author);
             newPref.setCategory(category);
             newPref.setLikeCount(1);
@@ -126,6 +127,66 @@ public class UserPreferenceServiceImpl extends ServiceImpl<UserPreferenceMapper,
                     .eq(UserPreferenceDO::getId, existPref.getId())
                     .set(UserPreferenceDO::getLikeCount, existPref.getLikeCount() + 1);
             update(updateWrapper);
+        }
+
+        // 4. 动态更新图结构
+        updateBookGraph(bookDO);
+    }
+
+    @Override
+    public void recordUserPreference(BookmarkReqDTO requestParam) {
+        String username = requestParam.getUsername();
+        Long bookId = requestParam.getBookId();
+
+        log.error("bookmark: {}");
+
+        // 1. 参数校验
+        if (username == null || bookId == null) {
+
+            return;
+        }
+
+        // 2. 查询 BookDO
+        LambdaQueryWrapper<BookDO> bookQuery = Wrappers.lambdaQuery(BookDO.class)
+                .eq(BookDO::getId, bookId);
+        BookDO bookDO = bookMapper.selectOne(bookQuery);
+        if (bookDO == null) {
+            return;
+        }
+
+        String author = bookDO.getAuthor();
+        String category = bookDO.getCategory();
+        if ((author == null || author.isEmpty()) &&
+                (category == null || category.isEmpty())) {
+            return;
+        }
+
+        // 3. 查找是否已经有这条记录
+        LambdaQueryWrapper<UserPreferenceDO> wrapper = Wrappers.lambdaQuery(UserPreferenceDO.class)
+                .eq(UserPreferenceDO::getUsername, username)
+                .eq(author != null, UserPreferenceDO::getAuthor, author)
+                .eq(category != null, UserPreferenceDO::getCategory, category);
+
+        UserPreferenceDO existPref = getOne(wrapper);
+        if (existPref == null) {
+            // 3a. 新建
+            UserPreferenceDO newPref = new UserPreferenceDO();
+            newPref.setUsername(username);
+            newPref.setAuthor(author);
+            newPref.setCategory(category);
+            newPref.setLikeCount(1);
+            save(newPref);
+
+            log.error("ici: {}");
+        } else {
+            // 3b. 累加 likeCount
+            LambdaUpdateWrapper<UserPreferenceDO> updateWrapper = Wrappers.lambdaUpdate(UserPreferenceDO.class)
+                    .eq(UserPreferenceDO::getUsername, username)
+                    .eq(UserPreferenceDO::getId, existPref.getId())
+                    .set(UserPreferenceDO::getLikeCount, existPref.getLikeCount() + 1);
+            update(updateWrapper);
+
+            log.error("cicici");
         }
 
         // 4. 动态更新图结构

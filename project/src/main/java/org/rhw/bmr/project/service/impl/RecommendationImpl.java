@@ -28,13 +28,13 @@ public class RecommendationImpl extends ServiceImpl<UserPreferenceMapper, UserPr
 
     @Override
     public List<BookDO> recommendBooksForUser(RecommendBookReqDTO requestParam) {
-        Long userId = requestParam.getUserId();
+        String username = requestParam.getUsername();
 
         // 1. 计算所有图书的 PageRank（使用我们手写的 PageRank）
         Map<Long, Double> bookPageRank = computeBookPageRank();
 
         // 2. 获取用户的偏好
-        List<UserPreferenceDO> preferences = getUserPreferences(userId);
+        List<UserPreferenceDO> preferences = getUserPreferences(username);
 
         // 3. 根据用户偏好过滤图书
         Set<Long> preferredBookIds = getPreferredBookIds(preferences);
@@ -96,13 +96,14 @@ public class RecommendationImpl extends ServiceImpl<UserPreferenceMapper, UserPr
     /**
      * 获取用户的偏好，按 like_count 降序，只取前 N 项
      */
-    private List<UserPreferenceDO> getUserPreferences(Long userId) {
+    private List<UserPreferenceDO> getUserPreferences(String username) {
         return baseMapper.selectList(
                 Wrappers.lambdaQuery(UserPreferenceDO.class)
-                        .eq(UserPreferenceDO::getUserId, userId)
+                        .eq(UserPreferenceDO::getUsername, username)
                         .orderByDesc(UserPreferenceDO::getLikeCount)
                         .last("LIMIT 6")
         );
+
     }
 
     /**
