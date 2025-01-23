@@ -4,10 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+
 import jakarta.annotation.PostConstruct;
-import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.SimpleGraph;
 import org.rhw.bmr.project.dao.entity.BookDO;
 import org.rhw.bmr.project.dao.entity.UserPreferenceDO;
 import org.rhw.bmr.project.dao.mapper.BookMapper;
@@ -17,41 +15,70 @@ import org.rhw.bmr.project.service.UserPreferenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
+/**
+ * 不使用 JGraphT，而是手动维护图书之间的邻接表 + 动态更新。
+ * 邻接表在 PageRank 中会被视为“有向”或“无向”都可，具体看你想如何构建。
+ */
 @Service
-public class UserPreferenceServiceImpl extends ServiceImpl<UserPreferenceMapper, UserPreferenceDO> implements UserPreferenceService {
+public class UserPreferenceServiceImpl extends ServiceImpl<UserPreferenceMapper, UserPreferenceDO>
+        implements UserPreferenceService {
 
     @Autowired
     private BookMapper bookMapper;
 
-    // 图书相似性图
-    private Graph<Long, DefaultEdge> bookGraph;
+    /**
+     * 图书相似性图（邻接表）
+     * key: bookId
+     * value: 与 bookId 相似的所有其他书的 ID（双向添加，逻辑上是无向图）
+     */
+    private Map<Long, List<Long>> adjacencyList;
 
     @PostConstruct
     public void init() {
-        bookGraph = new SimpleGraph<>(DefaultEdge.class);
+        adjacencyList = new HashMap<Long, List<Long>>();
         buildInitialGraph();
     }
 
     /**
-     * 构建初始图书相似性图
+     * 构建初始的图书相似性邻接表
      */
     private void buildInitialGraph() {
         List<BookDO> books = bookMapper.selectList(null);
-        for (BookDO book : books) {
-            bookGraph.addVertex(book.getId());
+        if (books == null || books.isEmpty()) {
+            return;
         }
 
-        // 根据相同作者或分类添加边
-        for (int i = 0; i < books.size(); i++) {
+        // 1. 先把所有书加入 map
+        for (BookDO book : books) {
+            adjacencyList.putIfAbsent(book.getId(), new ArrayList<Long>());
+        }
+
+        // 2. 根据相同作者或分类添加边（无向图：需要在 A、B 两边都加）
+        int size = books.size();
+        for (int i = 0; i < size; i++) {
             BookDO bookA = books.get(i);
-            for (int j = i + 1; j < books.size(); j++) {
+            Long idA = bookA.getId();
+            for (int j = i + 1; j < size; j++) {
                 BookDO bookB = books.get(j);
-                if (bookA.getAuthor() != null && bookA.getAuthor().equals(bookB.getAuthor()) ||
-                        bookA.getCategory() != null && bookA.getCategory().equals(bookB.getCategory())) {
-                    bookGraph.addEdge(bookA.getId(), bookB.getId());
+                Long idB = bookB.getId();
+
+                boolean sameAuthor = false;
+                if (bookA.getAuthor() != null && bookB.getAuthor() != null) {
+                    sameAuthor = bookA.getAuthor().equals(bookB.getAuthor());
+                }
+                boolean sameCategory = false;
+                if (bookA.getCategory() != null && bookB.getCategory() != null) {
+                    sameCategory = bookA.getCategory().equals(bookB.getCategory());
+                }
+
+                if (sameAuthor || sameCategory) {
+                    adjacencyList.get(idA).add(idB);
+                    adjacencyList.get(idB).add(idA);
                 }
             }
         }
@@ -59,7 +86,6 @@ public class UserPreferenceServiceImpl extends ServiceImpl<UserPreferenceMapper,
 
     @Override
     public void recordUserPreference(ReadBookReqDTO requestParam) {
-
         Long userId = requestParam.getUserid();
         Long bookId = requestParam.getBookId();
 
@@ -68,30 +94,28 @@ public class UserPreferenceServiceImpl extends ServiceImpl<UserPreferenceMapper,
             return;
         }
 
-        // 查询 BookDO
-        LambdaQueryWrapper<BookDO> bookQuery = Wrappers.lambdaQuery(BookDO.class).eq(BookDO::getId, bookId);
+        // 2. 查询 BookDO
+        LambdaQueryWrapper<BookDO> bookQuery = Wrappers.lambdaQuery(BookDO.class)
+                .eq(BookDO::getId, bookId);
         BookDO bookDO = bookMapper.selectOne(bookQuery);
-
         if (bookDO == null) {
-            return; // 或者抛出异常，取决于业务需求
+            return;
         }
 
         String author = bookDO.getAuthor();
         String category = bookDO.getCategory();
-
         if ((author == null || author.isEmpty()) &&
                 (category == null || category.isEmpty())) {
             return;
         }
 
-        // 2. 查找是否已经有这条记录
+        // 3. 查找是否已经有这条记录
         LambdaQueryWrapper<UserPreferenceDO> wrapper = Wrappers.lambdaQuery(UserPreferenceDO.class)
                 .eq(UserPreferenceDO::getUserId, userId)
                 .eq(author != null, UserPreferenceDO::getAuthor, author)
                 .eq(category != null, UserPreferenceDO::getCategory, category);
 
         UserPreferenceDO existPref = getOne(wrapper);
-
         if (existPref == null) {
             // 3a. 新建
             UserPreferenceDO newPref = new UserPreferenceDO();
@@ -101,23 +125,28 @@ public class UserPreferenceServiceImpl extends ServiceImpl<UserPreferenceMapper,
             newPref.setLikeCount(1);
             save(newPref);
         } else {
-            // 3b. 累加 likeCount，使用 UpdateWrapper 仅更新 likeCount
+            // 3b. 累加 likeCount
             LambdaUpdateWrapper<UserPreferenceDO> updateWrapper = Wrappers.lambdaUpdate(UserPreferenceDO.class)
                     .eq(UserPreferenceDO::getId, existPref.getId())
                     .set(UserPreferenceDO::getLikeCount, existPref.getLikeCount() + 1);
             update(updateWrapper);
         }
 
-        // 更新图书相似性图
+        // 4. 动态更新图结构
         updateBookGraph(bookDO);
     }
 
     /**
-     * 根据用户阅读的图书更新图书相似性图
-     * 可以根据新的阅读行为动态调整图结构
+     * 根据用户阅读的图书动态更新图：
+     * 如果发现新的相似书籍，需要在邻接表中把它们连起来
      */
     private void updateBookGraph(BookDO readBook) {
-        // 假设用户阅读了一本书，找到所有与这本书相同作者或分类的书，并添加边
+        Long readBookId = readBook.getId();
+        if (!adjacencyList.containsKey(readBookId)) {
+            adjacencyList.put(readBookId, new ArrayList<Long>());
+        }
+
+        // 找到所有与这本书相同作者或分类的书
         List<BookDO> similarBooks = bookMapper.selectList(
                 Wrappers.lambdaQuery(BookDO.class)
                         .eq(BookDO::getAuthor, readBook.getAuthor())
@@ -126,19 +155,28 @@ public class UserPreferenceServiceImpl extends ServiceImpl<UserPreferenceMapper,
         );
 
         for (BookDO book : similarBooks) {
-            if (!bookGraph.containsVertex(book.getId())) {
-                bookGraph.addVertex(book.getId());
-            }
-            if (!book.getId().equals(readBook.getId()) && !bookGraph.containsEdge(readBook.getId(), book.getId())) {
-                bookGraph.addEdge(readBook.getId(), book.getId());
+            Long otherId = book.getId();
+            if (!otherId.equals(readBookId)) {
+                // 双向添加
+                if (!adjacencyList.containsKey(otherId)) {
+                    adjacencyList.put(otherId, new ArrayList<Long>());
+                }
+                // A->B
+                if (!adjacencyList.get(readBookId).contains(otherId)) {
+                    adjacencyList.get(readBookId).add(otherId);
+                }
+                // B->A
+                if (!adjacencyList.get(otherId).contains(readBookId)) {
+                    adjacencyList.get(otherId).add(readBookId);
+                }
             }
         }
     }
 
     /**
-     * 提供图结构以便 RecommendationService 使用
+     * 提供邻接表给外部使用（例如计算 PageRank）
      */
-    public Graph<Long, DefaultEdge> getBookGraph() {
-        return bookGraph;
+    public Map<Long, List<Long>> getBookAdjacencyList() {
+        return adjacencyList;
     }
 }

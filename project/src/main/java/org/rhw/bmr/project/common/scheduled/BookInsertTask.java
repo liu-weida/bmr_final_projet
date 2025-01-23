@@ -1,4 +1,4 @@
-package org.rhw.bmr.project.common.Scheduled;
+package org.rhw.bmr.project.common.scheduled;
 
 
 import lombok.extern.slf4j.Slf4j;
