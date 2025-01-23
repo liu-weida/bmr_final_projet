@@ -141,24 +141,34 @@ public class BookSyncServiceImpl extends ServiceImpl<BookSyncMapper, BookSyncDO>
 
     private String readFromUrl(String urlPath) throws IOException {
         StringBuilder content = new StringBuilder();
-        URL url = new URL(urlPath);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
-        connection.setConnectTimeout(5000); // 连接超时 5 秒
-        connection.setReadTimeout(5000);    // 读取超时 5 秒
+        while (true) {
+            URL url = new URL(urlPath);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setConnectTimeout(5000); // 连接超时 5 秒
+            connection.setReadTimeout(5000);    // 读取超时 5 秒
+            connection.setInstanceFollowRedirects(false);
 
-        try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                content.append(line).append("\n");
+            int responseCode = connection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_MOVED_PERM || responseCode == HttpURLConnection.HTTP_MOVED_TEMP) {
+                urlPath = connection.getHeaderField("Location");
+                log.info("重定向到: {}", urlPath);
+                continue;
             }
-        } finally {
-            connection.disconnect();
+
+            try (BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    content.append(line).append("\n");
+                }
+            } finally {
+                connection.disconnect();
+            }
+
+            break;
         }
 
         return content.toString();
     }
-
-
 }

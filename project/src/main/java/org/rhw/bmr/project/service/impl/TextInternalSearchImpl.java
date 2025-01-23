@@ -7,18 +7,16 @@ import org.rhw.bmr.project.dto.req.TextInternalSearchByKMPReqDTO;
 import org.rhw.bmr.project.service.TextInternalSearchService;
 import org.springframework.stereotype.Service;
 
-
 import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.MalformedURLException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class TextInternalSearchImpl implements TextInternalSearchService {
-
 
     @Override
     public String[] TextInternalSearchByKMP(TextInternalSearchByKMPReqDTO requestParam) {
@@ -32,14 +30,13 @@ public class TextInternalSearchImpl implements TextInternalSearchService {
             // 调用 KPM 算法匹配
             List<String> results = kpMalgo.KPM(factor, url);
             matchingLines.addAll(results);
-        } catch (MalformedURLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Malformed URL: " + url, e);
+            throw new RuntimeException(e);
         }
         // 将匹配结果转换为字符串数组返回
         return matchingLines.toArray(new String[0]);
     }
-
 
     @Override
     public String[] TextInternalSearchByEgreplike(TextInternalSearchByEgreplikeReqDTO requestParam) {
@@ -57,26 +54,41 @@ public class TextInternalSearchImpl implements TextInternalSearchService {
 
         List<String> matchingLines = new ArrayList<>(); // 用于存储匹配的行
 
-        // 读取文件并匹配
-        try (BufferedReader br = new BufferedReader(new FileReader(url))) {
-            String line;
-            int lineNumber = 0;
-            while ((line = br.readLine()) != null) {
-                lineNumber++;
-                // 使用最小化 DFA 匹配每一行
-                if (matchesDFA(minimizeDFA, line)) {
-                    matchingLines.add(lineNumber + ": " + line); // 如果匹配，存储结果
+        // 从网络文件读取并匹配
+        while (true) {
+            try {
+                URL fileURL = new URL(url);
+                HttpURLConnection httpConnection = (HttpURLConnection) fileURL.openConnection();
+                httpConnection.setRequestMethod("GET");
+                httpConnection.setInstanceFollowRedirects(false);
+
+                int responseCode = httpConnection.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_MOVED_PERM || responseCode == HttpURLConnection.HTTP_MOVED_TEMP) {
+                    url = httpConnection.getHeaderField("Location");
+                    System.out.println("重定向到: " + url);
+                    continue; // 跳转到新地址
                 }
+
+                try (BufferedReader br = new BufferedReader(new InputStreamReader(httpConnection.getInputStream()))) {
+                    String line;
+                    int lineNumber = 0;
+                    while ((line = br.readLine()) != null) {
+                        lineNumber++;
+                        // 使用最小化 DFA 匹配每一行
+                        if (matchesDFA(minimizeDFA, line)) {
+                            matchingLines.add(lineNumber + ": " + line); // 如果匹配，存储结果
+                        }
+                    }
+                }
+                break; // 如果没有重定向则退出循环
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
         // 将匹配结果转换为字符串数组返回
         return matchingLines.toArray(new String[0]);
     }
-
-
 
     @Override
     public long[] TextInternalSearchByKMPLong(TextInternalSearchByKMPReqDTO requestParam) {
@@ -89,9 +101,9 @@ public class TextInternalSearchImpl implements TextInternalSearchService {
         try {
             // 调用 KPM 算法匹配
             matchingLineNumbers = kpMalgo.KPMLong(factor, url);
-        } catch (MalformedURLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Malformed URL: " + url, e);
+            throw new RuntimeException(e);
         }
 
         // 将匹配结果转换为 long 数组返回
@@ -113,24 +125,40 @@ public class TextInternalSearchImpl implements TextInternalSearchService {
 
         List<Long> matchingLineNumbers = new ArrayList<>();
 
-        // 读取文件并匹配
-        try (BufferedReader br = new BufferedReader(new FileReader(url))) {
-            String line;
-            long lineNumber = 0;
-            while ((line = br.readLine()) != null) {
-                lineNumber++;
-                if (matchesDFA(minimizeDFA, line)) {
-                    matchingLineNumbers.add(lineNumber); // 存储匹配行号
+        // 从网络文件读取并匹配
+        while (true) {
+            try {
+                URL fileURL = new URL(url);
+                HttpURLConnection httpConnection = (HttpURLConnection) fileURL.openConnection();
+                httpConnection.setRequestMethod("GET");
+                httpConnection.setInstanceFollowRedirects(false);
+
+                int responseCode = httpConnection.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_MOVED_PERM || responseCode == HttpURLConnection.HTTP_MOVED_TEMP) {
+                    url = httpConnection.getHeaderField("Location");
+                    System.out.println("重定向到: " + url);
+                    continue; // 跳转到新地址
                 }
+
+                try (BufferedReader br = new BufferedReader(new InputStreamReader(httpConnection.getInputStream()))) {
+                    String line;
+                    long lineNumber = 0;
+                    while ((line = br.readLine()) != null) {
+                        lineNumber++;
+                        if (matchesDFA(minimizeDFA, line)) {
+                            matchingLineNumbers.add(lineNumber); // 存储匹配行号
+                        }
+                    }
+                }
+                break; // 如果没有重定向则退出循环
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
         // 将匹配结果转换为 long 数组返回
         return matchingLineNumbers.stream().mapToLong(Long::longValue).toArray();
     }
-
 
     private static boolean matchesDFA(DetFiniAuto dfa, String line) {
         // 检查每一个子串是否被 DFA 接受

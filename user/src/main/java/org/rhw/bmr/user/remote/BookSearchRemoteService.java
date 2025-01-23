@@ -75,7 +75,7 @@ public interface BookSearchRemoteService {
     default Result<ReadBookRespDTO> readBook(ReadBookReqDTO requestParam){
         Map<String, Object>requestMap = new HashMap<>();
 
-        requestMap.put("userid", requestParam.getUserid());
+        requestMap.put("username", requestParam.getUsername());
 
         requestMap.put("bookId", requestParam.getBookId());
 
@@ -130,7 +130,7 @@ public interface BookSearchRemoteService {
     default void recordUserPreference(ReadBookReqDTO requestParam){
         Map<String, Object>requestMap = new HashMap<>();
 
-        requestMap.put("userid", requestParam.getUserid());
+        requestMap.put("username", requestParam.getUsername());
 
         requestMap.put("bookId", requestParam.getBookId());
 
@@ -142,7 +142,7 @@ public interface BookSearchRemoteService {
     default Result<List<BookDO>> recommendBooksForUser(RecommendBookReqDTO requestParam){
         Map<String, Object>requestMap = new HashMap<>();
 
-        requestMap.put("userId", requestParam.getUserId());
+        requestMap.put("username", requestParam.getUsername());
 
         String resultBodyStr = HttpUtil.get(
                 "http://127.0.0.1:8001/api/bmr/project/v1/recommend",

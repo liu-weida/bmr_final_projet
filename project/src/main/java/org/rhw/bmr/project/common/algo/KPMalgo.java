@@ -1,13 +1,14 @@
 package org.rhw.bmr.project.common.algo;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.MalformedURLException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 public class KPMalgo {
+
     public int[] computeCarryover(char[] pattern) {
         int len = pattern.length;
         int[] next = new int[len + 1];
@@ -33,71 +34,99 @@ public class KPMalgo {
         return next;
     }
 
-    public List<String> KPM(String factor, String file) throws MalformedURLException {
+    public List<String> KPM(String factor, String fileURL) throws Exception {
         char[] factorChar = factor.toCharArray();
         int[] carryover = computeCarryover(factorChar);
-        List<String> matchingLines = new ArrayList<>(); // 用于存储匹配的行
+        List<String> matchingLines = new ArrayList<>();
 
-        // read from local file
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String line;
-            int lineNumber = 0;
-            while ((line = br.readLine()) != null) {
-                lineNumber++;
-                int i = 0;
-                int j = 0;
-                int textLen = line.length();
-                int factorLen = factorChar.length;
-                while (i < textLen) {
-                    if (j == -1 || line.charAt(i) == factorChar[j]) {
-                        i++;
-                        j++;
-                        if (j == factorLen) {
-                            matchingLines.add(lineNumber + ": " + line); // 存储匹配的行
+        while (true) {
+            URL url = new URL(fileURL);
+            HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
+            httpConnection.setInstanceFollowRedirects(false);
+            httpConnection.setRequestMethod("GET");
+
+            int responseCode = httpConnection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_MOVED_PERM || responseCode == HttpURLConnection.HTTP_MOVED_TEMP) {
+                fileURL = httpConnection.getHeaderField("Location");
+                continue;
+            }
+
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(httpConnection.getInputStream()))) {
+                String line;
+                int lineNumber = 0;
+                while ((line = br.readLine()) != null) {
+                    lineNumber++;
+                    int i = 0;
+                    int j = 0;
+                    int textLen = line.length();
+                    int factorLen = factorChar.length;
+                    while (i < textLen) {
+                        if (j == -1 || line.charAt(i) == factorChar[j]) {
+                            i++;
+                            j++;
+                            if (j == factorLen) {
+                                matchingLines.add(lineNumber + ": " + line);
+                                j = carryover[j];
+                            }
+                        } else {
                             j = carryover[j];
                         }
-                    } else {
-                        j = carryover[j];
                     }
                 }
+            } finally {
+                httpConnection.disconnect();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+
+            break;
         }
 
         return matchingLines;
     }
 
-    public List<Long> KPMLong(String factor, String file) throws MalformedURLException {
+    public List<Long> KPMLong(String factor, String fileURL) throws Exception {
         char[] factorChar = factor.toCharArray();
         int[] carryover = computeCarryover(factorChar);
-        List<Long> matchingLineNumbers = new ArrayList<>(); // 用于存储匹配的行号
+        List<Long> matchingLineNumbers = new ArrayList<>();
 
-        // read from local file
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String line;
-            long lineNumber = 0;
-            while ((line = br.readLine()) != null) {
-                lineNumber++;
-                int i = 0;
-                int j = 0;
-                int textLen = line.length();
-                int factorLen = factorChar.length;
-                while (i < textLen) {
-                    if (j == -1 || line.charAt(i) == factorChar[j]) {
-                        i++;
-                        j++;
-                        if (j == factorLen) {
-                            matchingLineNumbers.add(lineNumber); // 存储匹配的行号
+        while (true) {
+            URL url = new URL(fileURL);
+            HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
+            httpConnection.setInstanceFollowRedirects(false);
+            httpConnection.setRequestMethod("GET");
+
+            int responseCode = httpConnection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_MOVED_PERM || responseCode == HttpURLConnection.HTTP_MOVED_TEMP) {
+                fileURL = httpConnection.getHeaderField("Location");
+                continue;
+            }
+
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(httpConnection.getInputStream()))) {
+                String line;
+                long lineNumber = 0;
+                while ((line = br.readLine()) != null) {
+                    lineNumber++;
+                    int i = 0;
+                    int j = 0;
+                    int textLen = line.length();
+                    int factorLen = factorChar.length;
+                    while (i < textLen) {
+                        if (j == -1 || line.charAt(i) == factorChar[j]) {
+                            i++;
+                            j++;
+                            if (j == factorLen) {
+                                matchingLineNumbers.add(lineNumber);
+                                j = carryover[j];
+                            }
+                        } else {
                             j = carryover[j];
                         }
-                    } else {
-                        j = carryover[j];
                     }
                 }
+            } finally {
+                httpConnection.disconnect();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+
+            break;
         }
 
         return matchingLineNumbers;
