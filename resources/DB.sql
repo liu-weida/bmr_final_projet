@@ -487,7 +487,8 @@ CREATE TABLE `t_books_0`
     PRIMARY KEY (`id`),
     UNIQUE KEY `idx_unique_title_author` (`title`, `author`) USING BTREE
 )  CHARACTER SET utf8mb4
-   COLLATE utf8mb4_general_ci;CREATE TABLE `t_books_1`
+   COLLATE utf8mb4_general_ci;
+CREATE TABLE `t_books_1`
                               (
                                   `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Book ID',
                                   `ref_id`               varchar(50) DEFAULT NULL COMMENT 'Reference ID for external systems',
@@ -1078,3 +1079,51 @@ CREATE TABLE `t_user_preference_15` (
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_general_ci;
+
+ALTER TABLE t_books_0 DROP INDEX `idx_unique_title_author`;
+ALTER TABLE t_books_0 ADD UNIQUE KEY `idx_unique_ref_id` (`ref_id`) USING BTREE;
+
+ALTER TABLE t_books_1 DROP INDEX `idx_unique_title_author`;
+ALTER TABLE t_books_1 ADD UNIQUE KEY `idx_unique_ref_id` (`ref_id`) USING BTREE;
+
+ALTER TABLE t_books_2 DROP INDEX `idx_unique_title_author`;
+ALTER TABLE t_books_2 ADD UNIQUE KEY `idx_unique_ref_id` (`ref_id`) USING BTREE;
+
+ALTER TABLE t_books_3 DROP INDEX `idx_unique_title_author`;
+ALTER TABLE t_books_3 ADD UNIQUE KEY `idx_unique_ref_id` (`ref_id`) USING BTREE;
+
+ALTER TABLE t_books_4 DROP INDEX `idx_unique_title_author`;
+ALTER TABLE t_books_4 ADD UNIQUE KEY `idx_unique_ref_id` (`ref_id`) USING BTREE;
+
+ALTER TABLE t_books_5 DROP INDEX `idx_unique_title_author`;
+ALTER TABLE t_books_5 ADD UNIQUE KEY `idx_unique_ref_id` (`ref_id`) USING BTREE;
+
+ALTER TABLE t_books_6 DROP INDEX `idx_unique_title_author`;
+ALTER TABLE t_books_6 ADD UNIQUE KEY `idx_unique_ref_id` (`ref_id`) USING BTREE;
+
+ALTER TABLE t_books_7 DROP INDEX `idx_unique_title_author`;
+ALTER TABLE t_books_7 ADD UNIQUE KEY `idx_unique_ref_id` (`ref_id`) USING BTREE;
+
+ALTER TABLE t_books_8 DROP INDEX `idx_unique_title_author`;
+ALTER TABLE t_books_8 ADD UNIQUE KEY `idx_unique_ref_id` (`ref_id`) USING BTREE;
+
+ALTER TABLE t_books_9 DROP INDEX `idx_unique_title_author`;
+ALTER TABLE t_books_9 ADD UNIQUE KEY `idx_unique_ref_id` (`ref_id`) USING BTREE;
+
+ALTER TABLE t_books_10 DROP INDEX `idx_unique_title_author`;
+ALTER TABLE t_books_10 ADD UNIQUE KEY `idx_unique_ref_id` (`ref_id`) USING BTREE;
+
+ALTER TABLE t_books_11 DROP INDEX `idx_unique_title_author`;
+ALTER TABLE t_books_11 ADD UNIQUE KEY `idx_unique_ref_id` (`ref_id`) USING BTREE;
+
+ALTER TABLE t_books_12 DROP INDEX `idx_unique_title_author`;
+ALTER TABLE t_books_12 ADD UNIQUE KEY `idx_unique_ref_id` (`ref_id`) USING BTREE;
+
+ALTER TABLE t_books_13 DROP INDEX `idx_unique_title_author`;
+ALTER TABLE t_books_13 ADD UNIQUE KEY `idx_unique_ref_id` (`ref_id`) USING BTREE;
+
+ALTER TABLE t_books_14 DROP INDEX `idx_unique_title_author`;
+ALTER TABLE t_books_14 ADD UNIQUE KEY `idx_unique_ref_id` (`ref_id`) USING BTREE;
+
+ALTER TABLE t_books_15 DROP INDEX `idx_unique_title_author`;
+ALTER TABLE t_books_15 ADD UNIQUE KEY `idx_unique_ref_id` (`ref_id`) USING BTREE;
