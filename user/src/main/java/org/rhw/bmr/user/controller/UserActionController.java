@@ -75,5 +75,26 @@ public class UserActionController {
     }
 
 
+    @GetMapping("/api/bmr/user/v1/bookmark/textInternalsearchBykmp")
+    public Result<String[]> textInternalsearchBykmp(TextInternalSearchByKMPReqDTO requestParam){
+        return bookSearchRemoteService.TextInternalSearchByKMP(requestParam);
+    }
+
+    @GetMapping("/api/bmr/user/v1/bookmark/textInternalsearchByEgrep")
+    public Result<String[]> textInternalsearchByEgrep(TextInternalSearchByEgreplikeReqDTO requestParam){
+        return bookSearchRemoteService.TextInternalSearchByEgreplike(requestParam);
+    }
+
+    @GetMapping("/api/bmr/user/v1/bookmark/textInternalsearchBykmp/long")
+    public Result<long[]> textInternalsearchBykmpLong(TextInternalSearchByKMPReqDTO requestParam){
+        return bookSearchRemoteService.TextInternalSearchByKMPLong(requestParam);
+    }
+
+    @GetMapping("/api/bmr/user/v1/bookmark/textInternalsearchByEgrep/long")
+    public Result<long[]> textInternalsearchByEgrepLong(TextInternalSearchByEgreplikeReqDTO requestParam){
+        return bookSearchRemoteService.TextInternalSearchByEgreplikeLong(requestParam);
+    }
+
+
 
 }

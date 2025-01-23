@@ -151,5 +151,57 @@ public interface BookSearchRemoteService {
         return JSON.parseObject(resultBodyStr, new TypeReference<>(){});
     }
 
+    default Result<String[]> TextInternalSearchByKMP(TextInternalSearchByKMPReqDTO requestParam) {
+        Map<String, Object>requestMap = new HashMap<>();
+
+        requestMap.put("URL", requestParam.getURL());
+        requestMap.put("word", requestParam.getWord());
+
+        String resultBodyStr = HttpUtil.get(
+                "http://127.0.0.1:8001/api/bmr/project/v1/bookmark/textInternalsearchBykmp",
+                requestMap);
+
+        return JSON.parseObject(resultBodyStr, new TypeReference<>(){});
+    }
+
+    default Result<String[]> TextInternalSearchByEgreplike(TextInternalSearchByEgreplikeReqDTO requestParam) {
+
+        Map<String, Object> requestMap = new HashMap<>();
+
+        requestMap.put("URL", requestParam.getURL());
+        requestMap.put("regular", requestParam.getRegular());
+
+        String resultBodyStr = HttpUtil.get(
+                "http://127.0.0.1:8001/api/bmr/project/v1/bookmark/textInternalsearchByEgrep",
+                requestMap);
+        return JSON.parseObject(resultBodyStr, new TypeReference<>(){});
+
+    }
+
+
+    default  Result<long[]> TextInternalSearchByKMPLong(TextInternalSearchByKMPReqDTO requestParam) {
+        Map<String, Object>requestMap = new HashMap<>();
+
+        requestMap.put("URL", requestParam.getURL());
+        requestMap.put("word", requestParam.getWord());
+
+        String resultBodyStr = HttpUtil.get(
+                "http://127.0.0.1:8001/api/bmr/project/v1/bookmark/textInternalsearchBykmp/long",
+                requestMap);
+
+        return JSON.parseObject(resultBodyStr, new TypeReference<>(){});
+    }
+
+    default  Result<long[]> TextInternalSearchByEgreplikeLong(TextInternalSearchByEgreplikeReqDTO requestParam) {
+        Map<String, Object> requestMap = new HashMap<>();
+
+        requestMap.put("URL", requestParam.getURL());
+        requestMap.put("regular", requestParam.getRegular());
+
+        String resultBodyStr = HttpUtil.get(
+                "http://127.0.0.1:8001/api/bmr/project/v1/bookmark/textInternalsearchByEgrep/long",
+                requestMap);
+        return JSON.parseObject(resultBodyStr, new TypeReference<>(){});
+    }
 
 }
