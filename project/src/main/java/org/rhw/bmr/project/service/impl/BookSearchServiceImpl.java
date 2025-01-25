@@ -13,9 +13,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.rhw.bmr.project.dao.entity.BookDO;
 import org.rhw.bmr.project.dao.mapper.BookMapper;
+import org.rhw.bmr.project.dto.req.BookSearchByIdReqDTO;
 import org.rhw.bmr.project.dto.req.BookSearchByRegexpReqDTO;
 import org.rhw.bmr.project.dto.req.BookSearchByWordReqDTO;
 import org.rhw.bmr.project.dto.req.BookSearchReqDTO;
+import org.rhw.bmr.project.dto.resp.BookSearchByIdRespDTO;
 import org.rhw.bmr.project.dto.resp.BookSearchByRegespRespDTO;
 import org.rhw.bmr.project.dto.resp.BookSearchByWordRespDTO;
 import org.rhw.bmr.project.dto.resp.BookSearchRespDTO;
@@ -205,6 +207,29 @@ public class BookSearchServiceImpl extends ServiceImpl<BookMapper, BookDO> imple
         }
     }
 
+    @Override
+    public BookSearchByIdRespDTO pageBookSearchById(BookSearchByIdReqDTO requestParam) {
+
+        String bookid = requestParam.getBookId();
+
+        BookDO bookDO = baseMapper.selectById(bookid);
+
+        BookSearchByIdRespDTO bookSearchByIdRespDTO = new BookSearchByIdRespDTO();
+
+        if (bookDO != null) {
+            bookSearchByIdRespDTO.setId(String.valueOf(bookDO.getId()));
+            bookSearchByIdRespDTO.setRefId(bookDO.getRefId());
+            bookSearchByIdRespDTO.setTitle(bookDO.getTitle());
+            bookSearchByIdRespDTO.setStoragePath(bookDO.getStoragePath());
+            bookSearchByIdRespDTO.setAuthor(bookDO.getAuthor());
+            bookSearchByIdRespDTO.setCategory(bookDO.getCategory());
+            bookSearchByIdRespDTO.setDescription(bookDO.getDescription());
+
+        }
+
+
+        return bookSearchByIdRespDTO;
+    }
 
 
 }

@@ -74,7 +74,7 @@ public class UserPreferenceServiceImpl extends ServiceImpl<UserPreferenceMapper,
     @Override
     public void recordUserPreference(ReadBookReqDTO requestParam) {
         String username = requestParam.getUsername();
-        Long bookId = requestParam.getBookId();
+        String bookId = requestParam.getBookId();
 
         if (username == null || bookId == null) {
             return;
@@ -122,7 +122,7 @@ public class UserPreferenceServiceImpl extends ServiceImpl<UserPreferenceMapper,
     @Override
     public void recordUserPreference(BookmarkReqDTO requestParam) {
         String username = requestParam.getUsername();
-        Long bookId = requestParam.getBookId();
+        String bookId = requestParam.getBookId();
 
         log.error("bookmark: {}");
 

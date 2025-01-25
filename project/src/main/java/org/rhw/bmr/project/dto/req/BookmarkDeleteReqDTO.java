@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class BookmarkDeleteReqDTO {
 
-    private Long gid;
+    private String gid;
 
     private String username;
 
-    private Long bookId;
+    private String bookId;
 
 }

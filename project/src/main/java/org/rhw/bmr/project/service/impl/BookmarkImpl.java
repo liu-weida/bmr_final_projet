@@ -36,7 +36,7 @@ public class BookmarkImpl extends ServiceImpl<BookmarkMapper, BookmarkDO> implem
     @Override
     public void bookmark(BookmarkReqDTO requestParam) {
         String gid = requestParam.getGid();
-        long bookId = requestParam.getBookId();
+        String bookId = requestParam.getBookId();
         String username = requestParam.getUsername();
 
         BookmarkDO build = BookmarkDO.builder().gid(gid).bookId(bookId).username(username).build();
@@ -48,7 +48,7 @@ public class BookmarkImpl extends ServiceImpl<BookmarkMapper, BookmarkDO> implem
     public void deleteBookmark(BookmarkReqDTO requestParam) {
 
         String gid = requestParam.getGid();
-        long bookId = requestParam.getBookId();
+        String bookId = requestParam.getBookId();
         String username = requestParam.getUsername();
 
         LambdaUpdateWrapper<BookmarkDO> set = Wrappers.lambdaUpdate(BookmarkDO.class)
@@ -80,7 +80,7 @@ public class BookmarkImpl extends ServiceImpl<BookmarkMapper, BookmarkDO> implem
             return new Page<>();
         }
 
-        List<Long> bookIds = bookmarkDOIPage.getRecords().stream()
+        List<String> bookIds = bookmarkDOIPage.getRecords().stream()
                 .map(BookmarkDO::getBookId)
                 .collect(Collectors.toList());
 

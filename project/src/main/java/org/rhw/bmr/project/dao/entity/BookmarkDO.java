@@ -23,6 +23,6 @@ public class BookmarkDO  extends BaseDO {
     private String username;
 
     @TableField("bookId")
-    private Long bookId;
+    private String bookId;
 
 }
