@@ -42,9 +42,9 @@ import static org.rhw.bmr.user.common.enums.UserErrorCodeEnum.USER_NOT_ONLINE;
 public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements UserService {
 
     private final RBloomFilter<String> userRegisterCachePenetrationBloomFilter;
-    private final RedissonClient redissonClient;    //使用分布式锁
-    private final RRateLimiter userRegisterRateLimiter; //限流桶
-    private final StringRedisTemplate redisTemplate;    //redis缓存查询
+    private final RedissonClient redissonClient;
+    private final RRateLimiter userRegisterRateLimiter;
+    private final StringRedisTemplate redisTemplate;
     private final GroupService groupService;
 
     @Override

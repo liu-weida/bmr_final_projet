@@ -35,11 +35,9 @@ public class BookInsertionImpl extends ServiceImpl<BookMapper, BookDO> implement
     @Value("${scheduledTaskInsertBook.url}")
     private String url;
 
-    // 备份文件夹路径，可以在 application.properties 中配置
     @Value("${scheduledTaskInsertBook.backingUp}")
     private String backupFolder;
 
-    // 表格模板文件路径
     @Value("${scheduledTaskInsertBook.formworkFile}")
     private String formworkFile;
 
@@ -48,23 +46,22 @@ public class BookInsertionImpl extends ServiceImpl<BookMapper, BookDO> implement
 
     @Override
     public void insertBook() {
-        logger.info("开始处理文件夹: {}", url);
+        logger.info("Start processing folder: {}", url);
         Path folderPath = Paths.get(url);
 
         if (!Files.exists(folderPath) || !Files.isDirectory(folderPath)) {
-            logger.error("指定的路径不存在或不是文件夹: {}", url);
+            logger.error("The specified path does not exist or is not a folder: {}", url);
             return;
         }
 
-        // 确保备份文件夹存在
         Path backupPath = Paths.get(backupFolder);
         try {
             if (!Files.exists(backupPath)) {
                 Files.createDirectories(backupPath);
-                logger.info("创建备份文件夹: {}", backupFolder);
+                logger.info("Create backup folder: {}", backupFolder);
             }
         } catch (IOException e) {
-            logger.error("无法创建备份文件夹 {}: {}", backupFolder, e.getMessage(), e);
+            logger.error("Cannot create backup folder {}: {}", backupFolder, e.getMessage(), e);
             return;
         }
 
@@ -76,25 +73,23 @@ public class BookInsertionImpl extends ServiceImpl<BookMapper, BookDO> implement
         );
 
         if (files == null || files.length == 0) {
-            logger.info("文件夹中没有可处理的CSV或Excel文件。");
+            logger.info("There are no CSV or Excel files in the folder that can be processed.。");
 
-            // 检查并创建表格模板文件
             Path formworkPath = Paths.get(formworkFile);
             File formwork = formworkPath.toFile();
 
             if (!formwork.exists()) {
                 createFormworkFile();
             } else {
-                logger.info("表格模板文件已存在: {}", formworkFile);
+                logger.info("The form template file already exists.: {}", formworkFile);
             }
 
-            // 任务正常结束
-            logger.info("任务完成，无需进一步操作。");
+            logger.info("The task is complete and no further action is required.");
             return;
         }
 
         for (File file : files) {
-            logger.info("正在处理文件: {}", file.getName());
+            logger.info("Processing document: {}", file.getName());
             try {
                 List<BookDO> books = new ArrayList<>();
 
@@ -105,51 +100,38 @@ public class BookInsertionImpl extends ServiceImpl<BookMapper, BookDO> implement
                 }
 
                 if (!books.isEmpty()) {
-                    // 批量插入数据库
                     saveBatch(books);
-                    logger.info("成功插入 {} 条记录到数据库。", books.size());
+                    logger.info("Successfully inserted {} records into the database.。", books.size());
 
-                    // 备份已处理的文件
                     backupFile(file, backupPath);
                 } else {
-                    logger.warn("文件 {} 中没有有效的数据。", file.getName());
-                    // 备份空文件，便于后续检查
+                    logger.warn("There is no valid data in the file {}。", file.getName());
                     backupFile(file, backupPath);
                 }
             } catch (Exception e) {
-                logger.error("处理文件 {} 时发生错误: {}", file.getName(), e.getMessage(), e);
-                // 可以选择在出错时将文件移动到一个错误文件夹，以便后续处理
+                logger.error("An error occurred while processing the file {}: {}", file.getName(), e.getMessage(), e);
             }
         }
 
-        // 创建表格模板文件（仅在存在文件的情况下执行，不再需要）
         // createFormworkFile();
 
-        logger.info("文件夹处理完成: {}", url);
+        logger.info("Finished with the folder: {}", url);
     }
 
-    /**
-     * 解析CSV文件
-     *
-     * @param file CSV文件
-     * @return BookDO列表
-     * @throws IOException
-     * @throws CsvValidationException
-     */
     private List<BookDO> parseCSV(File file) throws IOException, CsvValidationException {
         List<BookDO> books = new ArrayList<>();
 
         try (CSVReader csvReader = new CSVReader(new FileReader(file))) {
             String[] headers = csvReader.readNext(); // 读取标题行
             if (headers == null || headers.length < 9) {
-                logger.warn("CSV文件 {} 没有足够的标题列。", file.getName());
+                logger.warn("CSV file {} does not have enough header columns.", file.getName());
                 return books;
             }
 
             String[] values;
             while ((values = csvReader.readNext()) != null) {
                 if (values.length < 9) {
-                    logger.warn("CSV文件 {} 的一行数据列数不足: {}", file.getName(), String.join(",", values));
+                    logger.warn("The CSV file {} has insufficient number of columns per row: {}", file.getName(), String.join(",", values));
                     continue;
                 }
 
@@ -169,13 +151,6 @@ public class BookInsertionImpl extends ServiceImpl<BookMapper, BookDO> implement
         return books;
     }
 
-    /**
-     * 解析Excel文件
-     *
-     * @param file Excel文件
-     * @return BookDO列表
-     * @throws IOException
-     */
     private List<BookDO> parseExcel(File file) throws IOException {
         List<BookDO> books = new ArrayList<>();
 
@@ -186,13 +161,13 @@ public class BookInsertionImpl extends ServiceImpl<BookMapper, BookDO> implement
             Iterator<Row> rowIterator = sheet.iterator();
 
             if (!rowIterator.hasNext()) {
-                logger.warn("Excel文件 {} 没有数据。", file.getName());
+                logger.warn("Excel file {} No data.", file.getName());
                 return books;
             }
 
-            Row headerRow = rowIterator.next(); // 标题行
+            Row headerRow = rowIterator.next();
             if (headerRow.getLastCellNum() < 9) {
-                logger.warn("Excel文件 {} 的标题行列数不足。", file.getName());
+                logger.warn("The Excel file {} has an insufficient number of header rows.", file.getName());
                 return books;
             }
 
@@ -210,23 +185,16 @@ public class BookInsertionImpl extends ServiceImpl<BookMapper, BookDO> implement
                 }
             }
         } catch (Exception e) {
-            logger.error("解析Excel文件 {} 时发生错误: {}", file.getName(), e.getMessage(), e);
+            logger.error("Error occurred while parsing the Excel file {}: {}", file.getName(), e.getMessage(), e);
             throw e;
         }
 
         return books;
     }
 
-    /**
-     * 将CSV或Excel行数据映射为BookDO对象
-     *
-     * @param values 行数据
-     * @return BookDO对象
-     */
     private BookDO mapToBookDO(String[] values) {
         try {
             BookDO book = new BookDO();
-            // 假设字段顺序为：refId, title, storagePath, author, category, description, language, clickCount, img
 
             book.setRefId(StringUtils.hasText(values[0]) ? Long.valueOf(values[0].trim()) : null);
             book.setTitle(StringUtils.hasText(values[1]) ? values[1].trim() : null);
@@ -240,11 +208,11 @@ public class BookInsertionImpl extends ServiceImpl<BookMapper, BookDO> implement
                 try {
                     book.setClickCount((long) Integer.parseInt(values[7].trim()));
                 } catch (NumberFormatException e) {
-                    logger.warn("无法解析clickCount: {}, 默认设置为0", values[7]);
+                    logger.warn("Cannot resolve clickCount: {}, default is 0", values[7]);
                     book.setClickCount(0L);
                 }
             } else {
-                book.setClickCount(0L); // 默认值
+                book.setClickCount(0L);
             }
 
             book.setImg(StringUtils.hasText(values[8]) ? values[8].trim() : null);
@@ -252,17 +220,12 @@ public class BookInsertionImpl extends ServiceImpl<BookMapper, BookDO> implement
 
             return book;
         } catch (Exception e) {
-            logger.error("映射BookDO时发生错误: {}", e.getMessage(), e);
+            logger.error("Error mapping BookDO: {}", e.getMessage(), e);
             return null;
         }
     }
 
-    /**
-     * 获取单元格的字符串值
-     *
-     * @param cell 单元格
-     * @return 字符串值
-     */
+
     private String getCellValueAsString(Cell cell) {
         switch (cell.getCellType()) {
             case STRING:
@@ -272,7 +235,7 @@ public class BookInsertionImpl extends ServiceImpl<BookMapper, BookDO> implement
                     return cell.getDateCellValue().toString();
                 } else {
                     double numericValue = cell.getNumericCellValue();
-                    // 如果是整数，去掉小数点
+
                     if (numericValue == (long) numericValue) {
                         return String.valueOf((long) numericValue);
                     } else {
@@ -282,7 +245,6 @@ public class BookInsertionImpl extends ServiceImpl<BookMapper, BookDO> implement
             case BOOLEAN:
                 return String.valueOf(cell.getBooleanCellValue());
             case FORMULA:
-                // 可以根据需要解析公式
                 try {
                     FormulaEvaluator evaluator = cell.getSheet().getWorkbook().getCreationHelper().createFormulaEvaluator();
                     CellValue cellValue = evaluator.evaluate(cell);
@@ -297,7 +259,7 @@ public class BookInsertionImpl extends ServiceImpl<BookMapper, BookDO> implement
                             return "";
                     }
                 } catch (Exception e) {
-                    logger.warn("解析公式单元格时发生错误: {}", e.getMessage(), e);
+                    logger.warn("Error parsing formula cell: {}", e.getMessage(), e);
                     return "";
                 }
             case BLANK:
@@ -308,44 +270,33 @@ public class BookInsertionImpl extends ServiceImpl<BookMapper, BookDO> implement
         }
     }
 
-    /**
-     * 备份已处理的文件到指定的备份文件夹，并重命名
-     *
-     * @param file       原始文件
-     * @param backupPath 备份文件夹路径
-     */
+
     private void backupFile(File file, Path backupPath) {
         try {
-            // 获取当前日期时间，格式为 yyyyMMddHHmmss
             LocalDateTime currentDateTime = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
             String dateTimeStr = currentDateTime.format(formatter);
 
-            // 构建新的文件名，包含日期时间戳
             String newFileName = "InfoBackingUp_" + dateTimeStr + "_" + file.getName();
 
-            // 目标路径
             Path targetPath = backupPath.resolve(newFileName);
 
-            // 移动并重命名文件
             Files.move(file.toPath(), targetPath, StandardCopyOption.REPLACE_EXISTING);
 
-            logger.info("已备份并重命名文件: {} 到 {}", file.getName(), targetPath.toString());
+            logger.info("Files backed up and renamed: {} to {}", file.getName(), targetPath.toString());
         } catch (IOException e) {
-            logger.error("备份文件 {} 时发生错误: {}", file.getName(), e.getMessage(), e);
+            logger.error("An error occurred while backing up the file {}: {}", file.getName(), e.getMessage(), e);
         }
     }
 
 
-    /**
-     * 创建表格模板文件 bookInfoFormwork.csv
-     */
+
     private void createFormworkFile() {
         Path formworkPath = Paths.get(formworkFile);
         File formwork = formworkPath.toFile();
 
         if (formwork.exists()) {
-            logger.info("表格模板文件已存在: {}", formworkFile);
+            logger.info("The form template file already exists: {}", formworkFile);
             return;
         }
 
@@ -353,9 +304,9 @@ public class BookInsertionImpl extends ServiceImpl<BookMapper, BookDO> implement
 
         try (java.io.FileWriter writer = new java.io.FileWriter(formwork)) {
             writer.append(String.join(",", headers)).append("\n");
-            logger.info("已创建表格模板文件: {}", formworkFile);
+            logger.info("Table template file created: {}", formworkFile);
         } catch (IOException e) {
-            logger.error("创建表格模板文件 {} 时发生错误: {}", formworkFile, e.getMessage(), e);
+            logger.error("An error occurred while creating the table template file {}: {}", formworkFile, e.getMessage(), e);
         }
     }
 

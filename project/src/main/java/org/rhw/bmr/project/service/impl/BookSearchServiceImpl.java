@@ -55,13 +55,11 @@ public class BookSearchServiceImpl extends ServiceImpl<BookMapper, BookDO> imple
             queryWrapper.eq(BookDO::getLanguage, requestParam.getLanguage());
         }
 
-        // 按 clickCount 降序排序
         queryWrapper.orderByDesc(BookDO::getClickCount);
 
-        // 执行分页查询
+
         IPage<BookDO> bookSearchDOPage = baseMapper.selectPage(page, queryWrapper);
 
-        // 转换为响应 DTO
         IPage<BookSearchRespDTO> bookSearchRespDTOPage = bookSearchDOPage.convert(bookSearchDO ->
                 BookSearchRespDTO.builder()
                         .id(String.valueOf(bookSearchDO.getId()))
@@ -90,12 +88,10 @@ public class BookSearchServiceImpl extends ServiceImpl<BookMapper, BookDO> imple
 
 
         try {
-            // 固定只查前10条
             int pageNo = currentPage;
             int pageSize = pageSz;
             int from = pageNo * pageSize - pageSize;
 
-            // 构建查询请求
             SearchRequest searchRequest = SearchRequest.of(sr -> sr
                     .index("bmr_books")
                     .query(q -> q
@@ -106,8 +102,8 @@ public class BookSearchServiceImpl extends ServiceImpl<BookMapper, BookDO> imple
                     )
                     .sort(sort -> sort
                             .field(f -> f
-                                    .field("clickCount")            // 按 clickCount 排序
-                                    .order(SortOrder.Desc)          // 降序
+                                    .field("clickCount")
+                                    .order(SortOrder.Desc)
                             )
                     )
                     .source(s -> s
@@ -119,7 +115,6 @@ public class BookSearchServiceImpl extends ServiceImpl<BookMapper, BookDO> imple
                     .size(pageSize)
             );
 
-            // 执行查询
             SearchResponse<BookSearchByWordRespDTO> response = elasticsearchClient.search(
                     searchRequest, BookSearchByWordRespDTO.class
             );
@@ -133,17 +128,16 @@ public class BookSearchServiceImpl extends ServiceImpl<BookMapper, BookDO> imple
                 record.setId(String.valueOf(record.getId()));
             }
 
-            // 获取总记录数
+
             long total = response.hits().total() != null ? response.hits().total().value() : 0;
 
-            // 组装分页对象
             IPage<BookSearchByWordRespDTO> page = new Page<>(pageNo, pageSize, total);
             page.setRecords(records);
             return page;
 
         } catch (Exception e) {
-            log.error("Elasticsearch 查询失败", e);
-            return new Page<>(); // 返回空分页
+            log.error("Elasticsearch Query failed", e);
+            return new Page<>();
         }
     }
 
@@ -156,12 +150,10 @@ public class BookSearchServiceImpl extends ServiceImpl<BookMapper, BookDO> imple
 
 
         try {
-            // 固定只查前10条
             int pageNo = currentPage;
             int pageSize = pageSz;
             int from = pageNo * pageSize - pageSize;
 
-            // 构建查询请求
             SearchRequest searchRequest = SearchRequest.of(sr -> sr
                     .index("bmr_books")
                     .query(q -> q
@@ -172,8 +164,8 @@ public class BookSearchServiceImpl extends ServiceImpl<BookMapper, BookDO> imple
                     )
                     .sort(sort -> sort
                             .field(f -> f
-                                    .field("clickCount")            // 按 clickCount 排序
-                                    .order(SortOrder.Desc)          // 降序
+                                    .field("clickCount")
+                                    .order(SortOrder.Desc)
                             )
                     )
                     .source(s -> s
@@ -185,12 +177,12 @@ public class BookSearchServiceImpl extends ServiceImpl<BookMapper, BookDO> imple
                     .size(pageSize)
             );
 
-            // 执行查询
+
             SearchResponse<BookSearchByRegespRespDTO> response = elasticsearchClient.search(
                     searchRequest, BookSearchByRegespRespDTO.class
             );
 
-            // 获取查询结果
+
             List<BookSearchByRegespRespDTO> records = new ArrayList<>();
             for (Hit<BookSearchByRegespRespDTO> hit : response.hits().hits()) {
                 records.add(hit.source());
@@ -201,17 +193,15 @@ public class BookSearchServiceImpl extends ServiceImpl<BookMapper, BookDO> imple
             }
 
 
-            // 获取总记录数
             long total = response.hits().total() != null ? response.hits().total().value() : 0;
 
-            // 构建分页结果
             IPage<BookSearchByRegespRespDTO> page = new Page<>(pageNo, pageSize, total);
             page.setRecords(records);
             return page;
 
         } catch (Exception e) {
-            log.error("Elasticsearch 查询失败", e);
-            return new Page<>(); // 返回空分页
+            log.error("Elasticsearch Query failed", e);
+            return new Page<>();
         }
     }
 

@@ -66,16 +66,13 @@ public class BookmarkImpl extends ServiceImpl<BookmarkMapper, BookmarkDO> implem
         int currentPage = requestParam.getPageNo() == null ? 1 : requestParam.getPageNo();
         int pageSize = requestParam.getPageSize() == null ? 10 : requestParam.getPageSize();
 
-        // 无论用户传什么分页参数，都只取前10本
         Page<BookmarkDO> page = new Page<>(currentPage, pageSize);
 
-        // 构建查询条件
         LambdaQueryWrapper<BookmarkDO> queryWrapper = Wrappers.lambdaQuery(BookmarkDO.class)
                 .eq(StringUtils.isNotBlank(requestParam.getUsername()), BookmarkDO::getUsername, requestParam.getUsername())
                 .eq(requestParam.getGid() != null, BookmarkDO::getGid, requestParam.getGid())
                 .eq(BookmarkDO::getDelFlag, 0);
 
-        // 分页查询 BookmarkDO
         IPage<BookmarkDO> bookmarkDOIPage = baseMapper.selectPage(page, queryWrapper);
 
 
@@ -83,24 +80,20 @@ public class BookmarkImpl extends ServiceImpl<BookmarkMapper, BookmarkDO> implem
             return new Page<>();
         }
 
-        // 提取所有 bookId
         List<Long> bookIds = bookmarkDOIPage.getRecords().stream()
                 .map(BookmarkDO::getBookId)
                 .collect(Collectors.toList());
 
-        // 批量查询 BookDO
         List<BookDO> books = bookMapper.selectList(Wrappers.lambdaQuery(BookDO.class).in(BookDO::getId, bookIds));
 
 
-        // 转换成 Map，便于快速查找
         Map<Long, BookDO> bookMap = books.stream()
                 .collect(Collectors.toMap(BookDO::getId, Function.identity()));
 
-        // 转换 BookmarkDO -> BookmarkSearchRespDTO
         IPage<BookmarkSearchRespDTO> respDTOPage = bookmarkDOIPage.convert(bookmarkDO -> {
             BookDO bookDO = bookMap.get(bookmarkDO.getBookId());
             if (bookDO == null) {
-                return new BookmarkSearchRespDTO(); // 处理空值
+                return new BookmarkSearchRespDTO();
             }
             return BeanUtil.toBean(bookDO, BookmarkSearchRespDTO.class);
         });

@@ -94,7 +94,6 @@ public class GroupServiceImpl extends ServiceImpl<GroupMapper, GroupDO> implemen
         LambdaQueryWrapper<GroupDO> eq = Wrappers.lambdaQuery(GroupDO.class)
                 .eq(GroupDO::getDelFlag, 0)
                 .eq(GroupDO::getGid, gid)
-                //TODO:等待网关完成之后，把用户信息传过来
                 .eq(GroupDO::getUsername, userName);
         GroupDO hasGroupFlag = baseMapper.selectOne(eq);
         return hasGroupFlag == null;

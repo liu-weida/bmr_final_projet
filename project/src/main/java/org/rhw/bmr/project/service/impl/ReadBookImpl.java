@@ -25,8 +25,7 @@ public class ReadBookImpl extends ServiceImpl<BookMapper, BookDO> implements Rea
             return new ReadBookRespDTO(bookDO.getStoragePath(),bookDO.getImg());
         }
 
-        // 如果未找到对应的书籍，返回一个默认响应或抛出异常
-        return new ReadBookRespDTO(); // 或者抛出一个自定义异常
+        return new ReadBookRespDTO();
     }
 
 }
