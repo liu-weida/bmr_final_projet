@@ -38,7 +38,6 @@ public class BookSearchServiceImpl extends ServiceImpl<BookMapper, BookDO> imple
         int currentPage = requestParam.getPageNo() == null ? 1 : requestParam.getPageNo();
         int pageSize = requestParam.getPageSize() == null ? 10 : requestParam.getPageSize();
 
-        // 无论用户传什么分页参数，都只取前10本
         Page<BookDO> page = new Page<>(currentPage, pageSize);
 
         // 构造查询条件
@@ -65,7 +64,7 @@ public class BookSearchServiceImpl extends ServiceImpl<BookMapper, BookDO> imple
         // 转换为响应 DTO
         IPage<BookSearchRespDTO> bookSearchRespDTOPage = bookSearchDOPage.convert(bookSearchDO ->
                 BookSearchRespDTO.builder()
-                        .id(bookSearchDO.getId())
+                        .id(String.valueOf(bookSearchDO.getId()))
                         .refId(bookSearchDO.getRefId())
                         .title(bookSearchDO.getTitle())
                         .storagePath(bookSearchDO.getStoragePath())
@@ -130,6 +129,10 @@ public class BookSearchServiceImpl extends ServiceImpl<BookMapper, BookDO> imple
                 records.add(hit.source());
             }
 
+            for (BookSearchByWordRespDTO record : records ){
+                record.setId(String.valueOf(record.getId()));
+            }
+
             // 获取总记录数
             long total = response.hits().total() != null ? response.hits().total().value() : 0;
 
@@ -192,6 +195,11 @@ public class BookSearchServiceImpl extends ServiceImpl<BookMapper, BookDO> imple
             for (Hit<BookSearchByRegespRespDTO> hit : response.hits().hits()) {
                 records.add(hit.source());
             }
+
+            for (BookSearchByRegespRespDTO record : records ){
+                record.setId(String.valueOf(record.getId()));
+            }
+
 
             // 获取总记录数
             long total = response.hits().total() != null ? response.hits().total().value() : 0;

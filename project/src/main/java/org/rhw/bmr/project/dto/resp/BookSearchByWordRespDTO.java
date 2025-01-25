@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class BookSearchByWordRespDTO {
 
-    private Long id;
+    private String id;
 
     @TableField("ref_id")
     private Long refId;

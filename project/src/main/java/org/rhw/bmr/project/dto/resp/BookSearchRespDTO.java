@@ -14,7 +14,7 @@ import org.rhw.bmr.project.dao.entity.BookDO;
 @AllArgsConstructor
 public class BookSearchRespDTO  extends Page<BookDO> {
 
-    private Long id;
+    private String id;
 
     @TableField("ref_id")
     private Long refId;

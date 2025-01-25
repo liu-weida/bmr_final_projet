@@ -39,7 +39,6 @@ public class UserConfiguration {
 
     /**
      * 配置用户操作流量风控过滤器（UserFlowRiskControlFilter）
-     * 该过滤器仅在配置属性 `short-link.flow-limit.enable` 为 `true` 时启用
      */
     @Bean
     @ConditionalOnProperty(name = "bmr.flow-limit.enable", havingValue = "true") // 条件注解，只有满足条件时才注册此 Bean

@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class BookmarkSearchRespDTO {
 
-    private Long id;
+    private String id;
 
     @TableField("ref_id")
     private Long refId;
