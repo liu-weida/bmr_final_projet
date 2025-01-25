@@ -3,7 +3,7 @@ package org.rhw.bmr.project.toolkit;
 import cn.hutool.core.lang.hash.MurmurHash;
 
 /**
- * HASH 工具类
+ * HASH Tools
  */
 public class HashUtil {
 

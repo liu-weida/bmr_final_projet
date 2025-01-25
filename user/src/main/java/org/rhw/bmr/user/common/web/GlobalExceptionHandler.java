@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.Optional;
 
 /**
- * 全局异常处理器
+ * global exception handler
  *
  */
 @Component
@@ -28,9 +28,7 @@ import java.util.Optional;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    /**
-     * 拦截参数验证异常
-     */
+
     @SneakyThrows
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public Result validExceptionHandler(HttpServletRequest request, MethodArgumentNotValidException ex) {
@@ -43,9 +41,7 @@ public class GlobalExceptionHandler {
         return Results.failure(BaseErrorCode.CLIENT_ERROR.code(), exceptionStr);
     }
 
-    /**
-     * 拦截应用内抛出的异常
-     */
+
     @ExceptionHandler(value = {AbstractException.class})
     public Result abstractException(HttpServletRequest request, AbstractException ex) {
         if (ex.getCause() != null) {
@@ -56,9 +52,7 @@ public class GlobalExceptionHandler {
         return Results.failure(ex);
     }
 
-    /**
-     * 拦截未捕获异常
-     */
+
     @ExceptionHandler(value = Throwable.class)
     public Result defaultErrorHandler(HttpServletRequest request, Throwable throwable) {
         log.error("[{}] {} ", request.getMethod(), getUrl(request), throwable);

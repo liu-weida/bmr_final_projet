@@ -6,12 +6,12 @@ package org.rhw.bmr.project.common.convention.errorcode;
 public interface IErrorCode {
 
     /**
-     * 错误码
+     * error code
      */
     String code();
 
     /**
-     * 错误信息
+     * error message
      */
     String message();
 }

@@ -35,12 +35,11 @@ public class SyncElasticTask implements SchedulingConfigurer {
         if (enabled) {
             ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
-            // 延迟 60 秒后开始执行任务
             executorService.scheduleAtFixedRate(() -> {
                 try {
                     bookSyncService.syncBooksToElasticsearch();
                 } catch (Exception e) {
-                    log.error("执行书籍插入任务时发生错误: ", e);
+                    log.error("An error occurred while performing the book insertion task.: ", e);
                 }
             }, start, interval, TimeUnit.MILLISECONDS);
         }

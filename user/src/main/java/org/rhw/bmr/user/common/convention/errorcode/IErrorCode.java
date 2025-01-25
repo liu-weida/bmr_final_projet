@@ -1,17 +1,13 @@
 package org.rhw.bmr.user.common.convention.errorcode;
 
 /**
- * 平台错误码
+ * platform error code
  */
 public interface IErrorCode {
 
-    /**
-     * 错误码
-     */
+
     String code();
 
-    /**
-     * 错误信息
-     */
+
     String message();
 }

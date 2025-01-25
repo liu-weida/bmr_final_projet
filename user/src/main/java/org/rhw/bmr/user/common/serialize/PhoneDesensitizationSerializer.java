@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import java.io.IOException;
 
 /**
- * 手机号脱敏反序列化
+ * Mobile phone number desensitization and reverse deserialization
  */
 public class PhoneDesensitizationSerializer extends JsonSerializer<String> {
 

@@ -23,7 +23,7 @@ import static org.rhw.bmr.user.common.convention.errorcode.BaseErrorCode.FLOW_LI
 
 
 /**
- * 用户操作流量风控过滤器
+ * User operation traffic risk control filter
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -45,7 +45,7 @@ public class UserFlowRiskControlFilter implements Filter {
         try {
             result = stringRedisTemplate.execute(redisScript, Lists.newArrayList(username), userFlowRiskControlConfiguration.getTimeWindow());
         } catch (Throwable ex) {
-            log.error("执行用户请求流量限制LUA脚本出错", ex);
+            log.error("Error executing user-requested traffic limit LUA script", ex);
             returnJson((HttpServletResponse) response, JSON.toJSONString(Results.failure(new ClientException(FLOW_LIMIT_ERROR))));
             return;
         }

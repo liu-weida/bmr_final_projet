@@ -9,9 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.rhw.bmr.project.common.database.BaseDO;
 
-/**
- * 访问日志监控
- */
+
 @Data
 @TableName("t_books")
 @Builder

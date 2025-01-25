@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 短链接中台远程调用服务
+ * remote call service
  */
 public interface BookSearchRemoteService {
 

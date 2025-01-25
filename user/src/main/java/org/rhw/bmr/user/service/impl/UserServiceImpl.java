@@ -37,9 +37,6 @@ import static org.rhw.bmr.user.common.enums.UserErrorCodeEnum.USER_LOGIN_REPEAT;
 import static org.rhw.bmr.user.common.enums.UserErrorCodeEnum.USER_NOT_ONLINE;
 
 
-/**
- * 用户接口实现
- */
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements UserService {
@@ -52,16 +49,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
 
     @Override
     public UserRespDTO getUserByUsername(String username) {
-        /*
-        这里相当于 SELECT * FROM user WHERE username = username;
-         */
+
         LambdaQueryWrapper<UserDO> queryWrapper = Wrappers.lambdaQuery(UserDO.class)
                                                     .eq(UserDO::getUsername, username);
-        // 这里的baseMapper实际上就是我们传进去的UserMapper
-        // selectOne，只找一条相符的数据
+
         UserDO userDO = baseMapper.selectOne(queryWrapper);
-        // 这里还存在问题，如果找不到怎么办？直接返回NULL用户就无法分辨到底是报错了，还是没找到?
-        // 所以我们创建一个规约convention
+
         if (userDO == null) {
             throw new ClientException(UserErrorCodeEnum.USER_NULL);
         }
@@ -87,10 +80,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
             throw new ClientException(UserErrorCodeEnum.USER_NAME_EXIST);
         }
 
-        //拿个锁，然后所有请求都会针对用户名去拿锁
         RLock lock = redissonClient.getLock(RedisCacheConstant.LOCK_USER_REGISTER_KEY+requestParam.getUsername());
 
-        //如果拿得到锁，说明能创建
         try {
             if (lock.tryLock()) {
                 try{
@@ -106,7 +97,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
                     throw new ClientException(UserErrorCodeEnum.USER_NAME_EXIST);
                 }
             }
-            // 拿不到锁，要么有人在注册，要么已经存在，不做分辨
             throw new ClientException(UserErrorCodeEnum.USER_NAME_EXIST);
         } finally {
            lock.unlock();
@@ -115,9 +105,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
 
     @Override
     public UserLoginRespDTO login(UserLoginReqDTO requestParam) {
-        /*
-         * 首先需要验证用户名是否存在数据库，然后验证密码，同时不能是已经注销的用户
-         */
+
         LambdaQueryWrapper<UserDO> queryWrapper = Wrappers.lambdaQuery(UserDO.class)
                 .eq(UserDO::getUsername, requestParam.getUsername())
                 .eq(UserDO::getPassword, requestParam.getPassword())
@@ -129,16 +117,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
         }
 
         if (redisTemplate.hasKey(USER_LOGIN_KEY+requestParam.getUsername())){
-            // 相比直接抛出异常，顶替登录是否好一些？
-//            throw new ClientException(USER_LOGIN_REPEAT);
-            // 下面就是顶替登录的代码
+
              redisTemplate.expire(USER_LOGIN_KEY+requestParam.getUsername(), 0, TimeUnit.SECONDS);
         }
 
-        /**
-         * 考虑用Hash结构，Key是用户名，Value是(token，Json用户信息)
-         * 这样做到用户名唯一性。
-         */
+
 
         String uuid = UUID.randomUUID().toString();
         redisTemplate.opsForHash().put(USER_LOGIN_KEY+requestParam.getUsername(), uuid, JSON.toJSONString(user));
@@ -150,14 +133,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDO> implements 
     @Override
     public Boolean checkLogin(String username, String token) {
 
-        // 检查是否登录，只要检查Redis里是否存在这个Token就行了。
         return redisTemplate.opsForHash().get(USER_LOGIN_KEY + username, token) != null;
 
     }
 
     @Override
     public void update(UserUpdateReqDTO requestParam) {
-        // TODO: 验证当前用户是否为登录用户
         LambdaUpdateWrapper<UserDO> updateWrapper = Wrappers.lambdaUpdate(UserDO.class)
                 .eq(UserDO::getUsername, requestParam.getUsername());
         baseMapper.update(BeanUtil.toBean(requestParam, UserDO.class), updateWrapper);

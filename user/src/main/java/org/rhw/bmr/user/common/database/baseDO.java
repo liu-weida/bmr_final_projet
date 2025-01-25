@@ -10,14 +10,10 @@ import java.util.Date;
 public class baseDO {
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;
-    /**
-     * 修改时间
-     */
+
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
-    /**
-     * 删除表示，0：未删除 1：删除
-     */
+
     @TableField(fill = FieldFill.INSERT)
     private Integer delFlag;
 }

@@ -7,7 +7,7 @@ import org.rhw.bmr.project.common.convention.errorcode.IErrorCode;
 import java.util.Optional;
 
 /**
- * 服务端异常
+ * server exception
  */
 public class ServiceException extends AbstractException {
 

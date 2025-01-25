@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class DataBaseConfiguration {
 
     /**
-     * 分页插件
+     * pagination plugin
      */
 
     @Bean

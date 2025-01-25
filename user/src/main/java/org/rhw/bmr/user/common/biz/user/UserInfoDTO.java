@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 用户信息实体
+ * user information entity
  */
 @Data
 @NoArgsConstructor
@@ -15,19 +15,13 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UserInfoDTO {
 
-    /**
-     * 用户 ID
-     */
+
     @JSONField(name = "id")
     private String userId;
 
-    /**
-     * 用户名
-     */
+
     private String username;
 
-    /**
-     * 用户 Token
-     */
+
     private String token;
 }

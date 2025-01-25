@@ -5,7 +5,7 @@ import org.rhw.bmr.project.common.convention.errorcode.BaseErrorCode;
 import org.rhw.bmr.project.common.convention.errorcode.IErrorCode;
 
 /**
- * 客户端异常
+ * client exception
  */
 public class ClientException extends AbstractException {
 

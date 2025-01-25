@@ -13,12 +13,7 @@ import static org.rhw.bmr.user.common.constant.RedisRateLimiterConstant.LOCK_USE
 
 @Configuration
 public class RRateLimiterConfiguration {
-    /**
-     * 限流器设置
-     * 每秒最多200个令牌
-     * OVERALL表示全局限流
-     * @return RRateLimiter
-     */
+
     @Bean
     public RRateLimiter userRegisterRateLimiter(RedissonClient redissonClient) {
        RRateLimiter rateLimiter = redissonClient.getRateLimiter(LOCK_USER_REGISTER_RATE_KEY);

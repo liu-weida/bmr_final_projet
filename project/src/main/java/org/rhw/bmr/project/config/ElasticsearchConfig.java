@@ -47,32 +47,31 @@ public class ElasticsearchConfig {
             credentialsProvider.setCredentials(AuthScope.ANY,
                     new UsernamePasswordCredentials(username, password));
 
-            // 配置 SSL 上下文（信任所有证书，仅用于测试）
             TrustStrategy trustStrategy = new TrustStrategy() {
                 @Override
                 public boolean isTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-                    return true; // 信任所有证书
+                    return true;
                 }
             };
             SSLContext sslContext = SSLContextBuilder.create()
                     .loadTrustMaterial(trustStrategy)
                     .build();
 
-            // 配置 RestClientBuilder
+
             RestClientBuilder builder = RestClient.builder(
-                    new HttpHost(host, port, protocol) // 使用 HTTPS 协议
+                    new HttpHost(host, port, protocol)
             ).setHttpClientConfigCallback(httpAsyncClientBuilder -> httpAsyncClientBuilder
-                    .setDefaultCredentialsProvider(credentialsProvider) // 设置认证
-                    .setSSLContext(sslContext) // 设置 SSL 上下文
-                    .setSSLHostnameVerifier((hostname, session) -> true) // 忽略主机名验证
+                    .setDefaultCredentialsProvider(credentialsProvider)
+                    .setSSLContext(sslContext)
+                    .setSSLHostnameVerifier((hostname, session) -> true)
                     .setDefaultIOReactorConfig(IOReactorConfig.custom()
-                            .setIoThreadCount(4) // 设置 IO 线程数
+                            .setIoThreadCount(4)
                             .build())
-                    .setMaxConnTotal(100) // 设置最大连接数
-                    .setMaxConnPerRoute(100) // 设置每个路由的最大连接数
+                    .setMaxConnTotal(100)
+                    .setMaxConnPerRoute(100)
             ).setRequestConfigCallback(requestConfigBuilder -> requestConfigBuilder
-                    .setConnectTimeout(10000) // 增加连接超时时间（10 秒）
-                    .setSocketTimeout(30000)  // 增加套接字超时时间（30 秒）
+                    .setConnectTimeout(10000)
+                    .setSocketTimeout(30000)
             );
 
             // 创建 ElasticsearchClient

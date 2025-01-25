@@ -4,7 +4,7 @@ import org.rhw.bmr.user.common.convention.errorcode.IErrorCode;
 import org.rhw.bmr.user.common.convention.errorcode.BaseErrorCode;
 
 /**
- * 远程服务调用异常
+ * Remote service invocation exception
  */
 public class RemoteException extends AbstractException {
 

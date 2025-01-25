@@ -7,9 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.rhw.bmr.user.common.database.baseDO;
 
-/**
- * 短链接分组实体
- */
+
 @Data
 @TableName("t_group")
 @Builder
