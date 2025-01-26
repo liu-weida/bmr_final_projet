@@ -30,7 +30,8 @@ export default {
 
     const handleLogin = async () => {
       try {
-        const res = await fetch('/api/bmr/user/v1/user/login', {
+        // 用户登录请求
+        const loginRes = await fetch('/api/bmr/user/v1/user/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -39,22 +40,42 @@ export default {
           }),
         });
 
-        if (!res.ok) {
-          throw new Error(`请求失败，状态码：${res.status}`);
+        if (!loginRes.ok) {
+          throw new Error(`登录请求失败，状态码：${loginRes.status}`);
         }
 
-        const data = await res.json();
-        console.log('登录成功后端返回：', data);
+        const loginData = await loginRes.json();
+        console.log('登录成功后端返回：', loginData);
 
-        if (!data || !data.data || !data.data.token) {
-          throw new Error('响应格式不正确，缺少 token');
+        if (!loginData || !loginData.data || !loginData.data.token) {
+          throw new Error('登录响应格式不正确，缺少 token');
         }
 
         // 存储 token 和用户名
-        localStorage.setItem('token', data.data.token);
+        localStorage.setItem('token', loginData.data.token);
         localStorage.setItem('username', username.value);
 
-        // 跳转到对应的用户名页面
+        // 获取用户组信息
+        const groupRes = await fetch(`/api/bmr/user/v1/group?username=${username.value}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        });
+
+        if (!groupRes.ok) {
+          throw new Error(`用户组请求失败，状态码：${groupRes.status}`);
+        }
+
+        const groupData = await groupRes.json();
+        console.log('用户组信息返回：', groupData);
+
+        if (!groupData || !groupData.data || !groupData.data.length) {
+          throw new Error('未获取到有效的用户组信息');
+        }
+
+        // 存储第一个组的 gid
+        localStorage.setItem('gid', groupData.data[0].gid);
+
+        // 跳转到用户页面
         router.push(`/${username.value}`);
       } catch (err) {
         errorMessage.value = err.message;
