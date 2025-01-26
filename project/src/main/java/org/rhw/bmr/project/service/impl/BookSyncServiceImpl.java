@@ -36,11 +36,15 @@ public class BookSyncServiceImpl extends ServiceImpl<BookSyncMapper, BookSyncDO>
     @Override
     public List<BookSyncDO> getUnsyncedBooks(int limit) {
 
-        LambdaQueryWrapper<BookSyncDO> last = Wrappers.lambdaQuery(BookSyncDO.class)
-                .eq(BookSyncDO::getEsSyncFlag, 0)
+        LambdaQueryWrapper<BookSyncDO> queryWrapper = Wrappers.lambdaQuery(BookSyncDO.class)
+                .and(wrapper -> wrapper
+                        .eq(BookSyncDO::getEsSyncFlag, 0)
+                        .or()
+                        .isNull(BookSyncDO::getEsSyncFlag)
+                )
                 .last("LIMIT " + limit);
 
-        return baseMapper.selectList(last);
+        return baseMapper.selectList(queryWrapper);
     }
 
     @Override
@@ -53,7 +57,9 @@ public class BookSyncServiceImpl extends ServiceImpl<BookSyncMapper, BookSyncDO>
                 .in(BookSyncDO::getId, ids)
                 .set(BookSyncDO::getEsSyncFlag, 1);
 
+
         baseMapper.update(null, updateWrapper);
+
     }
 
 
@@ -140,7 +146,6 @@ public class BookSyncServiceImpl extends ServiceImpl<BookSyncMapper, BookSyncDO>
             int responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_MOVED_PERM || responseCode == HttpURLConnection.HTTP_MOVED_TEMP) {
                 urlPath = connection.getHeaderField("Location");
-                log.info("redirect to: {}", urlPath);
                 continue;
             }
 

@@ -38,6 +38,6 @@ public class BookSyncDO extends BaseDO {
 
     private Long sortedOrder;
 
-    @TableField(value = "es_sync_flag",fill = FieldFill.INSERT)
+    @TableField(value = "es_sync_flag")
     private Integer esSyncFlag;
 }
