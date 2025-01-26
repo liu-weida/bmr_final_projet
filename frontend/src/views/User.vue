@@ -1,4 +1,3 @@
-<!-- src/views/User.vue -->
 <template>
   <div class="user-container">
     <header class="user-header">
@@ -11,60 +10,96 @@
     </header>
 
     <div class="search-wrapper">
-      <!-- 放置我们的4输入框 SearchBar -->
       <SearchBar @search="handleSearch" />
+    </div>
+
+    <div class="recommendations-wrapper">
+      <h2>书籍推荐</h2>
+      <div v-if="recommendations.length === 0" class="no-recommendations">
+        暂无推荐书籍
+      </div>
+      <div v-else class="books-grid">
+        <div
+          v-for="book in recommendations"
+          :key="book.id"
+          class="book-card"
+        >
+          <img :src="book.img || '/default-book-cover.jpg'" alt="书籍封面" />
+          <h3>{{ book.title }}</h3>
+          <p class="description">{{ truncateDescription(book.description) }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bookmarks-wrapper">
+      <h2>我的收藏</h2>
+      <div v-if="bookmarks.length === 0" class="no-bookmarks">
+        暂无收藏
+      </div>
+      <div v-else class="books-grid">
+        <div
+          v-for="book in bookmarks"
+          :key="book.id"
+          class="book-card"
+        >
+          <img :src="book.img || '/default-book-cover.jpg'" alt="书籍封面" />
+          <h3>{{ book.title }}</h3>
+          <p class="description">{{ truncateDescription(book.description) }}</p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import axios from 'axios'
-import SearchBar from '../SearchBar.vue'
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import SearchBar from '../SearchBar.vue';
 
-const route = useRoute()
-const router = useRouter()
+const username = ref(localStorage.getItem('username') || '');
+const gid = ref(localStorage.getItem('gid') || '');
+const recommendations = ref([]);
+const bookmarks = ref([]);
 
-// 当前用户名
-const username = ref(route.params.username || '')
+const router = useRouter();
 
-// 注销操作
-async function logout() {
-  const token = localStorage.getItem('token') || ''
+// 获取书籍推荐
+async function fetchRecommendations() {
   try {
-    const response = await axios.delete('/api/bmr/user/v1/user/logout', {
-      params: {
-        username: username.value,
-        token
-      }
-    })
-    if (response.data.code === '200') {
-      // 注销成功
-      localStorage.removeItem('token')
-      router.push({ name: 'login' })
-    } else {
-      console.error('注销失败:', response.data.message)
-    }
-  } catch (error) {
-    console.error('注销异常:', error)
+    const res = await fetch(`/api/bmr/project/v1/recommend?username=${username.value}`);
+    const data = await res.json();
+    recommendations.value = data.data || [];
+  } catch (err) {
+    console.error('获取推荐书籍失败:', err);
   }
 }
 
-// 当用户在搜索栏点击“搜索”时的回调
-function handleSearch(payload) {
-  // payload 里包含 { title, author, category, language }
-  // 这里假设点击搜索后，跳转到搜索页面的第1页
-  router.push({
-    name: 'Search',            // 在 router/index.js 里配置的 route 名
-    params: { pageNo: 1 },     // path: /search/1
-    query: {
-      title: payload.title,
-      author: payload.author,
-      category: payload.category,
-      language: payload.language
-    }
-  })
+// 获取收藏书籍
+async function fetchBookmarks() {
+  try {
+    const res = await fetch(`/api/bmr/user/v1/bookmark/search?gid=${gid.value}&username=${username.value}&pageNo=1&pageSize=10`);
+    const data = await res.json();
+    bookmarks.value = data.data.records || [];
+  } catch (err) {
+    console.error('获取收藏书籍失败:', err);
+  }
+}
+
+// 注销
+async function logout() {
+  localStorage.clear();
+  router.push('/login');
+}
+
+// 页面加载时初始化数据
+onMounted(() => {
+  fetchRecommendations();
+  fetchBookmarks();
+});
+
+// 描述截取
+function truncateDescription(description, length = 50) {
+  return description.length > length ? `${description.slice(0, length)}...` : description;
 }
 </script>
 
@@ -73,6 +108,8 @@ function handleSearch(payload) {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  font-family: 'Arial', sans-serif;
+  background: #f7f7f7;
 }
 
 .user-header {
@@ -80,17 +117,87 @@ function handleSearch(payload) {
   justify-content: space-between;
   align-items: center;
   padding: 16px;
-  background: #f1f1f1;
+  background: #4caf50;
+  color: white;
+  font-size: 1.2em;
 }
 
 .header-left .username {
   font-weight: bold;
-  margin-right: 16px;
 }
 
 .search-wrapper {
-  margin-top: 32px;
+  margin-top: 20px;
   display: flex;
   justify-content: center;
 }
+
+.recommendations-wrapper,
+.bookmarks-wrapper {
+  margin: 20px auto;
+  width: 90%;
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.recommendations-wrapper h2,
+.bookmarks-wrapper h2 {
+  font-size: 1.5em;
+  color: #333;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 每行 5 个书籍 */
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.book-card {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.book-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.book-card img {
+  width: 100%;
+  height: 120px; /* 固定高度使布局整齐 */
+  object-fit: cover;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.book-card h3 {
+  font-size: 1em;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.book-card .description {
+  font-size: 0.85em;
+  color: #666;
+  line-height: 1.4;
+}
+
+.no-recommendations,
+.no-bookmarks {
+  text-align: center;
+  color: #666;
+  margin-top: 16px;
+}
 </style>
+
