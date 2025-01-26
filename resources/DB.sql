@@ -1,5 +1,7 @@
 CREATE DATABASE bmr;
 
+USE bmr;
+
 DROP TABLE IF EXISTS t_books_0;
 DROP TABLE IF EXISTS t_books_1;
 DROP TABLE IF EXISTS t_books_2;
@@ -1132,3 +1134,164 @@ CREATE TABLE `t_user_preference_15` (
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8mb4
   COLLATE=utf8mb4_general_ci;
+
+create table t_user_bookmark_0
+(
+    id          bigint auto_increment primary key,
+    gid         varchar(20) not null,
+    username    varchar(50) not null,
+    bookId      bigint      not null,
+    create_time datetime    null comment 'creation time',
+    update_time datetime    null comment 'modified time',
+    del_flag    tinyint(1)  null comment 'Delete flag 0: not deleted 1: deleted'
+);
+create table t_user_bookmark_1
+(
+    id          bigint auto_increment primary key,
+    gid         varchar(20) not null,
+    username    varchar(50) not null,
+    bookId      bigint      not null,
+    create_time datetime    null comment 'creation time',
+    update_time datetime    null comment 'modified time',
+    del_flag    tinyint(1)  null comment 'Delete flag 0: not deleted 1: deleted'
+);
+create table t_user_bookmark_2
+(
+    id          bigint auto_increment primary key,
+    gid         varchar(20) not null,
+    username    varchar(50) not null,
+    bookId      bigint      not null,
+    create_time datetime    null comment 'creation time',
+    update_time datetime    null comment 'modified time',
+    del_flag    tinyint(1)  null comment 'Delete flag 0: not deleted 1: deleted'
+);
+create table t_user_bookmark_3
+(
+    id          bigint auto_increment primary key,
+    gid         varchar(20) not null,
+    username    varchar(50) not null,
+    bookId      bigint      not null,
+    create_time datetime    null comment 'creation time',
+    update_time datetime    null comment 'modified time',
+    del_flag    tinyint(1)  null comment 'Delete flag 0: not deleted 1: deleted'
+);
+create table t_user_bookmark_4
+(
+    id          bigint auto_increment primary key,
+    gid         varchar(20) not null,
+    username    varchar(50) not null,
+    bookId      bigint      not null,
+    create_time datetime    null comment 'creation time',
+    update_time datetime    null comment 'modified time',
+    del_flag    tinyint(1)  null comment 'Delete flag 0: not deleted 1: deleted'
+);
+create table t_user_bookmark_5
+(
+    id          bigint auto_increment primary key,
+    gid         varchar(20) not null,
+    username    varchar(50) not null,
+    bookId      bigint      not null,
+    create_time datetime    null comment 'creation time',
+    update_time datetime    null comment 'modified time',
+    del_flag    tinyint(1)  null comment 'Delete flag 0: not deleted 1: deleted'
+);
+create table t_user_bookmark_6
+(
+    id          bigint auto_increment primary key,
+    gid         varchar(20) not null,
+    username    varchar(50) not null,
+    bookId      bigint      not null,
+    create_time datetime    null comment 'creation time',
+    update_time datetime    null comment 'modified time',
+    del_flag    tinyint(1)  null comment 'Delete flag 0: not deleted 1: deleted'
+);
+create table t_user_bookmark_7
+(
+    id          bigint auto_increment primary key,
+    gid         varchar(20) not null,
+    username    varchar(50) not null,
+    bookId      bigint      not null,
+    create_time datetime    null comment 'creation time',
+    update_time datetime    null comment 'modified time',
+    del_flag    tinyint(1)  null comment 'Delete flag 0: not deleted 1: deleted'
+);
+create table t_user_bookmark_8
+(
+    id          bigint auto_increment primary key,
+    gid         varchar(20) not null,
+    username    varchar(50) not null,
+    bookId      bigint      not null,
+    create_time datetime    null comment 'creation time',
+    update_time datetime    null comment 'modified time',
+    del_flag    tinyint(1)  null comment 'Delete flag 0: not deleted 1: deleted'
+);
+create table t_user_bookmark_9
+(
+    id          bigint auto_increment primary key,
+    gid         varchar(20) not null,
+    username    varchar(50) not null,
+    bookId      bigint      not null,
+    create_time datetime    null comment 'creation time',
+    update_time datetime    null comment 'modified time',
+    del_flag    tinyint(1)  null comment 'Delete flag 0: not deleted 1: deleted'
+);
+create table t_user_bookmark_10
+(
+    id          bigint auto_increment primary key,
+    gid         varchar(20) not null,
+    username    varchar(50) not null,
+    bookId      bigint      not null,
+    create_time datetime    null comment 'creation time',
+    update_time datetime    null comment 'modified time',
+    del_flag    tinyint(1)  null comment 'Delete flag 0: not deleted 1: deleted'
+);
+create table t_user_bookmark_11
+(
+    id          bigint auto_increment primary key,
+    gid         varchar(20) not null,
+    username    varchar(50) not null,
+    bookId      bigint      not null,
+    create_time datetime    null comment 'creation time',
+    update_time datetime    null comment 'modified time',
+    del_flag    tinyint(1)  null comment 'Delete flag 0: not deleted 1: deleted'
+);
+create table t_user_bookmark_12
+(
+    id          bigint auto_increment primary key,
+    gid         varchar(20) not null,
+    username    varchar(50) not null,
+    bookId      bigint      not null,
+    create_time datetime    null comment 'creation time',
+    update_time datetime    null comment 'modified time',
+    del_flag    tinyint(1)  null comment 'Delete flag 0: not deleted 1: deleted'
+);
+create table t_user_bookmark_13
+(
+    id          bigint auto_increment primary key,
+    gid         varchar(20) not null,
+    username    varchar(50) not null,
+    bookId      bigint      not null,
+    create_time datetime    null comment 'creation time',
+    update_time datetime    null comment 'modified time',
+    del_flag    tinyint(1)  null comment 'Delete flag 0: not deleted 1: deleted'
+);
+create table t_user_bookmark_14
+(
+    id          bigint auto_increment primary key,
+    gid         varchar(20) not null,
+    username    varchar(50) not null,
+    bookId      bigint      not null,
+    create_time datetime    null comment 'creation time',
+    update_time datetime    null comment 'modified time',
+    del_flag    tinyint(1)  null comment 'Delete flag 0: not deleted 1: deleted'
+);
+create table t_user_bookmark_15
+(
+    id          bigint auto_increment primary key,
+    gid         varchar(20) not null,
+    username    varchar(50) not null,
+    bookId      bigint      not null,
+    create_time datetime    null comment 'creation time',
+    update_time datetime    null comment 'modified time',
+    del_flag    tinyint(1)  null comment 'Delete flag 0: not deleted 1: deleted'
+);
