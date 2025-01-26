@@ -29,14 +29,10 @@ rules:
       t_group:
 
         actualDataNodes: ds_0.t_group_${0..15}
-
         tableStrategy:
-
           standard:
-
             shardingColumn: username
-
-            shardingAlgorithmName: user_table_hash_mod
+            shardingAlgorithmName: user_group_hash_mod
         keyGenerateStrategy:
           column: id
           keyGeneratorName: snowflake
@@ -46,11 +42,15 @@ rules:
     shardingAlgorithms:
 
       user_table_hash_mod:
-
         type: HASH_MOD
-
         props:
           sharding-count: 16
+
+      user_group_hash_mod:
+        type: HASH_MOD
+        props:
+          sharding-count: 16
+
     keyGenerators:
       snowflake:
         type: SNOWFLAKE
