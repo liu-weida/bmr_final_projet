@@ -17,13 +17,12 @@ public class ReadBookImpl extends ServiceImpl<BookMapper, BookDO> implements Rea
     @Override
     public ReadBookRespDTO readBook(ReadBookReqDTO requestParam) {
 
-        BookDO bookDO = baseMapper.selectById(Long.valueOf(requestParam.getBookId()));
-
+        BookDO bookDO = baseMapper.selectById(requestParam.getBookId());
 
         if (bookDO != null) {
 
             LambdaUpdateWrapper<BookDO> wrapper = Wrappers.lambdaUpdate(BookDO.class)
-                    .eq(BookDO::getId, Long.valueOf(bookDO.getId()))
+                    .eq(BookDO::getId, bookDO.getId())
                     .set(BookDO::getClickCount, bookDO.getClickCount() + 1);
 
             baseMapper.update(null, wrapper);

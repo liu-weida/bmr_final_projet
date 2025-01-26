@@ -2,14 +2,14 @@ package org.rhw.bmr.project.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.rhw.bmr.project.dao.entity.BookSyncDO;
+import org.rhw.bmr.project.dao.entity.BookDO;
 
 import java.util.List;
 
-public interface BookSyncService extends IService<BookSyncDO> {
-    List<BookSyncDO> getUnsyncedBooks(int limit);
+public interface BookSyncService extends IService<BookDO> {
+    List<BookDO> getUnsyncedBooks(int limit);
 
-    void updateSyncFlag(List<Long> ids);
+    void updateSyncFlag(List<String> ids);
 
     void syncBooksToElasticsearch();
 }

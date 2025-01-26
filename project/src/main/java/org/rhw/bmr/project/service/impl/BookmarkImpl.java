@@ -91,7 +91,7 @@ public class BookmarkImpl extends ServiceImpl<BookmarkMapper, BookmarkDO> implem
         List<BookDO> books = new ArrayList<>();
 
         for (String bookid : bookIds){
-            books.add(bookMapper.selectById(Long.valueOf(bookid)));
+            books.add(bookMapper.selectById(bookid));
         }
 
 

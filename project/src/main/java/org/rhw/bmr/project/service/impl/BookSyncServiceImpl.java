@@ -8,8 +8,8 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.rhw.bmr.project.dao.entity.BookSyncDO;
-import org.rhw.bmr.project.dao.mapper.BookSyncMapper;
+import org.rhw.bmr.project.dao.entity.BookDO;
+import org.rhw.bmr.project.dao.mapper.BookMapper;
 import org.rhw.bmr.project.service.BookSyncService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,36 +29,38 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class BookSyncServiceImpl extends ServiceImpl<BookSyncMapper, BookSyncDO> implements BookSyncService {
+public class BookSyncServiceImpl extends ServiceImpl<BookMapper, BookDO> implements BookSyncService {
 
     @Autowired
     private ElasticsearchClient elasticsearchClient;
     @Override
-    public List<BookSyncDO> getUnsyncedBooks(int limit) {
+    public List<BookDO> getUnsyncedBooks(int limit) {
 
-        LambdaQueryWrapper<BookSyncDO> queryWrapper = Wrappers.lambdaQuery(BookSyncDO.class)
+        LambdaQueryWrapper<BookDO> last = Wrappers.lambdaQuery(BookDO.class)
                 .and(wrapper -> wrapper
-                        .eq(BookSyncDO::getEsSyncFlag, 0)
+                        .eq(BookDO::getEsSyncFlag, 0)
                         .or()
-                        .isNull(BookSyncDO::getEsSyncFlag)
+                        .isNull(BookDO::getEsSyncFlag)
                 )
                 .last("LIMIT " + limit);
 
-        return baseMapper.selectList(queryWrapper);
+        return baseMapper.selectList(last);
     }
 
     @Override
-    public void updateSyncFlag(List<Long> ids) {
+    public void updateSyncFlag(List<String> ids) {
         if (ids == null || ids.isEmpty()) {
             return;
         }
 
-        LambdaUpdateWrapper<BookSyncDO> updateWrapper = Wrappers.lambdaUpdate(BookSyncDO.class)
-                .in(BookSyncDO::getId, ids)
-                .set(BookSyncDO::getEsSyncFlag, 1);
+        ids.forEach(Long::valueOf);
+
+        LambdaUpdateWrapper<BookDO> wrapper = Wrappers.lambdaUpdate(BookDO.class)
+                .in(BookDO::getId, ids)
+                .set(BookDO::getEsSyncFlag, 1);
 
 
-        baseMapper.update(null, updateWrapper);
+        baseMapper.update(null, wrapper);
 
     }
 
@@ -66,12 +68,12 @@ public class BookSyncServiceImpl extends ServiceImpl<BookSyncMapper, BookSyncDO>
     @Override
     public void syncBooksToElasticsearch() {
         try {
-            List<BookSyncDO> unsyncedBooks = getUnsyncedBooks(100);
+            List<BookDO> unsyncedBooks = getUnsyncedBooks(100);
 
             while (!unsyncedBooks.isEmpty()) {
                 BulkRequest.Builder bulkRequestBuilder = new BulkRequest.Builder();
 
-                for (BookSyncDO bookSyncDO : unsyncedBooks) {
+                for (BookDO bookSyncDO : unsyncedBooks) {
                     String fileContent = readFileContent(bookSyncDO.getStoragePath());
 
                     Map<String, Object> document = new HashMap<>();
@@ -100,7 +102,7 @@ public class BookSyncServiceImpl extends ServiceImpl<BookSyncMapper, BookSyncDO>
                             .collect(Collectors.joining(", ")));
                 }
 
-                List<Long> syncedIds = unsyncedBooks.stream().map(BookSyncDO::getId).collect(Collectors.toList());
+                List<String> syncedIds = unsyncedBooks.stream().map(BookDO::getId).collect(Collectors.toList());
                 updateSyncFlag(syncedIds);
 
                 log.info("Successfully synchronized {} entries.", syncedIds.size());
