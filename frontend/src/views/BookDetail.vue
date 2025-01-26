@@ -34,14 +34,6 @@
           <td><strong>点击量：</strong></td>
           <td>{{ book.clickCount }}</td>
         </tr>
-        <tr>
-          <td><strong>创建时间：</strong></td>
-          <td>{{ book.createTime }}</td>
-        </tr>
-        <tr>
-          <td><strong>更新时间：</strong></td>
-          <td>{{ book.updateTime }}</td>
-        </tr>
       </table>
     </div>
   </div>
@@ -99,7 +91,7 @@ async function addToFavorites() {
     });
 
     const data = await response.json();
-    console.log(data);
+    console.log("test", data);
     console.log(gid);
     console.log(username);
     if (data.code === '0') {
