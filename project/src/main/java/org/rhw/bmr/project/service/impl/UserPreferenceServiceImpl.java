@@ -43,16 +43,16 @@ public class UserPreferenceServiceImpl extends ServiceImpl<UserPreferenceMapper,
         }
 
         for (BookDO book : books) {
-            adjacencyList.putIfAbsent(book.getId(), new ArrayList<Long>());
+            adjacencyList.putIfAbsent(Long.valueOf(book.getId()), new ArrayList<Long>());
         }
 
         int size = books.size();
         for (int i = 0; i < size; i++) {
             BookDO bookA = books.get(i);
-            Long idA = bookA.getId();
+            Long idA = Long.valueOf(bookA.getId());
             for (int j = i + 1; j < size; j++) {
                 BookDO bookB = books.get(j);
-                Long idB = bookB.getId();
+                Long idB = Long.valueOf(bookB.getId());
 
                 boolean sameAuthor = false;
                 if (bookA.getAuthor() != null && bookB.getAuthor() != null) {
@@ -178,7 +178,7 @@ public class UserPreferenceServiceImpl extends ServiceImpl<UserPreferenceMapper,
 
 
     private void updateBookGraph(BookDO readBook) {
-        Long readBookId = readBook.getId();
+        Long readBookId = Long.valueOf(readBook.getId());
         if (!adjacencyList.containsKey(readBookId)) {
             adjacencyList.put(readBookId, new ArrayList<Long>());
         }
@@ -192,7 +192,7 @@ public class UserPreferenceServiceImpl extends ServiceImpl<UserPreferenceMapper,
         );
 
         for (BookDO book : similarBooks) {
-            Long otherId = book.getId();
+            Long otherId = Long.valueOf(book.getId());
             if (!otherId.equals(readBookId)) {
 
                 if (!adjacencyList.containsKey(otherId)) {

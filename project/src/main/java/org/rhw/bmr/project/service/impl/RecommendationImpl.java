@@ -100,7 +100,7 @@ public class RecommendationImpl extends ServiceImpl<UserPreferenceMapper, UserPr
             UserPreferenceDO pref = preferences.get(i);
             List<BookDO> books = queryBooksByAuthorAndCategory(pref.getAuthor(), pref.getCategory());
             for (int j = 0; j < books.size(); j++) {
-                bookIds.add(books.get(j).getId());
+                bookIds.add(Long.valueOf(books.get(j).getId()));
             }
         }
         return bookIds;

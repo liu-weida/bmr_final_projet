@@ -17,7 +17,7 @@ import org.rhw.bmr.project.common.database.BaseDO;
 @AllArgsConstructor
 public class BookDO extends BaseDO {
 
-    private Long id;
+    private String id;
 
     @TableField("ref_id")
     private Long refId;

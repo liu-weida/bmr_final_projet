@@ -87,7 +87,7 @@ public class BookmarkImpl extends ServiceImpl<BookmarkMapper, BookmarkDO> implem
         List<BookDO> books = bookMapper.selectList(Wrappers.lambdaQuery(BookDO.class).in(BookDO::getId, bookIds));
 
 
-        Map<Long, BookDO> bookMap = books.stream()
+        Map<String, BookDO> bookMap = books.stream()
                 .collect(Collectors.toMap(BookDO::getId, Function.identity()));
 
         IPage<BookmarkSearchRespDTO> respDTOPage = bookmarkDOIPage.convert(bookmarkDO -> {
