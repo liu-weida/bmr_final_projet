@@ -96,7 +96,11 @@ public class BookmarkImpl extends ServiceImpl<BookmarkMapper, BookmarkDO> implem
 
 
         Map<String, BookDO> bookMap = books.stream()
-                .collect(Collectors.toMap(BookDO::getId, Function.identity()));
+                .collect(Collectors.toMap(
+                        BookDO::getId,
+                        Function.identity(),
+                        (oldVal, newVal) -> oldVal
+                ));
 
         IPage<BookmarkSearchRespDTO> respDTOPage = bookmarkDOIPage.convert(bookmarkDO -> {
             BookDO bookDO = bookMap.get(bookmarkDO.getBookId());

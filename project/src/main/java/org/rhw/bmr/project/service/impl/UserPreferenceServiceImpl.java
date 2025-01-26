@@ -124,7 +124,7 @@ public class UserPreferenceServiceImpl extends ServiceImpl<UserPreferenceMapper,
         String username = requestParam.getUsername();
         String bookId = requestParam.getBookId();
 
-        log.error("bookmark: {}");
+//        log.error("bookmark: {}");
 
         if (username == null || bookId == null) {
 
