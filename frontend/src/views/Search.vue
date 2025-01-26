@@ -16,7 +16,7 @@
           @click="goToDetail(book.id)"
         >
           <img :src="book.img" alt="Book cover" class="book-cover" />
-          <p>{{ book.title }} and {{ book.id }}</p>
+          <p>{{ book.title }} </p>
         </div>
       </div>
     </div>
