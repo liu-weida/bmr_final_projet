@@ -40,6 +40,16 @@ public class BookmarkImpl extends ServiceImpl<BookmarkMapper, BookmarkDO> implem
         String bookId = requestParam.getBookId();
         String username = requestParam.getUsername();
 
+        LambdaQueryWrapper<BookmarkDO> set = Wrappers.lambdaQuery(BookmarkDO.class)
+                .eq(BookmarkDO::getGid, gid)
+                .eq(BookmarkDO::getBookId, bookId)
+                .eq(BookmarkDO::getUsername, username);
+
+        if (baseMapper.selectOne(set) != null) {
+            return;
+        }
+
+
         BookmarkDO build = BookmarkDO.builder().gid(gid).bookId(bookId).username(username).build();
 
         baseMapper.insert(build);
