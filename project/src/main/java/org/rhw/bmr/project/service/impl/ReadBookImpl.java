@@ -31,7 +31,11 @@ public class ReadBookImpl extends ServiceImpl<BookMapper, BookDO> implements Rea
             return new ReadBookRespDTO(bookDO.getStoragePath(),bookDO.getImg());
         }
 
-        return new ReadBookRespDTO();
+        if (bookDO == null){
+            log.error("Book not found!!!!!!!!!!!!!!!!!");
+        }
+
+        return new ReadBookRespDTO("没找到","没找到");
     }
 
 }
