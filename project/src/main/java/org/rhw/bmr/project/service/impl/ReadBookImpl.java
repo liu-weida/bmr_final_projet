@@ -1,6 +1,8 @@
 package org.rhw.bmr.project.service.impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.rhw.bmr.project.dao.entity.BookDO;
 import org.rhw.bmr.project.dao.mapper.BookMapper;
@@ -15,13 +17,17 @@ public class ReadBookImpl extends ServiceImpl<BookMapper, BookDO> implements Rea
     @Override
     public ReadBookRespDTO readBook(ReadBookReqDTO requestParam) {
 
-        BookDO bookDO = baseMapper.selectById(requestParam.getBookId());
+        BookDO bookDO = baseMapper.selectById(Long.valueOf(requestParam.getBookId()));
 
-        bookDO.getStoragePath();
 
         if (bookDO != null) {
-            bookDO.setClickCount(bookDO.getClickCount() + 1);
-            baseMapper.updateById(bookDO);
+
+            LambdaUpdateWrapper<BookDO> wrapper = Wrappers.lambdaUpdate(BookDO.class)
+                    .eq(BookDO::getId, Long.valueOf(bookDO.getId()))
+                    .set(BookDO::getClickCount, bookDO.getClickCount() + 1);
+
+            baseMapper.update(null, wrapper);
+
             return new ReadBookRespDTO(bookDO.getStoragePath(),bookDO.getImg());
         }
 

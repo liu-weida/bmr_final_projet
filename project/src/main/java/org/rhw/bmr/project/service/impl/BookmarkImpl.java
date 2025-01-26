@@ -21,6 +21,7 @@ import org.rhw.bmr.project.service.BookmarkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -84,7 +85,14 @@ public class BookmarkImpl extends ServiceImpl<BookmarkMapper, BookmarkDO> implem
                 .map(BookmarkDO::getBookId)
                 .collect(Collectors.toList());
 
-        List<BookDO> books = bookMapper.selectList(Wrappers.lambdaQuery(BookDO.class).in(BookDO::getId, bookIds));
+
+//        List<BookDO> books = bookMapper.selectList(Wrappers.lambdaQuery(BookDO.class).in(BookDO::getId, bookIds));
+
+        List<BookDO> books = new ArrayList<>();
+
+        for (String bookid : bookIds){
+            books.add(bookMapper.selectById(Long.valueOf(bookid)));
+        }
 
 
         Map<String, BookDO> bookMap = books.stream()
