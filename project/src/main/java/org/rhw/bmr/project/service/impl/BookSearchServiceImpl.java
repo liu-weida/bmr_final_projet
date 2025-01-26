@@ -224,6 +224,9 @@ public class BookSearchServiceImpl extends ServiceImpl<BookMapper, BookDO> imple
             bookSearchByIdRespDTO.setAuthor(bookDO.getAuthor());
             bookSearchByIdRespDTO.setCategory(bookDO.getCategory());
             bookSearchByIdRespDTO.setDescription(bookDO.getDescription());
+            bookSearchByIdRespDTO.setImg(bookDO.getImg());
+            bookSearchByIdRespDTO.setLanguage(bookDO.getLanguage());
+            bookSearchByIdRespDTO.setClickCount(bookDO.getClickCount());
 
         }
 
