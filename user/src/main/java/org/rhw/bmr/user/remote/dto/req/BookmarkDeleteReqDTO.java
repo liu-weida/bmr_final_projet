@@ -15,6 +15,6 @@ public class BookmarkDeleteReqDTO {
 
     private String username;
 
-    private Long bookId;
+    private String bookId;
 
 }

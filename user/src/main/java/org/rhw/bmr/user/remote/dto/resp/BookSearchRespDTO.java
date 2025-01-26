@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class BookSearchRespDTO {
 
-    private Long id;
+    private String id;
 
     @TableField("ref_id")
     private Long refId;

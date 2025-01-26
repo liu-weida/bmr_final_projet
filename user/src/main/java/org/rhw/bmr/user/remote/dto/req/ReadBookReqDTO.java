@@ -13,6 +13,6 @@ public class ReadBookReqDTO {
 
     private String username;
 
-    private Long bookId;
+    private String bookId;
 
 }
