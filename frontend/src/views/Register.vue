@@ -1,111 +1,184 @@
 <template>
-  <div>
-    <h2>注册</h2>
+  <div class="register-container">
+    <h1>注册</h1>
     <form @submit.prevent="handleRegister">
-      <div>
-        <label>用户名：</label>
-        <input v-model="username" required />
+      <div class="form-group">
+        <label for="username">用户名：</label>
+        <input id="username" v-model="form.username" placeholder="请输入用户名" required />
       </div>
-      <div>
-        <label>密码：</label>
-        <input v-model="password" type="password" required />
+      <div class="form-group">
+        <label for="password">密码：</label>
+        <input
+          id="password"
+          type="password"
+          v-model="form.password"
+          placeholder="请输入密码"
+          required
+        />
       </div>
-      <div>
-        <label>邮箱：</label>
-        <input v-model="mail" type="email" required />
+      <div class="form-group">
+        <label for="mail">邮箱：</label>
+        <input id="mail" type="email" v-model="form.mail" placeholder="请输入邮箱" required />
       </div>
-      <div>
-        <label>电话：</label>
-        <input v-model="phone" type="tel" required />
+      <div class="form-group">
+        <label for="phone">电话号码：</label>
+        <input
+          id="phone"
+          type="tel"
+          v-model="form.phone"
+          placeholder="请输入电话号码"
+          required
+        />
       </div>
-      <button type="submit">注册</button>
+      <button type="submit" :disabled="isSubmitting">注册</button>
     </form>
-    <p v-if="errorMessage" style="color: red;">{{ errorMessage }}</p>
+    <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+    <p v-if="successMessage" class="success-message">{{ successMessage }}</p>
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import axios from 'axios';
 
-// 生成随机 bigint ID
-function generateRandomBigInt() {
-  return BigInt(Math.floor(Math.random() * 1e16)); // 生成一个 16 位随机数并转换为 bigint
+const form = ref({
+  username: '',
+  password: '',
+  mail: '',
+  phone: '',
+});
+
+const isSubmitting = ref(false);
+const errorMessage = ref('');
+const successMessage = ref('');
+const router = useRouter();
+
+function generateRandomNumberString() {
+  let result = '';
+  const digits = '0123456789';
+
+  for (let i = 0; i < 8; i++) {
+    const randomIndex = Math.floor(Math.random() * digits.length);
+    result += digits[randomIndex];
+  }
+
+  return result;
 }
 
-export default {
-  name: 'Register',
-  setup() {
-    const username = ref('');
-    const password = ref('');
-    const mail = ref('');
-    const phone = ref('');
-    const errorMessage = ref('');
+const handleRegister = async () => {
+  isSubmitting.value = true;
+  errorMessage.value = '';
+  successMessage.value = '';
 
-    const handleRegister = async () => {
-      try {
-        // 生成随机 userId
-        const userId = generateRandomBigInt().toString();
-
-        // 调用注册 API
-        const registerResponse = await axios.put('/api/bmr/user/v1/user', {
-          id: userId,
-          username: username.value,
-          password: password.value,
-          mail: mail.value,
-          phone: phone.value,
-        });
-
-        if (registerResponse.data.code !== '0') {
-          errorMessage.value = `注册失败：${registerResponse.data.message}`;
-          return;
-        }
-
-        console.log('注册成功：', registerResponse.data);
-        console.log('username', username.value);
-        console.log('passowrd', password.value);
-
-
-        // 清空错误消息
-        errorMessage.value = '';
-
-        // 跳转到首页或其他页面
-        window.location.href = '/login';
-      } catch (err) {
-        console.error('注册或登录请求发生错误:', err);
-        errorMessage.value = '发生未知错误，请稍后重试';
-      }
+  try {
+    const userId = generateRandomNumberString();
+    const queryParams = {
+        id: parseInt(userId, 10),
+        username: form.value.username,
+        password: form.value.password,
+        mail: form.value.mail,
+        phone: form.value.phone,
     };
 
-    return {
-      username,
-      password,
-      mail,
-      phone,
-      errorMessage,
-      handleRegister,
-    };
-  },
+
+
+    console.log(queryParams);
+
+    const response = await axios.post('/api/bmr/user/v1/user', queryParams,
+        { headers: { 'Content-Type': 'application/json' } },
+    );
+    console.log(response);
+
+    if (response.data.code === '0') {
+      successMessage.value = '注册成功！正在跳转到登录页面...';
+      setTimeout(() => {
+        router.push('/login');
+      }, 2000);
+    } else {
+      errorMessage.value = response.data.message || '注册失败，请重试。';
+    }
+  } catch (error) {
+    console.log(error);
+    errorMessage.value = '网络错误，请稍后重试。';
+  } finally {
+    isSubmitting.value = false;
+  }
 };
 </script>
 
-<style>
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+<style scoped>
+.register-container {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #555;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+input:focus {
+  outline: none;
+  border-color: #4caf50;
+  box-shadow: 0 0 4px rgba(76, 175, 80, 0.5);
 }
 
 button {
-  background-color: #007bff;
+  width: 100%;
+  padding: 10px;
+  background-color: #4caf50;
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
   border-radius: 4px;
+  font-size: 16px;
   cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
-button:hover {
-  background-color: #0056b3;
+button:disabled {
+  background-color: #a5d6a7;
+  cursor: not-allowed;
+}
+
+button:hover:enabled {
+  background-color: #45a049;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.success-message {
+  color: green;
+  margin-top: 10px;
+  text-align: center;
 }
 </style>

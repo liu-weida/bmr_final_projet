@@ -23,6 +23,7 @@
           v-for="book in recommendations"
           :key="book.id"
           class="book-card"
+          @click="goToDetail(book.id)"
         >
           <img :src="book.img || '/default-book-cover.jpg'" alt="书籍封面" />
           <h3>{{ book.title }}</h3>
@@ -41,6 +42,7 @@
           v-for="book in bookmarks"
           :key="book.id"
           class="book-card"
+          @click="goToDetail(book.id)"
         >
           <img :src="book.img || '/default-book-cover.jpg'" alt="书籍封面" />
           <h3>{{ book.title }}</h3>
@@ -100,6 +102,10 @@ onMounted(() => {
 // 描述截取
 function truncateDescription(description, length = 50) {
   return description.length > length ? `${description.slice(0, length)}...` : description;
+}
+
+function goToDetail(bookId) {
+  router.push({ name: 'BookDetail', params: { bookId } });
 }
 </script>
 

@@ -13,16 +13,17 @@
       <!-- 书籍展示 -->
       <section class="book-list">
         <h2>推荐书籍</h2>
-        <div v-if="books.length === 0" class="no-books">暂无书籍</div>
+        <div v-if="total === 0" class="no-books">暂无书籍</div>
         <div v-else class="books-grid">
           <div
             v-for="book in books"
             :key="book.id"
             class="book-card"
+            @click="goToDetail(book.id)"
           >
+            <img :src="book.img" alt="Book cover" class="book-cover" />
             <h3>{{ book.title }}</h3>
             <p>作者: {{ book.author }}</p>
-            <p>分类: {{ book.category }}</p>
             <p class="description">{{ truncateDescription(book.description) }}</p>
           </div>
         </div>
@@ -36,11 +37,13 @@ import { ref, onMounted } from 'vue';
 import NavBar from '../NavBar.vue';
 import SearchBar from '../SearchBar.vue';
 import { useRoute, useRouter } from 'vue-router';
+import axios from 'axios';
 
 const route = useRoute();
 const router = useRouter();
 
 const books = ref([]); // 存储书籍列表
+const total = ref(0);
 const pageSize = 20; // 每页显示的书籍数量
 
 // 截取描述字符串
@@ -52,18 +55,19 @@ function truncateDescription(description, length = 100) {
 // 获取书籍数据
 async function fetchBooks(params = {}) {
   try {
-    const response = await fetch('/api/bmr/user/v1/bookSearch_page', {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-      params: JSON.stringify({
-        pageNo: 1,
-        pageSize: 20,
-      }),
+    const queryParams = {
+          pageNo: 1,
+          pageSize: 10,
+    };
+
+    const response = await axios.get('/api/bmr/project/v1/bookSearch_page', {
+          params: queryParams,
     });
 
-    const data = await response.json();
-    if (data.code === '0') {
-      books.value = data.data.records || [];
+    console.log(response.data);
+    if (response.data.code === '0') {
+       books.value = response.data.data.records;
+       total.value = response.data.data.total;
     } else {
       console.error('获取书籍失败:', data.message);
     }
@@ -81,6 +85,10 @@ function handleSearch(payload) {
   });
 }
 
+function goToDetail(bookId) {
+  router.push({ name: 'BookDetail', params: { bookId } });
+}
+
 // 初始化数据
 onMounted(() => {
   fetchBooks();
@@ -93,13 +101,39 @@ main {
 }
 
 .book-list {
-  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 
-.book-list h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  color: #333;
+.book-item {
+  width: 120px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.book-cover {
+  width: 100px;
+  height: 140px;
+  object-fit: cover;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.pagination button {
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
 .no-books {
