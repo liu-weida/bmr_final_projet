@@ -15,6 +15,7 @@ import org.rhw.bmr.project.service.UserPreferenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -41,14 +42,14 @@ public class UserActionController {
     }
 
     @PostMapping("/api/bmr/project/v1/bookmark")
-    public Result<Void> bookmark(BookmarkReqDTO requestParam){
+    public Result<Void> bookmark(@RequestBody BookmarkReqDTO requestParam){
         userPreferenceService.recordUserPreference(requestParam);
         bookmarkService.bookmark(requestParam);
         return Results.success();
     }
 
     @PostMapping("/api/bmr/project/v1/bookmark/delete")
-    public Result<Void> bookmarkDelete(BookmarkReqDTO requestParam){
+    public Result<Void> bookmarkDelete(@RequestBody BookmarkReqDTO requestParam){
         bookmarkService.deleteBookmark(requestParam);
         return Results.success();
     }
