@@ -7,7 +7,9 @@ import lombok.Data;
 @AllArgsConstructor
 public class BmrSaveGroupReqDTO {
 
-    private String groupName;
     private String username;
+
+    private String groupName;
+
 
 }
