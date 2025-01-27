@@ -38,6 +38,8 @@ def get_data(bookID):
                 metadata['storagePath'] = 'https://www.gutenberg.org' + td.find('a').get('href');
 
         metadata['Downloads'] = metadata['Downloads'].strip(' ')[0]
+        metadata['Title'] = metadata['Title'][:199]
+        metadata['Subject'] = metadata['Subject'][:90]
         return metadata
     except requests.exceptions.RequestException as e:
         print(f"Error fetching data for bookID {bookID}: {e}")
@@ -46,7 +48,7 @@ def get_data(bookID):
 # Function to write data to a CSV file
 def write_to_csv(data, filename):
     with open(filename, 'w', newline='', encoding='utf-8') as csvfile:
-        fieldnames = ['refID', 'Title', 'storagePath', 'Author', 'Category', 'Summary', 'Language', 'Downloads', 'img']
+        fieldnames = ['refID', 'Title', 'storagePath', 'Author', 'Subject', 'Summary', 'Language', 'Downloads', 'img']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
         for entry in data:
@@ -57,7 +59,7 @@ def write_to_csv(data, filename):
 
 # Main script
 if __name__ == "__main__":
-    n = 10  # Number of random book IDs to fetch
+    n = 200  # Number of random book IDs to fetch
     min_book_id = 1  # Minimum book ID
     max_book_id = 75000  # Maximum book ID (you can adjust based on your requirement)
 
