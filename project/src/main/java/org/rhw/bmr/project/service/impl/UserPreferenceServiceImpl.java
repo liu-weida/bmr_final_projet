@@ -112,6 +112,7 @@ public class UserPreferenceServiceImpl extends ServiceImpl<UserPreferenceMapper,
 
             LambdaUpdateWrapper<UserPreferenceDO> updateWrapper = Wrappers.lambdaUpdate(UserPreferenceDO.class)
                     .eq(UserPreferenceDO::getId, existPref.getId())
+                    .eq(UserPreferenceDO::getUsername, username)
                     .set(UserPreferenceDO::getLikeCount, existPref.getLikeCount() + 1);
             update(updateWrapper);
         }

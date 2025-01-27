@@ -62,8 +62,12 @@ public class RecommendationImpl extends ServiceImpl<UserPreferenceMapper, UserPr
             finalList.add(recommendedBooks.get(i));
         }
 
+
         if (finalList.size() < 10) {
             int stillNeed = 10 - finalList.size();
+
+
+
             List<BookDO> randomBooks = queryRandomBooks(stillNeed);
             finalList.addAll(randomBooks);
         }
@@ -75,7 +79,6 @@ public class RecommendationImpl extends ServiceImpl<UserPreferenceMapper, UserPr
     private Map<Long, Double> computeBookPageRank() {
         Map<Long, List<Long>> bookAdjList = userPreferenceServiceImpl.getBookAdjacencyList();
 
-        // 这里可根据需要调整参数
         double dampingFactor = 0.85;
         int maxIterations = 100;
         double epsilon = 1.0e-6;
@@ -111,10 +114,10 @@ public class RecommendationImpl extends ServiceImpl<UserPreferenceMapper, UserPr
                 new com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper<BookDO>();
 
         if (author != null && !author.isEmpty()) {
-            wrapper.eq(BookDO::getAuthor, author);
+            wrapper.or().eq(BookDO::getAuthor, author);
         }
         if (category != null && !category.isEmpty()) {
-            wrapper.eq(BookDO::getCategory, category);
+            wrapper.or().eq(BookDO::getCategory, category);
         }
         wrapper.orderByDesc(BookDO::getClickCount);
         wrapper.last("LIMIT 20");
@@ -123,8 +126,9 @@ public class RecommendationImpl extends ServiceImpl<UserPreferenceMapper, UserPr
     }
 
     private List<BookDO> queryRandomBooks(int stillNeed) {
+
         com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper<BookDO> wrapper =
-                Wrappers.lambdaQuery(BookDO.class).last("LIMIT " + stillNeed);
+                Wrappers.lambdaQuery(BookDO.class).last("ORDER BY RAND() LIMIT " + stillNeed);
         return bookMapper.selectList(wrapper);
     }
 }
