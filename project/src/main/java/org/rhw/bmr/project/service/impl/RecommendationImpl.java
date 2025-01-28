@@ -28,8 +28,11 @@ public class RecommendationImpl extends ServiceImpl<UserPreferenceMapper, UserPr
 
     @Override
     public List<BookDO> recommendBooksForUser(RecommendBookReqDTO requestParam) {
-        String username = requestParam.getUsername();
 
+        int currentPage = requestParam.getPageNo() == null ? 1 : requestParam.getPageNo();
+        int pageSize = requestParam.getPageSize() == null ? 10 : requestParam.getPageSize();
+
+        String username = requestParam.getUsername();
 
         Map<Long, Double> bookPageRank = computeBookPageRank();
 
@@ -37,7 +40,7 @@ public class RecommendationImpl extends ServiceImpl<UserPreferenceMapper, UserPr
 
         Set<Long> preferredBookIds = getPreferredBookIds(preferences);
 
-        List<BookDO> recommendedBooks = new ArrayList<BookDO>();
+        List<BookDO> recommendedBooks = new ArrayList<>();
         if (!preferredBookIds.isEmpty()) {
             List<BookDO> filteredBooks = bookMapper.selectList(
                     Wrappers.lambdaQuery(BookDO.class).in(BookDO::getId, preferredBookIds)
@@ -47,33 +50,34 @@ public class RecommendationImpl extends ServiceImpl<UserPreferenceMapper, UserPr
             }
         }
 
-        Collections.sort(recommendedBooks, new Comparator<BookDO>() {
-            @Override
-            public int compare(BookDO b1, BookDO b2) {
-                double score1 = bookPageRank.getOrDefault(b1.getId(), 0.0);
-                double score2 = bookPageRank.getOrDefault(b2.getId(), 0.0);
-                return Double.compare(score2, score1);
-            }
+        recommendedBooks.sort((b1, b2) -> {
+            double score1 = bookPageRank.getOrDefault(b1.getId(), 0.0);
+            double score2 = bookPageRank.getOrDefault(b2.getId(), 0.0);
+            return Double.compare(score2, score1);
         });
 
-        List<BookDO> finalList = new ArrayList<BookDO>();
-        int limit = Math.min(10, recommendedBooks.size());
+        List<BookDO> finalList = new ArrayList<>();
+        int limit = Math.min(100, recommendedBooks.size());
         for (int i = 0; i < limit; i++) {
             finalList.add(recommendedBooks.get(i));
         }
 
-
-        if (finalList.size() < 10) {
-            int stillNeed = 10 - finalList.size();
-
-
-
+        if (finalList.size() < 100) {
+            int stillNeed = 100 - finalList.size();
             List<BookDO> randomBooks = queryRandomBooks(stillNeed);
             finalList.addAll(randomBooks);
         }
 
-        return finalList;
+        int startIndex = (currentPage - 1) * pageSize;
+        int endIndex = Math.min(startIndex + pageSize, finalList.size());
+
+        if (startIndex >= finalList.size()) {
+            return Collections.emptyList();
+        }
+
+        return finalList.subList(startIndex, endIndex);
     }
+
 
 
     private Map<Long, Double> computeBookPageRank() {

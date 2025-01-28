@@ -2,7 +2,9 @@ package org.rhw.bmr.project.dto.req;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import lombok.Data;
 
+@Data
 public class BookInsertionReqDTO {
 
     @TableField("ref_id")

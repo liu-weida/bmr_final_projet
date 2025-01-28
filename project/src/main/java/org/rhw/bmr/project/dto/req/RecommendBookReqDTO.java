@@ -7,4 +7,6 @@ public class RecommendBookReqDTO {
 
     private String username;
 
+    private Integer pageNo;
+    private Integer pageSize;
 }

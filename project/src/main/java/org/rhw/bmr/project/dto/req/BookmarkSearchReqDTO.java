@@ -18,8 +18,7 @@ public class BookmarkSearchReqDTO{
 
     private String username;
 
-    private Integer pageNo;   // 当前页码
-    private Integer pageSize; // 每页大小
-
+    private Integer pageNo;
+    private Integer pageSize;
 
 }
