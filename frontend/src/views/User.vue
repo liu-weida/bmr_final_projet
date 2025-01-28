@@ -1,4 +1,5 @@
 <template>
+  <NavBar />
   <div class="user-container">
     <header class="user-header">
       <div class="header-left">
@@ -57,6 +58,7 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import SearchBar from '../SearchBar.vue';
+import NavBar from '../NavBar.vue';
 
 const username = ref(localStorage.getItem('username') || '');
 const gid = ref(localStorage.getItem('gid') || '');
@@ -68,8 +70,9 @@ const router = useRouter();
 // 获取书籍推荐
 async function fetchRecommendations() {
   try {
-    const res = await fetch(`/api/bmr/project/v1/recommend?username=${username.value}`);
+    const res = await fetch(`/api/bmr/project/v1/recommend?username=${username.value}&pageNo=1&pageSize=10`);
     const data = await res.json();
+    console.log(data);
     recommendations.value = data.data || [];
   } catch (err) {
     console.error('获取推荐书籍失败:', err);
