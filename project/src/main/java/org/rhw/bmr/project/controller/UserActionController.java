@@ -42,6 +42,9 @@ public class UserActionController {
         return Results.success(readBookService.readBook(requestParam));
     }
 
+
+
+
     @PostMapping("/api/bmr/project/v1/bookmark")
     public Result<Void> bookmark(@RequestBody BookmarkReqDTO requestParam){
         userPreferenceService.recordUserPreference(requestParam);

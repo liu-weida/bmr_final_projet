@@ -18,4 +18,6 @@ public class ReadBookRespDTO {
 
     private String img;
 
+    private String[] contents;
+
 }
