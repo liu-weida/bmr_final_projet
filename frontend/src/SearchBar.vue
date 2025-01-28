@@ -1,22 +1,22 @@
 <template>
   <div class="search-bar">
     <div class="search-field">
-      <label>书名：</label>
+      <label>Title :</label>
       <input type="text" v-model="title" @keyup.enter="emitSearch" />
     </div>
     <div class="search-field">
-      <label>作者：</label>
+      <label>Author :</label>
       <input type="text" v-model="author" @keyup.enter="emitSearch" />
     </div>
     <div class="search-field">
-      <label>分类：</label>
+      <label>Category :</label>
       <input type="text" v-model="category" @keyup.enter="emitSearch" />
     </div>
     <div class="search-field">
-      <label>语言：</label>
+      <label>Language :</label>
       <input type="text" v-model="language" @keyup.enter="emitSearch" />
     </div>
-    <button @click="emitSearch">搜索</button>
+    <button @click="emitSearch">Search :</button>
   </div>
 </template>
 

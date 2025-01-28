@@ -1,36 +1,36 @@
 <template>
   <div class="register-container">
-    <h1>注册</h1>
+    <h1>Register</h1>
     <form @submit.prevent="handleRegister">
       <div class="form-group">
-        <label for="username">用户名：</label>
-        <input id="username" v-model="form.username" placeholder="请输入用户名" required />
+        <label for="username">Username :</label>
+        <input id="username" v-model="form.username" placeholder="Please enter your username" required />
       </div>
       <div class="form-group">
-        <label for="password">密码：</label>
+        <label for="password">Password :</label>
         <input
           id="password"
           type="password"
           v-model="form.password"
-          placeholder="请输入密码"
+          placeholder="Please enter your password"
           required
         />
       </div>
       <div class="form-group">
-        <label for="mail">邮箱：</label>
-        <input id="mail" type="email" v-model="form.mail" placeholder="请输入邮箱" required />
+        <label for="mail">Email :</label>
+        <input id="mail" type="email" v-model="form.mail" placeholder="Please enter your email" required />
       </div>
       <div class="form-group">
-        <label for="phone">电话号码：</label>
+        <label for="phone">Phone :</label>
         <input
           id="phone"
           type="tel"
           v-model="form.phone"
-          placeholder="请输入电话号码"
+          placeholder="Please enter your phone number"
           required
         />
       </div>
-      <button type="submit" :disabled="isSubmitting">注册</button>
+      <button type="submit" :disabled="isSubmitting"> Register </button>
     </form>
     <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
     <p v-if="successMessage" class="success-message">{{ successMessage }}</p>

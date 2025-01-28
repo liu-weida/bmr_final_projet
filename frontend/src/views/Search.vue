@@ -5,8 +5,8 @@
 
     <!-- 搜索结果展示 -->
     <div class="search-result">
-      <p v-if="total > 0">总计匹配书籍: {{ total }} 本</p>
-      <p v-else>未找到匹配的书籍。</p>
+      <p v-if="total > 0">Total match Number :{{ total }} 本</p>
+      <p v-else>No matches</p>
 
       <div class="book-list">
         <div
@@ -29,7 +29,7 @@
       >
         上一页
       </button>
-      <span>第 {{ currentPage }} 页 / 共 {{ totalPages }} 页</span>
+      <span> Page {{ currentPage }}  / total {{ totalPages }} pages </span>
       <button
         :disabled="currentPage === totalPages"
         @click="changePage(currentPage + 1)"

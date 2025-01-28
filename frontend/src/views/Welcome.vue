@@ -5,14 +5,14 @@
 
     <main>
       <h1>Welcome Page</h1>
-      <p>这是一个欢迎界面</p>
+      <p>Welcome to our DAAR project</p>
 
       <!-- 搜索栏 -->
       <SearchBar @search="handleSearch" />
 
       <!-- 书籍展示 -->
       <section class="book-list">
-        <h2>推荐书籍</h2>
+        <h2>Current most popular books </h2>
         <div v-if="total === 0" class="no-books">暂无书籍</div>
         <div v-else class="books-grid">
           <div
