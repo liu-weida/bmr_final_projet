@@ -5,8 +5,8 @@
     <div class="left-section">
       <img :src="book.img || '/default-book-cover.jpg'" alt="书籍封面" class="book-image" />
       <div class="buttons">
-        <button class="btn-read" @click="readBook">立刻阅读</button>
-        <button class="btn-add" @click="addToFavorites">添加收藏</button>
+        <button class="btn-read" @click="readBook">Read Now</button>
+        <button class="btn-add" @click="addToFavorites">Add to favorite</button>
       </div>
     </div>
 
@@ -15,23 +15,23 @@
       <h2>{{ book.title }}</h2>
       <table class="book-info-table">
         <tr>
-          <td><strong>作者：</strong></td>
+          <td><strong>Author :</strong></td>
           <td>{{ book.author }}</td>
         </tr>
         <tr>
-          <td><strong>分类：</strong></td>
+          <td><strong>Category :</strong></td>
           <td>{{ book.category }}</td>
         </tr>
         <tr>
-          <td><strong>语言：</strong></td>
+          <td><strong>Language :</strong></td>
           <td>{{ book.language }}</td>
         </tr>
         <tr>
-          <td><strong>描述：</strong></td>
+          <td><strong>Description :</strong></td>
           <td>{{ book.description }}</td>
         </tr>
         <tr>
-          <td><strong>点击量：</strong></td>
+          <td><strong>ClickCount :</strong></td>
           <td>{{ book.clickCount }}</td>
         </tr>
       </table>

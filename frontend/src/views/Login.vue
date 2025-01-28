@@ -3,14 +3,14 @@
     <h2>登录</h2>
     <form @submit.prevent="handleLogin">
       <div>
-        <label>用户名：</label>
+        <label>Username :</label>
         <input v-model="username" />
       </div>
       <div>
-        <label>密码：</label>
+        <label>Password :</label>
         <input v-model="password" type="password" />
       </div>
-      <button type="submit">登录</button>
+      <button type="submit">Login</button>
     </form>
     <p v-if="errorMessage" style="color: red;">{{ errorMessage }}</p>
   </div>

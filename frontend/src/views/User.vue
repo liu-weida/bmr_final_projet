@@ -5,7 +5,7 @@
         <span class="username">{{ username }}</span>
       </div>
       <div class="header-right">
-        <button @click="logout">注销</button>
+        <button @click="logout">Logout</button>
       </div>
     </header>
 
@@ -14,9 +14,9 @@
     </div>
 
     <div class="recommendations-wrapper">
-      <h2>书籍推荐</h2>
+      <h2>Book Recommendations</h2>
       <div v-if="recommendations.length === 0" class="no-recommendations">
-        暂无推荐书籍
+        No Recommendation yet
       </div>
       <div v-else class="books-grid">
         <div
@@ -33,9 +33,9 @@
     </div>
 
     <div class="bookmarks-wrapper">
-      <h2>我的收藏</h2>
+      <h2>My Collections</h2>
       <div v-if="bookmarks.length === 0" class="no-bookmarks">
-        暂无收藏
+        NO Collections yet
       </div>
       <div v-else class="books-grid">
         <div
