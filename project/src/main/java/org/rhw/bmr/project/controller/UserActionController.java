@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.rhw.bmr.project.common.convention.result.Result;
 import org.rhw.bmr.project.common.convention.result.Results;
 import org.rhw.bmr.project.dto.req.*;
+import org.rhw.bmr.project.dto.resp.BookID2refIDRespDTO;
 import org.rhw.bmr.project.dto.resp.BookSearchRespDTO;
 import org.rhw.bmr.project.dto.resp.BookmarkSearchRespDTO;
 import org.rhw.bmr.project.dto.resp.ReadBookRespDTO;
@@ -79,6 +80,10 @@ public class UserActionController {
         return Results.success(textInternalSearchService.TextInternalSearchByEgreplikeLong(requestParam));
     }
 
+    @GetMapping("/api/bmr/project/v1/bookID2refID")
+    public Result<BookID2refIDRespDTO> bookID2refID(BookID2refIDReqDTO requestParam){
+        return Results.success(readBookService.bookID2refID(requestParam));
+    }
 
 
 }

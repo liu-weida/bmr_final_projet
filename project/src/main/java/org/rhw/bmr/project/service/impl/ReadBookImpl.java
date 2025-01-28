@@ -6,7 +6,9 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.rhw.bmr.project.dao.entity.BookDO;
 import org.rhw.bmr.project.dao.mapper.BookMapper;
+import org.rhw.bmr.project.dto.req.BookID2refIDReqDTO;
 import org.rhw.bmr.project.dto.req.ReadBookReqDTO;
+import org.rhw.bmr.project.dto.resp.BookID2refIDRespDTO;
 import org.rhw.bmr.project.dto.resp.ReadBookRespDTO;
 import org.rhw.bmr.project.service.ReadBookService;
 import org.springframework.stereotype.Service;
@@ -30,11 +32,19 @@ public class ReadBookImpl extends ServiceImpl<BookMapper, BookDO> implements Rea
             return new ReadBookRespDTO(bookDO.getStoragePath(),bookDO.getImg());
         }
 
-        if (bookDO == null){
-            log.error("Book not found!!!!!!!!!!!!!!!!!");
-        }
+        return new ReadBookRespDTO();
+    }
 
-        return new ReadBookRespDTO("没找到","没找到");
+    @Override
+    public BookID2refIDRespDTO bookID2refID(BookID2refIDReqDTO requestParam) {
+
+        String bookID = requestParam.getBookID();
+
+        BookDO bookDO = baseMapper.selectById(bookID);
+
+
+
+        return new BookID2refIDRespDTO(bookDO.getRefId().toString());
     }
 
 }
