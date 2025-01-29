@@ -2,6 +2,7 @@
   <header class="header">
     <!-- 左边按钮 -->
     <div class="left-buttons">
+      <button @click="goBack">Back</button>
       <button @click="goToWelcome">Welcome</button>
     </div>
 
@@ -33,26 +34,26 @@ async function checkTokenValidity() {
   const token = localStorage.getItem('token');
   if (!token) return;
   try {
-      const response = await axios.get('/api/bmr/user/v1/user/check-login', {
-         params: {
-           username: username.value,
-           token: token,
-         },
-      });
+    const response = await axios.get('/api/bmr/user/v1/user/check-login', {
+      params: {
+        username: username.value,
+        token: token,
+      },
+    });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
 
-      const result = await response.json();
+    const result = await response.json();
 
-      if (result.code === '0' && result.data === true) {
-        console.log('Token 有效');
-      } else {
-        console.warn('Token 无效或过期，清空缓存');
-        localStorage.removeItem('token');
-        localStorage.removeItem('username');
-      }
+    if (result.code === '0' && result.data === true) {
+      console.log('Token 有效');
+    } else {
+      console.warn('Token 无效或过期，清空缓存');
+      localStorage.removeItem('token');
+      localStorage.removeItem('username');
+    }
   } catch (error) {
     console.error('检查 Token 异常:', error);
     localStorage.removeItem('token');
@@ -60,6 +61,7 @@ async function checkTokenValidity() {
   }
 }
 
+const goBack = () => router.back();
 const goToWelcome = () => router.push({ name: 'Welcome' });
 const goToLogin = () => router.push({ name: 'Login' });
 const goToRegister = () => router.push({ name: 'Register' });
@@ -70,10 +72,10 @@ async function logout() {
   console.log('token:', token);
   try {
     const response = await axios.delete('/api/bmr/user/v1/user/logout', {
-        params: {
-            username: username.value,
-            token: token,
-        },
+      params: {
+        username: username.value,
+        token: token,
+      },
     });
 
     if (!response.ok) {

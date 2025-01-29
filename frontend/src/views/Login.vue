@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>登录</h2>
+    <h2>Login</h2>
     <form @submit.prevent="handleLogin">
       <div>
         <label>Username :</label>

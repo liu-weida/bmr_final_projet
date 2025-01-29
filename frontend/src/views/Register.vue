@@ -1,4 +1,5 @@
 <template>
+
   <div class="register-container">
     <h1>Register</h1>
     <form @submit.prevent="handleRegister">
@@ -91,7 +92,7 @@ const handleRegister = async () => {
     console.log(response);
 
     if (response.data.code === '0') {
-      successMessage.value = '注册成功！正在跳转到登录页面...';
+      successMessage.value = 'Registration success! Redirecting to the login page...';
       setTimeout(() => {
         router.push('/login');
       }, 2000);

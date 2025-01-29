@@ -22,9 +22,9 @@
             @click="goToDetail(book.id)"
           >
             <img :src="book.img" alt="Book cover" class="book-cover" />
-            <h3>{{ book.title }}</h3>
-            <p>作者: {{ book.author }}</p>
-            <p class="description">{{ truncateDescription(book.description) }}</p>
+            <h3>{{ truncateText(book.title, 20) }}</h3>
+            <p>Author: {{ truncateText(book.author, 20)}}</p>
+            <p class="description">{{ truncateText(book.description, 50) }}</p>
           </div>
         </div>
       </section>
@@ -74,6 +74,11 @@ async function fetchBooks(params = {}) {
   } catch (error) {
     console.error('获取书籍异常:', error);
   }
+}
+
+function truncateText(text, maxLength) {
+  if (!text) return "";
+  return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
 }
 
 // 处理搜索

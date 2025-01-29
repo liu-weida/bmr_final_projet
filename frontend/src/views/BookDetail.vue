@@ -28,7 +28,7 @@
         </tr>
         <tr>
           <td><strong>Description :</strong></td>
-          <td>{{ book.description }}</td>
+          <td>{{ truncateText(book.description, 100) }}</td>
         </tr>
         <tr>
           <td><strong>ClickCount :</strong></td>
@@ -75,6 +75,11 @@ async function fetchBookDetails() {
 // 跳转到阅读页面
 function readBook() {
   router.push(`/read/${bookId}`);
+}
+
+function truncateText(text, maxLength) {
+  if (!text) return "";
+  return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
 }
 
 // 添加到收藏

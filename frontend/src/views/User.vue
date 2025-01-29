@@ -21,14 +21,14 @@
       </div>
       <div v-else class="books-grid">
         <div
-          v-for="book in recommendations"
+          v-for="book in books"
           :key="book.id"
           class="book-card"
           @click="goToDetail(book.id)"
-        >
-          <img :src="book.img || '/default-book-cover.jpg'" alt="书籍封面" />
-          <h3>{{ book.title }}</h3>
-          <p class="description">{{ truncateDescription(book.description) }}</p>
+      >
+        <img :src="book.img" alt="Book cover" class="book-cover" />
+        <h3>{{ truncateText(book.title, 20) }}</h3>
+        <p class="description">{{ truncateText(book.description, 50) }}</p>
         </div>
       </div>
     </div>
@@ -40,14 +40,14 @@
       </div>
       <div v-else class="books-grid">
         <div
-          v-for="book in bookmarks"
-          :key="book.id"
-          class="book-card"
-          @click="goToDetail(book.id)"
+            v-for="book in books"
+            :key="book.id"
+            class="book-card"
+            @click="goToDetail(book.id)"
         >
-          <img :src="book.img || '/default-book-cover.jpg'" alt="书籍封面" />
-          <h3>{{ book.title }}</h3>
-          <p class="description">{{ truncateDescription(book.description) }}</p>
+          <img :src="book.img" alt="Book cover" class="book-cover" />
+          <h3>{{ truncateText(book.title, 20) }}</h3>
+          <p class="description">{{ truncateText(book.description, 50) }}</p>
         </div>
       </div>
     </div>
@@ -103,8 +103,9 @@ onMounted(() => {
 });
 
 // 描述截取
-function truncateDescription(description, length = 50) {
-  return description.length > length ? `${description.slice(0, length)}...` : description;
+function truncateText(text, maxLength) {
+  if (!text) return "";
+  return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
 }
 
 function goToDetail(bookId) {

@@ -1,11 +1,12 @@
 <template>
+  <NavBar/>
   <div class="search-page">
     <!-- 顶部搜索栏 -->
     <SearchBar @search="handleSearch" />
 
     <!-- 搜索结果展示 -->
     <div class="search-result">
-      <p v-if="total > 0">Total match Number :{{ total }} 本</p>
+      <p v-if="total > 0">Total match Number :{{ total }} </p>
       <p v-else>No matches</p>
 
       <div class="book-list">
@@ -27,14 +28,14 @@
         :disabled="currentPage === 1"
         @click="changePage(currentPage - 1)"
       >
-        上一页
+        Previous
       </button>
       <span> Page {{ currentPage }}  / total {{ totalPages }} pages </span>
       <button
         :disabled="currentPage === totalPages"
         @click="changePage(currentPage + 1)"
       >
-        下一页
+        Next
       </button>
     </div>
   </div>
@@ -45,6 +46,7 @@ import { ref, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 import SearchBar from '../SearchBar.vue';
+import NavBar from "../NavBar.vue";
 
 const route = useRoute();
 const router = useRouter();

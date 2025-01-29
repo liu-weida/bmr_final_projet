@@ -1,4 +1,5 @@
 <template>
+  <NavBar />
   <div class="reader">
     <div class="search-bar">
       <input v-model="searchWord" placeholder="Enter word to search" class="search-input" />
@@ -24,8 +25,10 @@
 
 <script>
 import axios from 'axios';
+import NavBar from "../NavBar.vue";
 
 export default {
+  components: {NavBar},
   data() {
     return {
       searchWord: "",
@@ -137,6 +140,8 @@ export default {
     this.loadBookContent();
   },
 };
+
+
 </script>
 
 <style scoped>
@@ -179,9 +184,10 @@ export default {
   border: 1px solid #ddd;
   border-radius: 4px;
   padding: 10px;
-  max-height: 400px;
+  max-height: 800px;
   overflow-y: auto;
 }
+
 .highlighted-line {
   background-color: #f0f8ff;
 }

@@ -7,11 +7,11 @@ export default defineConfig({
     port: 3000, // Port for the frontend
     proxy: {
         '/api/bmr/user': {
-            target: 'http://46qnjj327962.vicp.fun:37122',
+            target: 'http://localhost:8002',
             changeOrigin: true,
         },
         '/api/bmr/project': {
-            target: 'http://46qnjj327962.vicp.fun:58857',
+            target: 'http://localhost:8001',
             changeOrigin: true,
         },
     },
