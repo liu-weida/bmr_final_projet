@@ -29,38 +29,6 @@ const router = useRouter();
 const username = ref(localStorage.getItem('username') || ''); // 从本地存储中获取用户名
 const isLoggedIn = computed(() => !!localStorage.getItem('token')); // 判断是否已登录
 
-// 检查 Token 是否过期
-async function checkTokenValidity() {
-  const token = localStorage.getItem('token');
-  if (!token) return;
-  try {
-    const response = await axios.get('/api/bmr/user/v1/user/check-login', {
-      params: {
-        username: username.value,
-        token: token,
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const result = await response.json();
-
-    if (result.code === '0' && result.data === true) {
-      console.log('Token 有效');
-    } else {
-      console.warn('Token 无效或过期，清空缓存');
-      localStorage.removeItem('token');
-      localStorage.removeItem('username');
-    }
-  } catch (error) {
-    console.error('检查 Token 异常:', error);
-    localStorage.removeItem('token');
-    localStorage.removeItem('username');
-  }
-}
-
 const goBack = () => router.back();
 const goToWelcome = () => router.push({ name: 'Welcome' });
 const goToLogin = () => router.push({ name: 'Login' });
@@ -98,10 +66,6 @@ async function logout() {
   }
 }
 
-// 在组件挂载时检查 Token
-onMounted(() => {
-  checkTokenValidity();
-});
 </script>
 
 <style scoped>

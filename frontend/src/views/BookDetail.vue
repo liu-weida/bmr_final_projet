@@ -100,7 +100,7 @@ async function addToFavorites() {
     console.log(gid);
     console.log(username);
     if (data.code === '0') {
-      alert('收藏成功！');
+      alert('Success');
     } else {
       alert(`收藏失败：${data.message}`);
     }

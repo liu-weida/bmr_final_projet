@@ -1,14 +1,6 @@
 <template>
   <NavBar />
   <div class="user-container">
-    <header class="user-header">
-      <div class="header-left">
-        <span class="username">{{ username }}</span>
-      </div>
-      <div class="header-right">
-        <button @click="logout">Logout</button>
-      </div>
-    </header>
 
     <div class="search-wrapper">
       <SearchBar @search="handleSearch" />
@@ -21,7 +13,7 @@
       </div>
       <div v-else class="books-grid">
         <div
-          v-for="book in books"
+          v-for="book in recommendations"
           :key="book.id"
           class="book-card"
           @click="goToDetail(book.id)"
@@ -40,7 +32,7 @@
       </div>
       <div v-else class="books-grid">
         <div
-            v-for="book in books"
+            v-for="book in bookmarks"
             :key="book.id"
             class="book-card"
             @click="goToDetail(book.id)"
