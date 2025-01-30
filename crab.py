@@ -48,18 +48,18 @@ def get_data(bookID):
         return None
 
 # Function to download book text
-def download_book_text(bookID, storagePath):
-    try:
-        response = requests.get(storagePath)
-        response.raise_for_status()
-        output_dir = 'resources/books/'
-        os.makedirs(output_dir, exist_ok=True)
-        file_path = os.path.join(output_dir, f"{bookID}.txt")
-        with open(file_path, 'w', encoding='utf-8') as file:
-            file.write(response.text)
-        print(f"Book text for bookID {bookID} saved to {file_path}")
-    except requests.exceptions.RequestException as e:
-        print(f"Error downloading text for bookID {bookID}: {e}")
+# def download_book_text(bookID, storagePath):
+#     try:
+#         response = requests.get(storagePath)
+#         response.raise_for_status()
+#         output_dir = 'resources/books/'
+#         os.makedirs(output_dir, exist_ok=True)
+#         file_path = os.path.join(output_dir, f"{bookID}.txt")
+#         with open(file_path, 'w', encoding='utf-8') as file:
+#             file.write(response.text)
+#         print(f"Book text for bookID {bookID} saved to {file_path}")
+#     except requests.exceptions.RequestException as e:
+#         print(f"Error downloading text for bookID {bookID}: {e}")
 
 # Function to write data to a CSV file
 def write_to_csv(data, filename):
@@ -92,8 +92,8 @@ if __name__ == "__main__":
             metadata['refID'] = bookID
             book_data.append(metadata)
 
-            if 'storagePath' in metadata and metadata['storagePath']:
-                download_book_text(bookID, metadata['storagePath'])
+            # if 'storagePath' in metadata and metadata['storagePath']:
+            #     download_book_text(bookID, metadata['storagePath'])
 
     if book_data:
         output_file = 'resources/bookInfo/bookInfo.csv'
