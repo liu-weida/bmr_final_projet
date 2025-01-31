@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project is a web application built using **Vue 3** for the frontend and **Java (JDK 17) with Spring Boot** for the backend. The backend uses **MySQL** as the database.
+This project is a web application built using **Vue 3** for the frontend and **Java (JDK 17) with Spring Boot** for the backend. The backend uses **MySQL** as the database, **redis** as cache and distributed lock, **elasticSearch** as a search engine.
 
 ## Tech Stack
 
