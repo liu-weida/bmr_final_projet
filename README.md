@@ -27,6 +27,8 @@ Make sure you have the following installed:
 - **Java 17 (JDK 17)**
 - **MySQL**
 - **Maven**
+- **redis**
+- **elasticSearch**
 
 ### DataCrabing
 ```
