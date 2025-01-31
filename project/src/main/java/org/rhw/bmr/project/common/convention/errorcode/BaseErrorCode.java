@@ -1,7 +1,7 @@
 package org.rhw.bmr.project.common.convention.errorcode;
 
 /**
- * 基础错误码定义
+ * Basic error code definition
  */
 public enum BaseErrorCode implements IErrorCode {
 
